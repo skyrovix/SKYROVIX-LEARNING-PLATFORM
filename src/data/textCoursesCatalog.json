@@ -1,0 +1,4157 @@
+[
+  {
+    "id": "text-css",
+    "slug": "css",
+    "title": "CSS3 & Modern Responsive Design",
+    "shortDesc": "Deep dive into Flexbox, Grid, Box Model, typography, animations, variables, and responsive layout patterns.",
+    "category": "Frontend",
+    "icon": "Palette",
+    "badge": "100% FREE",
+    "level": "Beginner to Intermediate",
+    "instructor": "Skyrovix Team",
+    "rating": 4.9,
+    "enrolledCount": 19800,
+    "type": "text",
+    "lessonsCount": 90,
+    "estimatedHours": "12.1 hrs",
+    "lessons": [
+      {
+        "id": "css_01_css_home",
+        "filename": "01_css_home.md",
+        "order": 1,
+        "title": "Css Home",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_02_css_introduction",
+        "filename": "02_css_introduction.md",
+        "order": 2,
+        "title": "Css Introduction",
+        "readTimeMinutes": 5,
+        "snippet": "CSS (Cascading Style Sheets) is used to control the presentation of HTML documents. With CSS, you can apply styles to elements, define layouts, create animation...",
+        "hasCode": true
+      },
+      {
+        "id": "css_03_css_syntax",
+        "filename": "03_css_syntax.md",
+        "order": 3,
+        "title": "Css Syntax",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_04_css_selectors",
+        "filename": "04_css_selectors.md",
+        "order": 4,
+        "title": "Css Selectors",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_05_css_how_to",
+        "filename": "05_css_how_to.md",
+        "order": 5,
+        "title": "Css How To",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_06_css_comments",
+        "filename": "06_css_comments.md",
+        "order": 6,
+        "title": "Css Comments",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_07_css_errors",
+        "filename": "07_css_errors.md",
+        "order": 7,
+        "title": "Css Errors",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_08_css_colors",
+        "filename": "08_css_colors.md",
+        "order": 8,
+        "title": "Css Colors",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_09_css_backgrounds",
+        "filename": "09_css_backgrounds.md",
+        "order": 9,
+        "title": "Css Backgrounds",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_10_css_borders",
+        "filename": "10_css_borders.md",
+        "order": 10,
+        "title": "Css Borders",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_11_css_margins",
+        "filename": "11_css_margins.md",
+        "order": 11,
+        "title": "Css Margins",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_12_css_padding",
+        "filename": "12_css_padding.md",
+        "order": 12,
+        "title": "Css Padding",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_13_css_height_width",
+        "filename": "13_css_height_width.md",
+        "order": 13,
+        "title": "Css Height Width",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_14_css_box_model",
+        "filename": "14_css_box_model.md",
+        "order": 14,
+        "title": "Css Box Model",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_15_css_outline",
+        "filename": "15_css_outline.md",
+        "order": 15,
+        "title": "Css Outline",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_16_css_text",
+        "filename": "16_css_text.md",
+        "order": 16,
+        "title": "Css Text",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_17_css_fonts",
+        "filename": "17_css_fonts.md",
+        "order": 17,
+        "title": "Css Fonts",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_18_css_icons",
+        "filename": "18_css_icons.md",
+        "order": 18,
+        "title": "Css Icons",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_19_css_links",
+        "filename": "19_css_links.md",
+        "order": 19,
+        "title": "Css Links",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_20_css_lists",
+        "filename": "20_css_lists.md",
+        "order": 20,
+        "title": "Css Lists",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_21_css_tables",
+        "filename": "21_css_tables.md",
+        "order": 21,
+        "title": "Css Tables",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_22_css_display",
+        "filename": "22_css_display.md",
+        "order": 22,
+        "title": "Css Display",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_23_css_max_width",
+        "filename": "23_css_max_width.md",
+        "order": 23,
+        "title": "Css Max Width",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_24_css_position",
+        "filename": "24_css_position.md",
+        "order": 24,
+        "title": "Css Position",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_25_css_position_offsets",
+        "filename": "25_css_position_offsets.md",
+        "order": 25,
+        "title": "Css Position Offsets",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_26_css_z_index",
+        "filename": "26_css_z_index.md",
+        "order": 26,
+        "title": "Css Z Index",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_27_css_overflow",
+        "filename": "27_css_overflow.md",
+        "order": 27,
+        "title": "Css Overflow",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_28_css_float",
+        "filename": "28_css_float.md",
+        "order": 28,
+        "title": "Css Float",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_29_css_inline_block",
+        "filename": "29_css_inline_block.md",
+        "order": 29,
+        "title": "Css Inline Block",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_30_css_align",
+        "filename": "30_css_align.md",
+        "order": 30,
+        "title": "Css Align",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_31_css_combinators",
+        "filename": "31_css_combinators.md",
+        "order": 31,
+        "title": "Css Combinators",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_32_css_pseudo_classes",
+        "filename": "32_css_pseudo_classes.md",
+        "order": 32,
+        "title": "Css Pseudo Classes",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_33_css_pseudo_elements",
+        "filename": "33_css_pseudo_elements.md",
+        "order": 33,
+        "title": "Css Pseudo Elements",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_34_css_opacity",
+        "filename": "34_css_opacity.md",
+        "order": 34,
+        "title": "Css Opacity",
+        "readTimeMinutes": 12,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_35_css_navbar",
+        "filename": "35_css_navbar.md",
+        "order": 35,
+        "title": "Css Navbar",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_36_css_dropdowns",
+        "filename": "36_css_dropdowns.md",
+        "order": 36,
+        "title": "Css Dropdowns",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_37_css_image_gallery",
+        "filename": "37_css_image_gallery.md",
+        "order": 37,
+        "title": "Css Image Gallery",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_38_css_image_sprites",
+        "filename": "38_css_image_sprites.md",
+        "order": 38,
+        "title": "Css Image Sprites",
+        "readTimeMinutes": 14,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_39_css_attribute_selectors",
+        "filename": "39_css_attribute_selectors.md",
+        "order": 39,
+        "title": "Css Attribute Selectors",
+        "readTimeMinutes": 13,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_40_css_forms",
+        "filename": "40_css_forms.md",
+        "order": 40,
+        "title": "Css Forms",
+        "readTimeMinutes": 14,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_41_css_counters",
+        "filename": "41_css_counters.md",
+        "order": 41,
+        "title": "Css Counters",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_42_css_units",
+        "filename": "42_css_units.md",
+        "order": 42,
+        "title": "Css Units",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_43_css_inheritance",
+        "filename": "43_css_inheritance.md",
+        "order": 43,
+        "title": "Css Inheritance",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_44_css_specificity",
+        "filename": "44_css_specificity.md",
+        "order": 44,
+        "title": "Css Specificity",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_45_css_important",
+        "filename": "45_css_important.md",
+        "order": 45,
+        "title": "Css Important",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_46_css_math_functions",
+        "filename": "46_css_math_functions.md",
+        "order": 46,
+        "title": "Css Math Functions",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_47_css_optimization",
+        "filename": "47_css_optimization.md",
+        "order": 47,
+        "title": "Css Optimization",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_48_css_accessibility",
+        "filename": "48_css_accessibility.md",
+        "order": 48,
+        "title": "Css Accessibility",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_49_css_rounded_corners",
+        "filename": "49_css_rounded_corners.md",
+        "order": 49,
+        "title": "Css Rounded Corners",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_50_css_border_images",
+        "filename": "50_css_border_images.md",
+        "order": 50,
+        "title": "Css Border Images",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_51_css_backgrounds_advanced",
+        "filename": "51_css_backgrounds_advanced.md",
+        "order": 51,
+        "title": "Css Backgrounds Advanced",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_52_css_colors_advanced",
+        "filename": "52_css_colors_advanced.md",
+        "order": 52,
+        "title": "Css Colors Advanced",
+        "readTimeMinutes": 13,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_53_css_gradients",
+        "filename": "53_css_gradients.md",
+        "order": 53,
+        "title": "Css Gradients",
+        "readTimeMinutes": 12,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_54_css_shadows",
+        "filename": "54_css_shadows.md",
+        "order": 54,
+        "title": "CSS Shadows",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_55_css_text_effects",
+        "filename": "55_css_text_effects.md",
+        "order": 55,
+        "title": "CSS Text Effects",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_56_css_custom_fonts",
+        "filename": "56_css_custom_fonts.md",
+        "order": 56,
+        "title": "CSS Custom Fonts",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_57_css_2d_transforms",
+        "filename": "57_css_2d_transforms.md",
+        "order": 57,
+        "title": "CSS 2D Transforms",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_58_css_3d_transforms",
+        "filename": "58_css_3d_transforms.md",
+        "order": 58,
+        "title": "CSS 3D Transforms",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_59_css_transitions",
+        "filename": "59_css_transitions.md",
+        "order": 59,
+        "title": "CSS Transitions",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_60_css_animations",
+        "filename": "60_css_animations.md",
+        "order": 60,
+        "title": "CSS Animations",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_61_css_tooltips",
+        "filename": "61_css_tooltips.md",
+        "order": 61,
+        "title": "Css Tooltips",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_62_css_image_styling",
+        "filename": "62_css_image_styling.md",
+        "order": 62,
+        "title": "Css Image Styling",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_63_css_image_modal",
+        "filename": "63_css_image_modal.md",
+        "order": 63,
+        "title": "Css Image Modal",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_64_css_image_centering",
+        "filename": "64_css_image_centering.md",
+        "order": 64,
+        "title": "Css Image Centering",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_65_css_image_filters",
+        "filename": "65_css_image_filters.md",
+        "order": 65,
+        "title": "Css Image Filters",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_66_css_image_shapes",
+        "filename": "66_css_image_shapes.md",
+        "order": 66,
+        "title": "Css Image Shapes",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_67_css_object_fit",
+        "filename": "67_css_object_fit.md",
+        "order": 67,
+        "title": "Css Object Fit",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_68_css_object_position",
+        "filename": "68_css_object_position.md",
+        "order": 68,
+        "title": "Css Object Position",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_69_css_masking",
+        "filename": "69_css_masking.md",
+        "order": 69,
+        "title": "Css Masking",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_70_css_buttons",
+        "filename": "70_css_buttons.md",
+        "order": 70,
+        "title": "Css Buttons",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_71_css_pagination",
+        "filename": "71_css_pagination.md",
+        "order": 71,
+        "title": "Css Pagination",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_72_css_multiple_columns",
+        "filename": "72_css_multiple_columns.md",
+        "order": 72,
+        "title": "Css Multiple Columns",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_73_css_user_interface",
+        "filename": "73_css_user_interface.md",
+        "order": 73,
+        "title": "Css User Interface",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_74_css_variables",
+        "filename": "74_css_variables.md",
+        "order": 74,
+        "title": "Css Variables",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_75_css_property",
+        "filename": "75_css_property.md",
+        "order": 75,
+        "title": "Css Property",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_76_css_box_sizing",
+        "filename": "76_css_box_sizing.md",
+        "order": 76,
+        "title": "Css Box Sizing",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_77_css_media_queries",
+        "filename": "77_css_media_queries.md",
+        "order": 77,
+        "title": "Css Media Queries",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_78_css_flexbox_intro",
+        "filename": "78_css_flexbox_intro.md",
+        "order": 78,
+        "title": "Css Flexbox Intro",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_79_css_flex_container",
+        "filename": "79_css_flex_container.md",
+        "order": 79,
+        "title": "Css Flex Container",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_80_css_grid_container",
+        "filename": "80_css_grid_container.md",
+        "order": 80,
+        "title": "Css Grid Container",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_81_css_grid_items",
+        "filename": "81_css_grid_items.md",
+        "order": 81,
+        "title": "Css Grid Items",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_82_css_grid_12_column",
+        "filename": "82_css_grid_12_column.md",
+        "order": 82,
+        "title": "Css Grid 12 Column",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_83_css_supports",
+        "filename": "83_css_supports.md",
+        "order": 83,
+        "title": "Css Supports",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_84_css_responsive_intro",
+        "filename": "84_css_responsive_intro.md",
+        "order": 84,
+        "title": "Css Responsive Intro",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_85_css_responsive_viewport",
+        "filename": "85_css_responsive_viewport.md",
+        "order": 85,
+        "title": "Css Responsive Viewport",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_86_css_responsive_grid_view",
+        "filename": "86_css_responsive_grid_view.md",
+        "order": 86,
+        "title": "Css Responsive Grid View",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_87_css_responsive_media_queries",
+        "filename": "87_css_responsive_media_queries.md",
+        "order": 87,
+        "title": "Css Responsive Media Queries",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_88_css_responsive_images",
+        "filename": "88_css_responsive_images.md",
+        "order": 88,
+        "title": "Css Responsive Images",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_89_css_responsive_videos",
+        "filename": "89_css_responsive_videos.md",
+        "order": 89,
+        "title": "Css Responsive Videos",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "css_90_css_responsive_frameworks",
+        "filename": "90_css_responsive_frameworks.md",
+        "order": 90,
+        "title": "Css Responsive Frameworks",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      }
+    ],
+    "isFree": true,
+    "price": "Free"
+  },
+  {
+    "id": "text-django",
+    "slug": "django",
+    "title": "Django Web Framework & REST Architecture",
+    "shortDesc": "Build robust Python web apps with Django ORM, authentication, view controllers, and REST framework APIs.",
+    "category": "Backend",
+    "icon": "Server",
+    "badge": "100% FREE",
+    "level": "Intermediate",
+    "instructor": "Skyrovix Team",
+    "rating": 4.91,
+    "enrolledCount": 13800,
+    "type": "text",
+    "lessonsCount": 15,
+    "estimatedHours": "2.4 hrs",
+    "lessons": [
+      {
+        "id": "django_01_django_intro",
+        "filename": "01_django_intro.md",
+        "order": 1,
+        "title": "Django Introduction",
+        "readTimeMinutes": 9,
+        "snippet": "## 📘 Introduction\r...",
+        "hasCode": true
+      },
+      {
+        "id": "django_02_django_get_started",
+        "filename": "02_django_get_started.md",
+        "order": 2,
+        "title": "Django Get Started",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "django_03_django_project_setup",
+        "filename": "03_django_project_setup.md",
+        "order": 3,
+        "title": "Django Project Setup",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "django_04_django_views_urls",
+        "filename": "04_django_views_urls.md",
+        "order": 4,
+        "title": "Django Views & URLs",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "django_05_django_templates",
+        "filename": "05_django_templates.md",
+        "order": 5,
+        "title": "Django Templates",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "django_06_django_models",
+        "filename": "06_django_models.md",
+        "order": 6,
+        "title": "Django Models",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "django_07_django_migrations",
+        "filename": "07_django_migrations.md",
+        "order": 7,
+        "title": "Django Migrations",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "django_08_django_admin",
+        "filename": "08_django_admin.md",
+        "order": 8,
+        "title": "Django Admin",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "django_09_django_orm",
+        "filename": "09_django_orm.md",
+        "order": 9,
+        "title": "Django ORM Queries",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "django_10_django_forms",
+        "filename": "10_django_forms.md",
+        "order": 10,
+        "title": "Django Forms",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "django_11_django_static_files",
+        "filename": "11_django_static_files.md",
+        "order": 11,
+        "title": "Django Static & Media Files",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "django_12_django_user_auth",
+        "filename": "12_django_user_auth.md",
+        "order": 12,
+        "title": "Django User Authentication",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "django_13_django_signals",
+        "filename": "13_django_signals.md",
+        "order": 13,
+        "title": "Django Signals",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "django_14_django_middleware",
+        "filename": "14_django_middleware.md",
+        "order": 14,
+        "title": "Django Middleware",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "django_15_django_rest_framework",
+        "filename": "15_django_rest_framework.md",
+        "order": 15,
+        "title": "Django REST Framework (DRF)",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      }
+    ],
+    "isFree": true,
+    "price": "Free"
+  },
+  {
+    "id": "text-html",
+    "slug": "html",
+    "title": "HTML5 Semantic Web Architecture",
+    "shortDesc": "Master semantic markup, accessibility, modern forms, multimedia, and web page architecture from ground up.",
+    "category": "Frontend",
+    "icon": "Code2",
+    "badge": "100% FREE",
+    "level": "Beginner",
+    "instructor": "Skyrovix Team",
+    "rating": 4.9,
+    "enrolledCount": 14200,
+    "type": "text",
+    "lessonsCount": 60,
+    "estimatedHours": "7.1 hrs",
+    "lessons": [
+      {
+        "id": "html_01_html_home",
+        "filename": "01_html_home.md",
+        "order": 1,
+        "title": "HTML HOME",
+        "readTimeMinutes": 8,
+        "snippet": "HTML (HyperText Markup Language) is the standard language used to create and structure content on the web. Every website you visit—from simple blogs to complex ...",
+        "hasCode": true
+      },
+      {
+        "id": "html_02_html_introduction",
+        "filename": "02_html_introduction.md",
+        "order": 2,
+        "title": "HTML Introduction",
+        "readTimeMinutes": 9,
+        "snippet": "## 📘 Introduction\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_03_html_editors",
+        "filename": "03_html_editors.md",
+        "order": 3,
+        "title": "HTML Editors",
+        "readTimeMinutes": 9,
+        "snippet": "To write HTML, you need a text editor and a web browser. While you can technically use any text editor like Notepad (Windows) or TextEdit (Mac), professional we...",
+        "hasCode": true
+      },
+      {
+        "id": "html_04_html_basic",
+        "filename": "04_html_basic.md",
+        "order": 4,
+        "title": "HTML Basic",
+        "readTimeMinutes": 9,
+        "snippet": "This module covers the fundamental tags and structure that form every HTML document. Understanding these basics is essential before moving on to more complex to...",
+        "hasCode": true
+      },
+      {
+        "id": "html_05_html_elements",
+        "filename": "05_html_elements.md",
+        "order": 5,
+        "title": "HTML Elements",
+        "readTimeMinutes": 9,
+        "snippet": "HTML elements are the building blocks of every web page. An element typically consists of an opening tag, content, and a closing tag. However, some elements are...",
+        "hasCode": true
+      },
+      {
+        "id": "html_06_html_attributes",
+        "filename": "06_html_attributes.md",
+        "order": 6,
+        "title": "HTML Attributes",
+        "readTimeMinutes": 9,
+        "snippet": "HTML attributes provide additional information about HTML elements. They are always specified in the opening tag and usually come in name/value pairs like `name...",
+        "hasCode": true
+      },
+      {
+        "id": "html_07_html_headings",
+        "filename": "07_html_headings.md",
+        "order": 7,
+        "title": "HTML Headings",
+        "readTimeMinutes": 9,
+        "snippet": "HTML headings are used to define the hierarchical structure of a web page's content. There are six levels of headings, from `<h1>` (most important) to `<h6>` (l...",
+        "hasCode": true
+      },
+      {
+        "id": "html_08_html_paragraphs",
+        "filename": "08_html_paragraphs.md",
+        "order": 8,
+        "title": "HTML Paragraphs",
+        "readTimeMinutes": 9,
+        "snippet": "Paragraphs are the most fundamental way to present text content on a web page. The `<p>` tag defines a paragraph, automatically adding space (margin) before and...",
+        "hasCode": true
+      },
+      {
+        "id": "html_09_html_styles",
+        "filename": "09_html_styles.md",
+        "order": 9,
+        "title": "HTML Styles",
+        "readTimeMinutes": 9,
+        "snippet": "The HTML `style` attribute allows you to apply inline CSS (Cascading Style Sheets) directly to individual HTML elements to control their appearance. While exter...",
+        "hasCode": true
+      },
+      {
+        "id": "html_10_html_formatting",
+        "filename": "10_html_formatting.md",
+        "order": 10,
+        "title": "HTML Formatting",
+        "readTimeMinutes": 10,
+        "snippet": "HTML provides a set of elements specifically designed for formatting text content. These elements give semantic meaning to text and often apply visual styling. ...",
+        "hasCode": true
+      },
+      {
+        "id": "html_11_html_quotations",
+        "filename": "11_html_quotations.md",
+        "order": 11,
+        "title": "HTML Quotations",
+        "readTimeMinutes": 10,
+        "snippet": "HTML provides specialized elements for quoting content from other sources, defining abbreviations, providing contact information, citing creative works, and ove...",
+        "hasCode": true
+      },
+      {
+        "id": "html_12_html_comments",
+        "filename": "12_html_comments.md",
+        "order": 12,
+        "title": "HTML Comments",
+        "readTimeMinutes": 10,
+        "snippet": "HTML comments are annotations in the source code that are not displayed in the browser. They are used to explain code, document sections, temporarily disable co...",
+        "hasCode": true
+      },
+      {
+        "id": "html_13_html_colors",
+        "filename": "13_html_colors.md",
+        "order": 13,
+        "title": "HTML Colors",
+        "readTimeMinutes": 10,
+        "snippet": "Colors are an essential part of web design, affecting aesthetics, user experience, and brand identity. HTML supports multiple ways to specify colors: color name...",
+        "hasCode": true
+      },
+      {
+        "id": "html_14_html_css",
+        "filename": "14_html_css.md",
+        "order": 14,
+        "title": "HTML CSS",
+        "readTimeMinutes": 11,
+        "snippet": "CSS (Cascading Style Sheets) controls the visual presentation of HTML elements. There are three ways to apply CSS to HTML: inline CSS (using the `style` attribu...",
+        "hasCode": true
+      },
+      {
+        "id": "html_15_html_links",
+        "filename": "15_html_links.md",
+        "order": 15,
+        "title": "HTML Links",
+        "readTimeMinutes": 10,
+        "snippet": "Links (or hyperlinks) are what make the World Wide Web \"web-like\" by connecting documents and resources together. The `<a>` (anchor) tag is used to create hyper...",
+        "hasCode": true
+      },
+      {
+        "id": "html_16_html_images",
+        "filename": "16_html_images.md",
+        "order": 16,
+        "title": "Html Images",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_17_html_favicon",
+        "filename": "17_html_favicon.md",
+        "order": 17,
+        "title": "Html Favicon",
+        "readTimeMinutes": 4,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_18_html_page_title",
+        "filename": "18_html_page_title.md",
+        "order": 18,
+        "title": "Html Page Title",
+        "readTimeMinutes": 4,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_19_html_tables",
+        "filename": "19_html_tables.md",
+        "order": 19,
+        "title": "Html Tables",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_20_html_lists",
+        "filename": "20_html_lists.md",
+        "order": 20,
+        "title": "Html Lists",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_21_html_block_inline",
+        "filename": "21_html_block_inline.md",
+        "order": 21,
+        "title": "Html Block Inline",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_22_html_div",
+        "filename": "22_html_div.md",
+        "order": 22,
+        "title": "Html Div",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_23_html_classes",
+        "filename": "23_html_classes.md",
+        "order": 23,
+        "title": "Html Classes",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_24_html_id",
+        "filename": "24_html_id.md",
+        "order": 24,
+        "title": "Html Id",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_25_html_buttons",
+        "filename": "25_html_buttons.md",
+        "order": 25,
+        "title": "Html Buttons",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_26_html_iframes",
+        "filename": "26_html_iframes.md",
+        "order": 26,
+        "title": "Html Iframes",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_27_html_javascript",
+        "filename": "27_html_javascript.md",
+        "order": 27,
+        "title": "Html Javascript",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_28_html_file_paths",
+        "filename": "28_html_file_paths.md",
+        "order": 28,
+        "title": "Html File Paths",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_29_html_head",
+        "filename": "29_html_head.md",
+        "order": 29,
+        "title": "Html Head",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_30_html_layout",
+        "filename": "30_html_layout.md",
+        "order": 30,
+        "title": "Html Layout",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_31_html_responsive",
+        "filename": "31_html_responsive.md",
+        "order": 31,
+        "title": "Html Responsive",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_32_html_computercode",
+        "filename": "32_html_computercode.md",
+        "order": 32,
+        "title": "Html Computercode",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_33_html_semantics",
+        "filename": "33_html_semantics.md",
+        "order": 33,
+        "title": "Html Semantics",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_34_html_style_guide",
+        "filename": "34_html_style_guide.md",
+        "order": 34,
+        "title": "Html Style Guide",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_35_html_entities",
+        "filename": "35_html_entities.md",
+        "order": 35,
+        "title": "Html Entities",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_36_html_symbols",
+        "filename": "36_html_symbols.md",
+        "order": 36,
+        "title": "Html Symbols",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_37_html_emojis",
+        "filename": "37_html_emojis.md",
+        "order": 37,
+        "title": "Html Emojis",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_38_html_charsets",
+        "filename": "38_html_charsets.md",
+        "order": 38,
+        "title": "Html Charsets",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_39_html_url_encode",
+        "filename": "39_html_url_encode.md",
+        "order": 39,
+        "title": "Html Url Encode",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_40_html_vs_xhtml",
+        "filename": "40_html_vs_xhtml.md",
+        "order": 40,
+        "title": "Html Vs Xhtml",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_41_html_forms",
+        "filename": "41_html_forms.md",
+        "order": 41,
+        "title": "Html Forms",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_42_html_form_attributes",
+        "filename": "42_html_form_attributes.md",
+        "order": 42,
+        "title": "Html Form Attributes",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_43_html_form_elements",
+        "filename": "43_html_form_elements.md",
+        "order": 43,
+        "title": "Html Form Elements",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_44_html_input_types",
+        "filename": "44_html_input_types.md",
+        "order": 44,
+        "title": "Html Input Types",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_45_html_input_attributes",
+        "filename": "45_html_input_attributes.md",
+        "order": 45,
+        "title": "Html Input Attributes",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_46_html_input_form_attributes",
+        "filename": "46_html_input_form_attributes.md",
+        "order": 46,
+        "title": "Html Input Form Attributes",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_47_html_canvas",
+        "filename": "47_html_canvas.md",
+        "order": 47,
+        "title": "Html Canvas",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_48_html_svg",
+        "filename": "48_html_svg.md",
+        "order": 48,
+        "title": "Html Svg",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_49_html_video",
+        "filename": "49_html_video.md",
+        "order": 49,
+        "title": "Html Video",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_50_html_audio",
+        "filename": "50_html_audio.md",
+        "order": 50,
+        "title": "Html Audio",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_51_html_youtube",
+        "filename": "51_html_youtube.md",
+        "order": 51,
+        "title": "HTML YouTube",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_52_html_web_apis",
+        "filename": "52_html_web_apis.md",
+        "order": 52,
+        "title": "HTML Web APIs",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_53_html_geolocation",
+        "filename": "53_html_geolocation.md",
+        "order": 53,
+        "title": "HTML Geolocation",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_54_html_drag_drop",
+        "filename": "54_html_drag_drop.md",
+        "order": 54,
+        "title": "HTML Drag and Drop",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_55_html_web_storage",
+        "filename": "55_html_web_storage.md",
+        "order": 55,
+        "title": "HTML Web Storage",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_56_html_web_workers",
+        "filename": "56_html_web_workers.md",
+        "order": 56,
+        "title": "HTML Web Workers",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_57_html_sse",
+        "filename": "57_html_sse.md",
+        "order": 57,
+        "title": "HTML SSE (Server-Sent Events)",
+        "readTimeMinutes": 12,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_58_html_websockets",
+        "filename": "58_html_websockets.md",
+        "order": 58,
+        "title": "HTML WebSockets",
+        "readTimeMinutes": 14,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_59_html_accessibility",
+        "filename": "59_html_accessibility.md",
+        "order": 59,
+        "title": "HTML Accessibility (WAI-ARIA)",
+        "readTimeMinutes": 13,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "html_60_html_seo",
+        "filename": "60_html_seo.md",
+        "order": 60,
+        "title": "HTML SEO & Best Practices",
+        "readTimeMinutes": 15,
+        "snippet": "\r...",
+        "hasCode": true
+      }
+    ],
+    "isFree": true,
+    "price": "Free"
+  },
+  {
+    "id": "text-java",
+    "slug": "java",
+    "title": "Java Enterprise & Object-Oriented Design",
+    "shortDesc": "Enterprise OOP principles, collections framework, multi-threading, memory management, and stream APIs.",
+    "category": "Backend",
+    "icon": "Coffee",
+    "badge": "100% FREE",
+    "level": "Intermediate to Advanced",
+    "instructor": "Skyrovix Team",
+    "rating": 4.87,
+    "enrolledCount": 17900,
+    "type": "text",
+    "lessonsCount": 60,
+    "estimatedHours": "6.7 hrs",
+    "lessons": [
+      {
+        "id": "java_01_java_home",
+        "filename": "01_java_home.md",
+        "order": 1,
+        "title": "Java Home",
+        "readTimeMinutes": 6,
+        "snippet": "Java is a high-level, object-oriented programming language developed by Sun Microsystems (now Oracle) in 1995. It is designed to be platform-independent through...",
+        "hasCode": true
+      },
+      {
+        "id": "java_02_java_intro",
+        "filename": "02_java_intro.md",
+        "order": 2,
+        "title": "Java Intro",
+        "readTimeMinutes": 7,
+        "snippet": "## 📘 Introduction\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_03_java_get_started",
+        "filename": "03_java_get_started.md",
+        "order": 3,
+        "title": "--- Command line workflow ---",
+        "readTimeMinutes": 6,
+        "snippet": "To write and run Java programs, you need the **Java Development Kit (JDK)** installed. The JDK includes the compiler (`javac`), the runtime (`java`), and librar...",
+        "hasCode": true
+      },
+      {
+        "id": "java_04_java_syntax",
+        "filename": "04_java_syntax.md",
+        "order": 4,
+        "title": "Java Syntax",
+        "readTimeMinutes": 6,
+        "snippet": "Java has a C-style syntax that is clean, strict, and consistent. Every Java program is written inside a **class**, and execution begins in the `main()` method. ...",
+        "hasCode": true
+      },
+      {
+        "id": "java_05_java_output",
+        "filename": "05_java_output.md",
+        "order": 5,
+        "title": "Java Output",
+        "readTimeMinutes": 6,
+        "snippet": "Java provides three primary methods for console output through `System.out`. The `print()` and `println()` methods handle simple text, while `printf()` offers f...",
+        "hasCode": true
+      },
+      {
+        "id": "java_06_java_comments",
+        "filename": "06_java_comments.md",
+        "order": 6,
+        "title": "Java Comments",
+        "readTimeMinutes": 8,
+        "snippet": "Comments in Java are non-executable text that explains code, documents APIs, or temporarily disables code. Java supports three types: **single-line** (`//`), **...",
+        "hasCode": true
+      },
+      {
+        "id": "java_07_java_variables",
+        "filename": "07_java_variables.md",
+        "order": 7,
+        "title": "Java Variables",
+        "readTimeMinutes": 7,
+        "snippet": "Variables in Java are containers that store data values. Every variable has a **type** that determines what kind of data it can hold and what operations are all...",
+        "hasCode": true
+      },
+      {
+        "id": "java_08_java_data_types",
+        "filename": "08_java_data_types.md",
+        "order": 8,
+        "title": "Java Data Types",
+        "readTimeMinutes": 9,
+        "snippet": "Java has **8 primitive data types** built into the language. These are the most basic data types and are not objects. Each primitive has a fixed size and a defa...",
+        "hasCode": true
+      },
+      {
+        "id": "java_09_java_type_casting",
+        "filename": "09_java_type_casting.md",
+        "order": 9,
+        "title": "Java Type Casting",
+        "readTimeMinutes": 8,
+        "snippet": "Type casting in Java converts a value from one data type to another. There are two categories: **widening** (automatic/implicit) and **narrowing** (explicit wit...",
+        "hasCode": true
+      },
+      {
+        "id": "java_10_java_operators",
+        "filename": "10_java_operators.md",
+        "order": 10,
+        "title": "Java Operators",
+        "readTimeMinutes": 9,
+        "snippet": "Operators in Java are special symbols that perform operations on variables and values. Java has a rich set of operators organized into categories: arithmetic, r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_11_java_strings",
+        "filename": "11_java_strings.md",
+        "order": 11,
+        "title": "Java Strings",
+        "readTimeMinutes": 8,
+        "snippet": "`String` is one of the most used classes in Java. Strings are **immutable** — once created, their value cannot change. Java optimizes string memory with the **S...",
+        "hasCode": true
+      },
+      {
+        "id": "java_12_java_math",
+        "filename": "12_java_math.md",
+        "order": 12,
+        "title": "Java Math",
+        "readTimeMinutes": 7,
+        "snippet": "Java provides the `java.lang.Math` class for basic numeric operations like exponentiation, logarithms, trigonometry, and rounding. All methods are `static`, so ...",
+        "hasCode": true
+      },
+      {
+        "id": "java_13_java_booleans",
+        "filename": "13_java_booleans.md",
+        "order": 13,
+        "title": "Java Booleans",
+        "readTimeMinutes": 8,
+        "snippet": "The `boolean` data type in Java represents a single bit of information: `true` or `false`. Booleans are the foundation of decision-making in Java — used in `if`...",
+        "hasCode": true
+      },
+      {
+        "id": "java_14_java_if_else",
+        "filename": "14_java_if_else.md",
+        "order": 14,
+        "title": "Java If Else",
+        "readTimeMinutes": 8,
+        "snippet": "Conditional statements in Java control the flow of execution based on boolean conditions. The `if-else` family handles simple to complex decision trees. The `sw...",
+        "hasCode": true
+      },
+      {
+        "id": "java_15_java_arrays",
+        "filename": "15_java_arrays.md",
+        "order": 15,
+        "title": "Java Arrays",
+        "readTimeMinutes": 9,
+        "snippet": "An **array** in Java is a container object that holds a fixed number of values of a single type. Arrays are zero-indexed — the first element is at index 0. The ...",
+        "hasCode": true
+      },
+      {
+        "id": "java_16_java_methods",
+        "filename": "16_java_methods.md",
+        "order": 16,
+        "title": "Java Methods",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_17_java_method_parameters",
+        "filename": "17_java_method_parameters.md",
+        "order": 17,
+        "title": "Java Method Parameters",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_18_java_method_overloading",
+        "filename": "18_java_method_overloading.md",
+        "order": 18,
+        "title": "Java Method Overloading",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_19_java_scope",
+        "filename": "19_java_scope.md",
+        "order": 19,
+        "title": "Java Scope",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_20_java_recursion",
+        "filename": "20_java_recursion.md",
+        "order": 20,
+        "title": "Java Recursion",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_21_java_classes",
+        "filename": "21_java_classes.md",
+        "order": 21,
+        "title": "Java Classes",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_22_java_classes_objects",
+        "filename": "22_java_classes_objects.md",
+        "order": 22,
+        "title": "Java Classes Objects",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_23_java_class_attributes",
+        "filename": "23_java_class_attributes.md",
+        "order": 23,
+        "title": "Java Class Attributes",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_24_java_class_methods",
+        "filename": "24_java_class_methods.md",
+        "order": 24,
+        "title": "Java Class Methods",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_25_java_constructors",
+        "filename": "25_java_constructors.md",
+        "order": 25,
+        "title": "Java Constructors",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_26_java_this_keyword",
+        "filename": "26_java_this_keyword.md",
+        "order": 26,
+        "title": "Java This Keyword",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_27_java_modifiers",
+        "filename": "27_java_modifiers.md",
+        "order": 27,
+        "title": "Java Modifiers",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_28_java_encapsulation",
+        "filename": "28_java_encapsulation.md",
+        "order": 28,
+        "title": "Java Encapsulation",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_29_java_packages_api",
+        "filename": "29_java_packages_api.md",
+        "order": 29,
+        "title": "Java Packages Api",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_30_java_inheritance",
+        "filename": "30_java_inheritance.md",
+        "order": 30,
+        "title": "Java Inheritance",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_31_java_polymorphism",
+        "filename": "31_java_polymorphism.md",
+        "order": 31,
+        "title": "Java Polymorphism",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_32_java_super_keyword",
+        "filename": "32_java_super_keyword.md",
+        "order": 32,
+        "title": "Java Super Keyword",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_33_java_inner_classes",
+        "filename": "33_java_inner_classes.md",
+        "order": 33,
+        "title": "Java Inner Classes",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_34_java_abstraction",
+        "filename": "34_java_abstraction.md",
+        "order": 34,
+        "title": "Java Abstraction",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_35_java_date",
+        "filename": "35_java_date.md",
+        "order": 35,
+        "title": "Java Date",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_36_java_interface",
+        "filename": "36_java_interface.md",
+        "order": 36,
+        "title": "Java Interface",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_37_java_enums",
+        "filename": "37_java_enums.md",
+        "order": 37,
+        "title": "Java Enums",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_38_java_user_input",
+        "filename": "38_java_user_input.md",
+        "order": 38,
+        "title": "Java User Input",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_39_java_errors",
+        "filename": "39_java_errors.md",
+        "order": 39,
+        "title": "Java Errors",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_40_java_exceptions",
+        "filename": "40_java_exceptions.md",
+        "order": 40,
+        "title": "Java Exceptions",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_41_java_multiple_exceptions",
+        "filename": "41_java_multiple_exceptions.md",
+        "order": 41,
+        "title": "Java Multiple Exceptions",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_42_java_try_with_resources",
+        "filename": "42_java_try_with_resources.md",
+        "order": 42,
+        "title": "Java Try With Resources",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_43_java_files",
+        "filename": "43_java_files.md",
+        "order": 43,
+        "title": "Java Files",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_44_java_create_files",
+        "filename": "44_java_create_files.md",
+        "order": 44,
+        "title": "Java Create Files",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_45_java_write_files",
+        "filename": "45_java_write_files.md",
+        "order": 45,
+        "title": "Java Write Files",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_46_java_read_files",
+        "filename": "46_java_read_files.md",
+        "order": 46,
+        "title": "Java Read Files",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_47_java_delete_files",
+        "filename": "47_java_delete_files.md",
+        "order": 47,
+        "title": "Java Delete Files",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_48_java_wrapper_classes",
+        "filename": "48_java_wrapper_classes.md",
+        "order": 48,
+        "title": "Java Wrapper Classes",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_49_java_generics",
+        "filename": "49_java_generics.md",
+        "order": 49,
+        "title": "Java Generics",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_50_java_hashmap",
+        "filename": "50_java_hashmap.md",
+        "order": 50,
+        "title": "Java Hashmap",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_51_java_collections",
+        "filename": "51_java_collections.md",
+        "order": 51,
+        "title": "Java Collections",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_52_java_arraylist",
+        "filename": "52_java_arraylist.md",
+        "order": 52,
+        "title": "Java Arraylist",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_53_java_linkedlist",
+        "filename": "53_java_linkedlist.md",
+        "order": 53,
+        "title": "Java Linkedlist",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_54_java_hashset",
+        "filename": "54_java_hashset.md",
+        "order": 54,
+        "title": "Java Hashset",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_55_java_treemap",
+        "filename": "55_java_treemap.md",
+        "order": 55,
+        "title": "Java Treemap",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_56_java_iterator",
+        "filename": "56_java_iterator.md",
+        "order": 56,
+        "title": "Java Iterator",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_57_java_algorithms",
+        "filename": "57_java_algorithms.md",
+        "order": 57,
+        "title": "Java Algorithms",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_58_java_wrapper_classes",
+        "filename": "58_java_wrapper_classes.md",
+        "order": 58,
+        "title": "Java Wrapper Classes",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_59_java_regex",
+        "filename": "59_java_regex.md",
+        "order": 59,
+        "title": "Java Regex",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "java_60_java_lambda",
+        "filename": "60_java_lambda.md",
+        "order": 60,
+        "title": "Java Lambda",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      }
+    ],
+    "isFree": true,
+    "price": "Free"
+  },
+  {
+    "id": "text-javascript",
+    "slug": "javascript",
+    "title": "Modern JavaScript (ES6+ to Async)",
+    "shortDesc": "Complete guide to closures, prototypes, asynchronous JS, DOM manipulation, promises, and modern ES features.",
+    "category": "Frontend & Fullstack",
+    "icon": "FileCode2",
+    "badge": "100% FREE",
+    "level": "Beginner to Advanced",
+    "instructor": "Skyrovix Team",
+    "rating": 4.95,
+    "enrolledCount": 28400,
+    "type": "text",
+    "lessonsCount": 30,
+    "estimatedHours": "3.0 hrs",
+    "lessons": [
+      {
+        "id": "javascript_01_js_home",
+        "filename": "01_js_home.md",
+        "order": 1,
+        "title": "Js Home",
+        "readTimeMinutes": 6,
+        "snippet": "JavaScript (JS) is a high-level, interpreted programming language that conforms to the ECMAScript specification. It is the core technology of the World Wide Web...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_02_js_introduction",
+        "filename": "02_js_introduction.md",
+        "order": 2,
+        "title": "Js Introduction",
+        "readTimeMinutes": 6,
+        "snippet": "## 📘 Introduction\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_03_js_where_to",
+        "filename": "03_js_where_to.md",
+        "order": 3,
+        "title": "Js Where To",
+        "readTimeMinutes": 7,
+        "snippet": "JavaScript code can be placed in three locations: inside HTML tags (inline), within `<script>` tags directly in the HTML document, or in external `.js` files. T...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_04_js_output",
+        "filename": "04_js_output.md",
+        "order": 4,
+        "title": "Js Output",
+        "readTimeMinutes": 6,
+        "snippet": "JavaScript provides several ways to display data or interact with users. Each method serves a different purpose and context — debugging, user feedback, DOM mani...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_05_js_syntax",
+        "filename": "05_js_syntax.md",
+        "order": 5,
+        "title": "Js Syntax",
+        "readTimeMinutes": 7,
+        "snippet": "JavaScript syntax is the set of rules that define a correctly structured JS program. Understanding syntax is fundamental — it governs how you write statements, ...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_06_js_operators",
+        "filename": "06_js_operators.md",
+        "order": 6,
+        "title": "Js Operators",
+        "readTimeMinutes": 7,
+        "snippet": "Operators are symbols that perform operations on operands (values). JavaScript provides a rich set of operators for arithmetic, assignment, comparison, logical ...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_07_js_if_conditions",
+        "filename": "07_js_if_conditions.md",
+        "order": 7,
+        "title": "Js If Conditions",
+        "readTimeMinutes": 7,
+        "snippet": "Conditional statements control the flow of execution based on boolean conditions. JavaScript provides `if`, `else if`, `else`, `switch`, and the ternary operato...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_08_js_loops",
+        "filename": "08_js_loops.md",
+        "order": 8,
+        "title": "Js Loops",
+        "readTimeMinutes": 7,
+        "snippet": "Loops execute a block of code repeatedly until a specified condition is false. JavaScript offers several loop types: `for`, `while`, `do...while`, `for...in`, a...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_09_js_strings",
+        "filename": "09_js_strings.md",
+        "order": 9,
+        "title": "Js Strings",
+        "readTimeMinutes": 6,
+        "snippet": "Strings represent textual data in JavaScript. They are immutable sequences of UTF-16 code units. JavaScript provides three ways to create strings (single quotes...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_10_js_numbers",
+        "filename": "10_js_numbers.md",
+        "order": 10,
+        "title": "Js Numbers",
+        "readTimeMinutes": 7,
+        "snippet": "JavaScript has a single `Number` type that handles both integers and floating-point numbers using the IEEE 754 double-precision 64-bit binary format. Special va...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_11_js_functions",
+        "filename": "11_js_functions.md",
+        "order": 11,
+        "title": "Js Functions",
+        "readTimeMinutes": 7,
+        "snippet": "Functions are the fundamental building blocks of JavaScript. They are reusable blocks of code that can take inputs (parameters), perform actions, and return out...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_12_js_objects",
+        "filename": "12_js_objects.md",
+        "order": 12,
+        "title": "Js Objects",
+        "readTimeMinutes": 8,
+        "snippet": "Objects are the core data structure in JavaScript. They are collections of key-value pairs where keys are strings (or Symbols) and values can be any data type, ...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_13_js_scope",
+        "filename": "13_js_scope.md",
+        "order": 13,
+        "title": "Js Scope",
+        "readTimeMinutes": 8,
+        "snippet": "Scope determines the accessibility of variables, functions, and objects in different parts of your code. JavaScript has four types of scope: global, function, b...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_14_js_dates",
+        "filename": "14_js_dates.md",
+        "order": 14,
+        "title": "Js Dates",
+        "readTimeMinutes": 8,
+        "snippet": "The JavaScript `Date` object provides methods for working with dates and times. It is based on the Unix timestamp (milliseconds since January 1, 1970, 00:00:00 ...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_15_js_arrays",
+        "filename": "15_js_arrays.md",
+        "order": 15,
+        "title": "Js Arrays",
+        "readTimeMinutes": 8,
+        "snippet": "Arrays are ordered, indexed collections of values in JavaScript. They are dynamic (resizable), can hold mixed types, and inherit from `Array.prototype` which pr...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_16_js_sets",
+        "filename": "16_js_sets.md",
+        "order": 16,
+        "title": "Js Sets",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_17_js_maps",
+        "filename": "17_js_maps.md",
+        "order": 17,
+        "title": "Js Maps",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_18_js_iterations",
+        "filename": "18_js_iterations.md",
+        "order": 18,
+        "title": "Js Iterations",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_19_js_math",
+        "filename": "19_js_math.md",
+        "order": 19,
+        "title": "Js Math",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_20_js_regexp",
+        "filename": "20_js_regexp.md",
+        "order": 20,
+        "title": "Js Regexp",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_21_js_data_types",
+        "filename": "21_js_data_types.md",
+        "order": 21,
+        "title": "Js Data Types",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_22_js_errors",
+        "filename": "22_js_errors.md",
+        "order": 22,
+        "title": "Js Errors",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_23_js_debugging",
+        "filename": "23_js_debugging.md",
+        "order": 23,
+        "title": "Js Debugging",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_24_js_style_guide",
+        "filename": "24_js_style_guide.md",
+        "order": 24,
+        "title": "Js Style Guide",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_25_js_classes",
+        "filename": "25_js_classes.md",
+        "order": 25,
+        "title": "Js Classes",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_26_js_async",
+        "filename": "26_js_async.md",
+        "order": 26,
+        "title": "Js Async",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_27_js_modules",
+        "filename": "27_js_modules.md",
+        "order": 27,
+        "title": "Js Modules",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_28_js_ajax",
+        "filename": "28_js_ajax.md",
+        "order": 28,
+        "title": "Js Ajax",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_29_js_json",
+        "filename": "29_js_json.md",
+        "order": 29,
+        "title": "Js Json",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "javascript_30_js_dom",
+        "filename": "30_js_dom.md",
+        "order": 30,
+        "title": "Js Dom",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      }
+    ],
+    "isFree": true,
+    "price": "Free"
+  },
+  {
+    "id": "text-matplotlib",
+    "slug": "matplotlib",
+    "title": "Matplotlib Data Visualization & Plotting",
+    "shortDesc": "Publication-quality visual graphics, custom subplots, statistical charts, styling, and 3D plotting.",
+    "category": "Data Science",
+    "icon": "LineChart",
+    "badge": "100% FREE",
+    "level": "Intermediate",
+    "instructor": "Skyrovix Team",
+    "rating": 4.85,
+    "enrolledCount": 9800,
+    "type": "text",
+    "lessonsCount": 13,
+    "estimatedHours": "1.3 hrs",
+    "lessons": [
+      {
+        "id": "matplotlib_01_matplotlib_intro",
+        "filename": "01_matplotlib_intro.md",
+        "order": 1,
+        "title": "OOP API",
+        "readTimeMinutes": 6,
+        "snippet": "Matplotlib is the most widely used Python library for data visualization. It provides an object-oriented API for embedding plots into applications and a MATLAB-...",
+        "hasCode": true
+      },
+      {
+        "id": "matplotlib_02_matplotlib_get_started",
+        "filename": "02_matplotlib_get_started.md",
+        "order": 2,
+        "title": "Quick plot",
+        "readTimeMinutes": 6,
+        "snippet": "Getting started with Matplotlib means importing the library, creating your first plot, and understanding the fundamental building blocks: the **Figure** and the...",
+        "hasCode": true
+      },
+      {
+        "id": "matplotlib_03_matplotlib_pyplot",
+        "filename": "03_matplotlib_pyplot.md",
+        "order": 3,
+        "title": "Common plot types",
+        "readTimeMinutes": 6,
+        "snippet": "`pyplot` is a module within Matplotlib that provides a MATLAB-like state-machine interface. Each `plt.xxx()` function implicitly tracks the \"current\" figure and...",
+        "hasCode": true
+      },
+      {
+        "id": "matplotlib_04_matplotlib_plotting",
+        "filename": "04_matplotlib_plotting.md",
+        "order": 4,
+        "title": "Line styles",
+        "readTimeMinutes": 6,
+        "snippet": "Customizing line styles, colors, and markers is essential for creating clear, publication-quality plots. Matplotlib offers extensive control over how lines are ...",
+        "hasCode": true
+      },
+      {
+        "id": "matplotlib_05_matplotlib_markers",
+        "filename": "05_matplotlib_markers.md",
+        "order": 5,
+        "title": "Basic marker",
+        "readTimeMinutes": 7,
+        "snippet": "Markers highlight individual data points on a plot. Matplotlib provides a wide variety of marker styles — from simple dots to stars, diamonds, arrows, and verti...",
+        "hasCode": true
+      },
+      {
+        "id": "matplotlib_06_matplotlib_line",
+        "filename": "06_matplotlib_line.md",
+        "order": 6,
+        "title": "Basic line styles",
+        "readTimeMinutes": 7,
+        "snippet": "Lines are the fundamental graphical element in Matplotlib. You have precise control over linestyle (solid, dashed, dotted, dash-dot), linewidth, color, transpar...",
+        "hasCode": true
+      },
+      {
+        "id": "matplotlib_07_matplotlib_labels",
+        "filename": "07_matplotlib_labels.md",
+        "order": 7,
+        "title": "TeX expressions",
+        "readTimeMinutes": 6,
+        "snippet": "Labels and titles make a plot self-explanatory. Matplotlib provides full control over text appearance: font family, size, weight, color, rotation, alignment, an...",
+        "hasCode": true
+      },
+      {
+        "id": "matplotlib_08_matplotlib_grid",
+        "filename": "08_matplotlib_grid.md",
+        "order": 8,
+        "title": "Basic grid",
+        "readTimeMinutes": 6,
+        "snippet": "Gridlines improve the readability of plots by providing reference lines aligned with tick marks. Matplotlib lets you control which axis shows gridlines, their s...",
+        "hasCode": true
+      },
+      {
+        "id": "matplotlib_09_matplotlib_subplot",
+        "filename": "09_matplotlib_subplot.md",
+        "order": 9,
+        "title": "Simple 2x2 grid",
+        "readTimeMinutes": 7,
+        "snippet": "Subplots allow multiple plots in a single figure, arranged in a grid. Matplotlib offers several approaches: `plt.subplot()` (simple grids), `plt.subplots()` (ea...",
+        "hasCode": true
+      },
+      {
+        "id": "matplotlib_10_matplotlib_scatter",
+        "filename": "10_matplotlib_scatter.md",
+        "order": 10,
+        "title": "Basic scatter",
+        "readTimeMinutes": 7,
+        "snippet": "Scatter plots display individual data points, making them ideal for visualizing relationships, clusters, and outliers. Matplotlib's `plt.scatter()` goes beyond ...",
+        "hasCode": true
+      },
+      {
+        "id": "matplotlib_11_matplotlib_bars",
+        "filename": "11_matplotlib_bars.md",
+        "order": 11,
+        "title": "Vertical bars",
+        "readTimeMinutes": 7,
+        "snippet": "Bar charts are essential for comparing categorical data. Matplotlib provides vertical bars (`bar()`), horizontal bars (`barh()`), grouped bars, stacked bars, an...",
+        "hasCode": true
+      },
+      {
+        "id": "matplotlib_12_matplotlib_histograms",
+        "filename": "12_matplotlib_histograms.md",
+        "order": 12,
+        "title": "Basic histogram",
+        "readTimeMinutes": 7,
+        "snippet": "Histograms visualize the distribution of numerical data by binning values into intervals and counting frequencies. Matplotlib's `plt.hist()` is flexible — suppo...",
+        "hasCode": true
+      },
+      {
+        "id": "matplotlib_13_matplotlib_pie",
+        "filename": "13_matplotlib_pie.md",
+        "order": 13,
+        "title": "Donut chart",
+        "readTimeMinutes": 7,
+        "snippet": "Pie charts show proportional relationships as circular slices. While often criticized (hard to compare angles), they remain popular for simple part-to-whole vis...",
+        "hasCode": true
+      }
+    ],
+    "isFree": true,
+    "price": "Free"
+  },
+  {
+    "id": "text-mysql",
+    "slug": "mysql",
+    "title": "MySQL Relational Database Engineering",
+    "shortDesc": "Relational data modeling, SQL queries, joins, indexes, ACID transactions, and stored procedures.",
+    "category": "Database",
+    "icon": "Database",
+    "badge": "100% FREE",
+    "level": "Intermediate",
+    "instructor": "Skyrovix Team",
+    "rating": 4.88,
+    "enrolledCount": 15600,
+    "type": "text",
+    "lessonsCount": 15,
+    "estimatedHours": "1.4 hrs",
+    "lessons": [
+      {
+        "id": "mysql_01_mysql_home",
+        "filename": "01_mysql_home.md",
+        "order": 1,
+        "title": "Mysql Home",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "mysql_02_mysql_database",
+        "filename": "02_mysql_database.md",
+        "order": 2,
+        "title": "Mysql Database",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "mysql_03_mysql_connect",
+        "filename": "03_mysql_connect.md",
+        "order": 3,
+        "title": "Mysql Connect",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "mysql_04_mysql_create_db",
+        "filename": "04_mysql_create_db.md",
+        "order": 4,
+        "title": "Mysql Create Db",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "mysql_05_mysql_create_table",
+        "filename": "05_mysql_create_table.md",
+        "order": 5,
+        "title": "Mysql Create Table",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "mysql_06_mysql_insert",
+        "filename": "06_mysql_insert.md",
+        "order": 6,
+        "title": "Mysql Insert",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "mysql_07_mysql_get_last_id",
+        "filename": "07_mysql_get_last_id.md",
+        "order": 7,
+        "title": "Mysql Get Last Id",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "mysql_08_mysql_insert_multiple",
+        "filename": "08_mysql_insert_multiple.md",
+        "order": 8,
+        "title": "Mysql Insert Multiple",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "mysql_09_mysql_prepared",
+        "filename": "09_mysql_prepared.md",
+        "order": 9,
+        "title": "Mysql Prepared",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "mysql_10_mysql_select",
+        "filename": "10_mysql_select.md",
+        "order": 10,
+        "title": "Mysql Select",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "mysql_11_mysql_where",
+        "filename": "11_mysql_where.md",
+        "order": 11,
+        "title": "Mysql Where",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "mysql_12_mysql_order_by",
+        "filename": "12_mysql_order_by.md",
+        "order": 12,
+        "title": "Mysql Order By",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "mysql_13_mysql_delete",
+        "filename": "13_mysql_delete.md",
+        "order": 13,
+        "title": "Mysql Delete",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "mysql_14_mysql_update",
+        "filename": "14_mysql_update.md",
+        "order": 14,
+        "title": "Mysql Update",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "mysql_15_mysql_limit",
+        "filename": "15_mysql_limit.md",
+        "order": 15,
+        "title": "Mysql Limit",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      }
+    ],
+    "isFree": true,
+    "price": "Free"
+  },
+  {
+    "id": "text-numpy",
+    "slug": "numpy",
+    "title": "NumPy High-Performance Vectorized Computing",
+    "shortDesc": "N-dimensional arrays, vectorization, linear algebra routines, broadcasting, and numerical analysis.",
+    "category": "Data Science",
+    "icon": "Binary",
+    "badge": "100% FREE",
+    "level": "Intermediate",
+    "instructor": "Skyrovix Team",
+    "rating": 4.89,
+    "enrolledCount": 12200,
+    "type": "text",
+    "lessonsCount": 12,
+    "estimatedHours": "1.2 hrs",
+    "lessons": [
+      {
+        "id": "numpy_01_numpy_intro",
+        "filename": "01_numpy_intro.md",
+        "order": 1,
+        "title": "Create numpy array from Python list",
+        "readTimeMinutes": 7,
+        "snippet": "NumPy (Numerical Python) is the fundamental library for scientific computing in Python. It provides high-performance multidimensional array objects and tools fo...",
+        "hasCode": true
+      },
+      {
+        "id": "numpy_02_numpy_get_started",
+        "filename": "02_numpy_get_started.md",
+        "order": 2,
+        "title": "Numpy Get Started",
+        "readTimeMinutes": 6,
+        "snippet": "Before using NumPy, you need to install it and understand how to import it. NumPy is not part of Python's standard library, so you must install it via pip or co...",
+        "hasCode": true
+      },
+      {
+        "id": "numpy_03_numpy_creating_arrays",
+        "filename": "03_numpy_creating_arrays.md",
+        "order": 3,
+        "title": "Numpy Creating Arrays",
+        "readTimeMinutes": 6,
+        "snippet": "NumPy provides a rich set of factory functions to create arrays with specific patterns: zeros, ones, empty, ranges, random values, and identity matrices. These ...",
+        "hasCode": true
+      },
+      {
+        "id": "numpy_04_numpy_array_indexing",
+        "filename": "04_numpy_array_indexing.md",
+        "order": 4,
+        "title": "1D indexing",
+        "readTimeMinutes": 6,
+        "snippet": "Indexing in NumPy is powerful and flexible. Beyond standard Python indexing, NumPy supports boolean indexing, fancy indexing with integer arrays, and `np.where(...",
+        "hasCode": true
+      },
+      {
+        "id": "numpy_05_numpy_array_slicing",
+        "filename": "05_numpy_array_slicing.md",
+        "order": 5,
+        "title": "1D slicing",
+        "readTimeMinutes": 6,
+        "snippet": "Slicing in NumPy follows the same `start:stop:step` syntax as Python lists, but extends to multiple dimensions. A critical distinction: slicing a NumPy array re...",
+        "hasCode": true
+      },
+      {
+        "id": "numpy_06_numpy_data_types",
+        "filename": "06_numpy_data_types.md",
+        "order": 6,
+        "title": "Numpy Data Types",
+        "readTimeMinutes": 6,
+        "snippet": "NumPy arrays are homogeneous — all elements share the same data type (dtype). This uniformity is key to performance: it enables fixed-size elements and contiguo...",
+        "hasCode": true
+      },
+      {
+        "id": "numpy_07_numpy_array_operations",
+        "filename": "07_numpy_array_operations.md",
+        "order": 7,
+        "title": "Element-wise arithmetic",
+        "readTimeMinutes": 7,
+        "snippet": "NumPy's real power lies in its ability to perform vectorized operations on entire arrays. Element-wise arithmetic, broadcasting, comparison operators, logical o...",
+        "hasCode": true
+      },
+      {
+        "id": "numpy_08_numpy_math",
+        "filename": "08_numpy_math.md",
+        "order": 8,
+        "title": "Sum across axis",
+        "readTimeMinutes": 6,
+        "snippet": "NumPy provides a comprehensive set of mathematical functions for aggregating, summarizing, and analyzing array data. These functions operate element-wise and al...",
+        "hasCode": true
+      },
+      {
+        "id": "numpy_09_numpy_reshape",
+        "filename": "09_numpy_reshape.md",
+        "order": 9,
+        "title": "Reshape",
+        "readTimeMinutes": 7,
+        "snippet": "Reshaping changes the dimensions of an array without changing its data. NumPy provides flexible tools to restructure arrays: `reshape`, `resize`, `flatten`, `ra...",
+        "hasCode": true
+      },
+      {
+        "id": "numpy_10_numpy_array_manipulation",
+        "filename": "10_numpy_array_manipulation.md",
+        "order": 10,
+        "title": "Concatenate",
+        "readTimeMinutes": 7,
+        "snippet": "NumPy provides a comprehensive set of functions for joining, splitting, adding, removing, and sorting array elements. These manipulation tools are essential for...",
+        "hasCode": true
+      },
+      {
+        "id": "numpy_11_numpy_random",
+        "filename": "11_numpy_random.md",
+        "order": 11,
+        "title": "Legacy API",
+        "readTimeMinutes": 7,
+        "snippet": "NumPy's `random` module is a cornerstone for simulations, bootstrapping, Monte Carlo methods, and stochastic algorithms. It provides both simple random generato...",
+        "hasCode": true
+      },
+      {
+        "id": "numpy_12_numpy_linear_algebra",
+        "filename": "12_numpy_linear_algebra.md",
+        "order": 12,
+        "title": "Dot / matmul / @",
+        "readTimeMinutes": 8,
+        "snippet": "NumPy's `linalg` module provides a comprehensive set of linear algebra operations built on top of highly optimized BLAS and LAPACK libraries. These include dot ...",
+        "hasCode": true
+      }
+    ],
+    "isFree": true,
+    "price": "Free"
+  },
+  {
+    "id": "text-pandas",
+    "slug": "pandas",
+    "title": "Pandas Data Wrangling & Analytical Workflows",
+    "shortDesc": "Series, DataFrames, group-by aggregations, missing data treatment, time series analysis, and ETL pipelines.",
+    "category": "Data Science",
+    "icon": "Table",
+    "badge": "100% FREE",
+    "level": "Intermediate",
+    "instructor": "Skyrovix Team",
+    "rating": 4.93,
+    "enrolledCount": 16500,
+    "type": "text",
+    "lessonsCount": 15,
+    "estimatedHours": "2.0 hrs",
+    "lessons": [
+      {
+        "id": "pandas_01_pandas_intro",
+        "filename": "01_pandas_intro.md",
+        "order": 1,
+        "title": "Create DataFrame from dictionary",
+        "readTimeMinutes": 8,
+        "snippet": "Pandas is a powerful open-source Python library used for data manipulation and analysis. It provides easy-to-use data structures like **Series** (1D) and **Data...",
+        "hasCode": true
+      },
+      {
+        "id": "pandas_02_pandas_get_started",
+        "filename": "02_pandas_get_started.md",
+        "order": 2,
+        "title": "Create Series",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "pandas_03_pandas_series",
+        "filename": "03_pandas_series.md",
+        "order": 3,
+        "title": "Create Series",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "pandas_04_pandas_dataframes",
+        "filename": "04_pandas_dataframes.md",
+        "order": 4,
+        "title": "From dict of lists",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "pandas_05_pandas_read_csv",
+        "filename": "05_pandas_read_csv.md",
+        "order": 5,
+        "title": "Basic",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "pandas_06_pandas_analyzing",
+        "filename": "06_pandas_analyzing.md",
+        "order": 6,
+        "title": "Quick previews",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "pandas_07_pandas_cleaning",
+        "filename": "07_pandas_cleaning.md",
+        "order": 7,
+        "title": "Missing values",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "pandas_08_pandas_filtering",
+        "filename": "08_pandas_filtering.md",
+        "order": 8,
+        "title": "Boolean indexing",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "pandas_09_pandas_sorting",
+        "filename": "09_pandas_sorting.md",
+        "order": 9,
+        "title": "Sort by single column",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "pandas_10_pandas_groupby",
+        "filename": "10_pandas_groupby.md",
+        "order": 10,
+        "title": "Basic groupby with aggregation",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "pandas_11_pandas_merge_join",
+        "filename": "11_pandas_merge_join.md",
+        "order": 11,
+        "title": "Merge on common column",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "pandas_12_pandas_data_correlation",
+        "filename": "12_pandas_data_correlation.md",
+        "order": 12,
+        "title": "Correlation matrix (Pearson by default)",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "pandas_13_pandas_plotting",
+        "filename": "13_pandas_plotting.md",
+        "order": 13,
+        "title": "Basic line plot",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "pandas_14_pandas_datetime",
+        "filename": "14_pandas_datetime.md",
+        "order": 14,
+        "title": "Convert to datetime",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": false
+      },
+      {
+        "id": "pandas_15_pandas_excel",
+        "filename": "15_pandas_excel.md",
+        "order": 15,
+        "title": "Read Excel",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": false
+      }
+    ],
+    "isFree": true,
+    "price": "Free"
+  },
+  {
+    "id": "text-php",
+    "slug": "php",
+    "title": "PHP 8 Web Development & Server Systems",
+    "shortDesc": "Server-side scripting, OOP PHP, sessions, security practices, RESTful APIs, and database integration.",
+    "category": "Backend",
+    "icon": "Globe",
+    "badge": "100% FREE",
+    "level": "Beginner to Intermediate",
+    "instructor": "Skyrovix Team",
+    "rating": 4.82,
+    "enrolledCount": 11400,
+    "type": "text",
+    "lessonsCount": 55,
+    "estimatedHours": "6.3 hrs",
+    "lessons": [
+      {
+        "id": "php_01_php_home",
+        "filename": "01_php_home.md",
+        "order": 1,
+        "title": "Php Home",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_02_php_intro",
+        "filename": "02_php_intro.md",
+        "order": 2,
+        "title": "Php Intro",
+        "readTimeMinutes": 7,
+        "snippet": "## 📘 Introduction\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_03_php_install",
+        "filename": "03_php_install.md",
+        "order": 3,
+        "title": "Built-in PHP server",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_04_php_syntax",
+        "filename": "04_php_syntax.md",
+        "order": 4,
+        "title": "This is also a single-line comment",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_05_php_comments",
+        "filename": "05_php_comments.md",
+        "order": 5,
+        "title": "Shell-style single-line comment",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_06_php_variables",
+        "filename": "06_php_variables.md",
+        "order": 6,
+        "title": "Php Variables",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_07_php_echo_print",
+        "filename": "07_php_echo_print.md",
+        "order": 7,
+        "title": "Php Echo Print",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_08_php_data_types",
+        "filename": "08_php_data_types.md",
+        "order": 8,
+        "title": "Php Data Types",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_09_php_strings",
+        "filename": "09_php_strings.md",
+        "order": 9,
+        "title": "Php Strings",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_10_php_numbers",
+        "filename": "10_php_numbers.md",
+        "order": 10,
+        "title": "Php Numbers",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_11_php_casting",
+        "filename": "11_php_casting.md",
+        "order": 11,
+        "title": "Php Casting",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_12_php_math",
+        "filename": "12_php_math.md",
+        "order": 12,
+        "title": "Php Math",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_13_php_constants",
+        "filename": "13_php_constants.md",
+        "order": 13,
+        "title": "Php Constants",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_14_php_operators",
+        "filename": "14_php_operators.md",
+        "order": 14,
+        "title": "Php Operators",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_15_php_superglobals",
+        "filename": "15_php_superglobals.md",
+        "order": 15,
+        "title": "Php Superglobals",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_16_php_if_else",
+        "filename": "16_php_if_else.md",
+        "order": 16,
+        "title": "Php If Else",
+        "readTimeMinutes": 5,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_17_php_switch",
+        "filename": "17_php_switch.md",
+        "order": 17,
+        "title": "PHP Switch",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_18_php_loops",
+        "filename": "18_php_loops.md",
+        "order": 18,
+        "title": "PHP Loops",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_19_php_functions",
+        "filename": "19_php_functions.md",
+        "order": 19,
+        "title": "PHP Functions",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_20_php_arrays",
+        "filename": "20_php_arrays.md",
+        "order": 20,
+        "title": "PHP Arrays",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_21_php_superglobals_advanced",
+        "filename": "21_php_superglobals_advanced.md",
+        "order": 21,
+        "title": "PHP Superglobals Advanced",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_22_php_regex",
+        "filename": "22_php_regex.md",
+        "order": 22,
+        "title": "PHP RegEx",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_23_php_form_handling",
+        "filename": "23_php_form_handling.md",
+        "order": 23,
+        "title": "PHP Form Handling",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_24_php_form_validation",
+        "filename": "24_php_form_validation.md",
+        "order": 24,
+        "title": "PHP Form Validation",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_25_php_form_required",
+        "filename": "25_php_form_required.md",
+        "order": 25,
+        "title": "PHP Form Required",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_26_php_form_url_email",
+        "filename": "26_php_form_url_email.md",
+        "order": 26,
+        "title": "PHP Form URL/E-mail",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_27_php_form_complete",
+        "filename": "27_php_form_complete.md",
+        "order": 27,
+        "title": "PHP Form Complete",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_28_php_date_time",
+        "filename": "28_php_date_time.md",
+        "order": 28,
+        "title": "PHP Date and Time",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_29_php_json",
+        "filename": "29_php_json.md",
+        "order": 29,
+        "title": "PHP JSON",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_30_php_match",
+        "filename": "30_php_match.md",
+        "order": 30,
+        "title": "PHP Match",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_31_php_include",
+        "filename": "31_php_include.md",
+        "order": 31,
+        "title": "Php Include",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_32_php_file_handling",
+        "filename": "32_php_file_handling.md",
+        "order": 32,
+        "title": "Php File Handling",
+        "readTimeMinutes": 6,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_33_php_file_open_read",
+        "filename": "33_php_file_open_read.md",
+        "order": 33,
+        "title": "Php File Open Read",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_34_php_file_create_write",
+        "filename": "34_php_file_create_write.md",
+        "order": 34,
+        "title": "Php File Create Write",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_35_php_file_upload",
+        "filename": "35_php_file_upload.md",
+        "order": 35,
+        "title": "Php File Upload",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_36_php_cookies",
+        "filename": "36_php_cookies.md",
+        "order": 36,
+        "title": "Php Cookies",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_37_php_sessions",
+        "filename": "37_php_sessions.md",
+        "order": 37,
+        "title": "Php Sessions",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_38_php_filters",
+        "filename": "38_php_filters.md",
+        "order": 38,
+        "title": "Php Filters",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_39_php_filters_advanced",
+        "filename": "39_php_filters_advanced.md",
+        "order": 39,
+        "title": "Php Filters Advanced",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_40_php_callback_functions",
+        "filename": "40_php_callback_functions.md",
+        "order": 40,
+        "title": "Php Callback Functions",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_41_php_exceptions",
+        "filename": "41_php_exceptions.md",
+        "order": 41,
+        "title": "Php Exceptions",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_42_php_oop_intro",
+        "filename": "42_php_oop_intro.md",
+        "order": 42,
+        "title": "Php Oop Intro",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_43_php_classes_objects",
+        "filename": "43_php_classes_objects.md",
+        "order": 43,
+        "title": "Php Classes Objects",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_44_php_constructor",
+        "filename": "44_php_constructor.md",
+        "order": 44,
+        "title": "Php Constructor",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_45_php_destructor",
+        "filename": "45_php_destructor.md",
+        "order": 45,
+        "title": "Php Destructor",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_46_php_access_modifiers",
+        "filename": "46_php_access_modifiers.md",
+        "order": 46,
+        "title": "Php Access Modifiers",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_47_php_inheritance",
+        "filename": "47_php_inheritance.md",
+        "order": 47,
+        "title": "Php Inheritance",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_48_php_constants_oop",
+        "filename": "48_php_constants_oop.md",
+        "order": 48,
+        "title": "Php Constants Oop",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_49_php_abstract_classes",
+        "filename": "49_php_abstract_classes.md",
+        "order": 49,
+        "title": "Monthly Sales",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_50_php_interfaces",
+        "filename": "50_php_interfaces.md",
+        "order": 50,
+        "title": "Php Interfaces",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_51_php_traits",
+        "filename": "51_php_traits.md",
+        "order": 51,
+        "title": "Php Traits",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_52_php_static_methods",
+        "filename": "52_php_static_methods.md",
+        "order": 52,
+        "title": "Php Static Methods",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_53_php_namespaces",
+        "filename": "53_php_namespaces.md",
+        "order": 53,
+        "title": "Php Namespaces",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_54_php_xml",
+        "filename": "54_php_xml.md",
+        "order": 54,
+        "title": "Php Xml",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "php_55_ajax_live_search",
+        "filename": "55_ajax_live_search.md",
+        "order": 55,
+        "title": "Ajax Live Search",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      }
+    ],
+    "isFree": true,
+    "price": "Free"
+  },
+  {
+    "id": "text-python",
+    "slug": "python",
+    "title": "Python Core to Advanced Programming",
+    "shortDesc": "From syntax, OOP, and data structures to file manipulation, virtual environments, and modular architecture.",
+    "category": "Backend & Data",
+    "icon": "Terminal",
+    "badge": "100% FREE",
+    "level": "All Levels",
+    "instructor": "Skyrovix Team",
+    "rating": 4.92,
+    "enrolledCount": 31200,
+    "type": "text",
+    "lessonsCount": 60,
+    "estimatedHours": "10.1 hrs",
+    "lessons": [
+      {
+        "id": "python_01_python_home",
+        "filename": "01_python_home.md",
+        "order": 1,
+        "title": "The simplest Python program",
+        "readTimeMinutes": 7,
+        "snippet": "Welcome to the Python course — your first step into the world of programming. Python is a high-level, interpreted programming language known for its simplicity ...",
+        "hasCode": true
+      },
+      {
+        "id": "python_02_python_intro",
+        "filename": "02_python_intro.md",
+        "order": 2,
+        "title": "Display Python facts",
+        "readTimeMinutes": 9,
+        "snippet": "## 2. 📘 Introduction\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_03_python_get_started",
+        "filename": "03_python_get_started.md",
+        "order": 3,
+        "title": "Your very first Python program",
+        "readTimeMinutes": 8,
+        "snippet": "Before you can write and run Python code, you need to set up your environment. Getting started with Python is straightforward — download the installer, run it, ...",
+        "hasCode": true
+      },
+      {
+        "id": "python_04_python_syntax",
+        "filename": "04_python_syntax.md",
+        "order": 4,
+        "title": "Correct indentation",
+        "readTimeMinutes": 9,
+        "snippet": "Python's syntax is designed to be clean, readable, and intuitive — it almost looks like plain English. Unlike many other programming languages that use curly br...",
+        "hasCode": true
+      },
+      {
+        "id": "python_05_python_output",
+        "filename": "05_python_output.md",
+        "order": 5,
+        "title": "Basic print with multiple items",
+        "readTimeMinutes": 9,
+        "snippet": "The `print()` function is your window to the outside world in Python — it's how your programs communicate results to you. Whether you're debugging code, present...",
+        "hasCode": true
+      },
+      {
+        "id": "python_06_python_comments",
+        "filename": "06_python_comments.md",
+        "order": 6,
+        "title": "This is a single-line comment",
+        "readTimeMinutes": 9,
+        "snippet": "Comments are notes in your code that the Python interpreter ignores — they exist solely for humans to read. Good comments explain why you wrote code a certain w...",
+        "hasCode": true
+      },
+      {
+        "id": "python_07_python_variables",
+        "filename": "07_python_variables.md",
+        "order": 7,
+        "title": "Basic variable assignments",
+        "readTimeMinutes": 9,
+        "snippet": "Variables are the fundamental building blocks of any program — they store data that your code can use, modify, and reference. In Python, variables are like labe...",
+        "hasCode": true
+      },
+      {
+        "id": "python_08_python_data_types",
+        "filename": "08_python_data_types.md",
+        "order": 8,
+        "title": "Checking data types",
+        "readTimeMinutes": 10,
+        "snippet": "Every value in Python has a type — a classification that tells Python what kind of data it is and what operations can be performed on it. Python comes with seve...",
+        "hasCode": true
+      },
+      {
+        "id": "python_09_python_numbers",
+        "filename": "09_python_numbers.md",
+        "order": 9,
+        "title": "Numeric types",
+        "readTimeMinutes": 9,
+        "snippet": "Numbers are everywhere in programming — counting items, calculating distances, computing averages, measuring time, and much more. Python provides three numeric ...",
+        "hasCode": true
+      },
+      {
+        "id": "python_10_python_casting",
+        "filename": "10_python_casting.md",
+        "order": 10,
+        "title": "String input (always string) — must cast to do math",
+        "readTimeMinutes": 10,
+        "snippet": "Type casting (also called type conversion) is the process of converting a value from one data type to another. While Python is dynamically typed and often handl...",
+        "hasCode": true
+      },
+      {
+        "id": "python_11_python_strings",
+        "filename": "11_python_strings.md",
+        "order": 11,
+        "title": "Python Strings",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_12_python_booleans",
+        "filename": "12_python_booleans.md",
+        "order": 12,
+        "title": "Python Booleans",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_13_python_operators",
+        "filename": "13_python_operators.md",
+        "order": 13,
+        "title": "Python Operators",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_14_python_lists",
+        "filename": "14_python_lists.md",
+        "order": 14,
+        "title": "Python Lists",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_15_python_tuples",
+        "filename": "15_python_tuples.md",
+        "order": 15,
+        "title": "Python Tuples",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_16_python_sets",
+        "filename": "16_python_sets.md",
+        "order": 16,
+        "title": "Python Sets",
+        "readTimeMinutes": 11,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_17_python_dictionaries",
+        "filename": "17_python_dictionaries.md",
+        "order": 17,
+        "title": "Python Dictionaries",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_18_python_if_else",
+        "filename": "18_python_if_else.md",
+        "order": 18,
+        "title": "Python If...Else",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_19_python_match",
+        "filename": "19_python_match.md",
+        "order": 19,
+        "title": "Python Match (Structural Pattern Matching)",
+        "readTimeMinutes": 12,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_20_python_while_loops",
+        "filename": "20_python_while_loops.md",
+        "order": 20,
+        "title": "Python While Loops",
+        "readTimeMinutes": 12,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_21_python_for_loops",
+        "filename": "21_python_for_loops.md",
+        "order": 21,
+        "title": "Basic for loop syntax",
+        "readTimeMinutes": 13,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_22_python_functions",
+        "filename": "22_python_functions.md",
+        "order": 22,
+        "title": "Basic function",
+        "readTimeMinutes": 13,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_23_python_range",
+        "filename": "23_python_range.md",
+        "order": 23,
+        "title": "range(stop) — single argument",
+        "readTimeMinutes": 12,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_24_python_arrays",
+        "filename": "24_python_arrays.md",
+        "order": 24,
+        "title": "Create an array of signed integers",
+        "readTimeMinutes": 14,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_25_python_iterators",
+        "filename": "25_python_iterators.md",
+        "order": 25,
+        "title": "Basic iteration with next()",
+        "readTimeMinutes": 15,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_26_python_modules",
+        "filename": "26_python_modules.md",
+        "order": 26,
+        "title": "Various import styles",
+        "readTimeMinutes": 14,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_27_python_dates",
+        "filename": "27_python_dates.md",
+        "order": 27,
+        "title": "Creating date objects",
+        "readTimeMinutes": 15,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_28_python_math",
+        "filename": "28_python_math.md",
+        "order": 28,
+        "title": "Constants",
+        "readTimeMinutes": 15,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_29_python_json",
+        "filename": "29_python_json.md",
+        "order": 29,
+        "title": "Python data",
+        "readTimeMinutes": 12,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_30_python_regex",
+        "filename": "30_python_regex.md",
+        "order": 30,
+        "title": "Basic matching",
+        "readTimeMinutes": 14,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_31_python_pip",
+        "filename": "31_python_pip.md",
+        "order": 31,
+        "title": "Python PIP",
+        "readTimeMinutes": 13,
+        "snippet": "PIP stands for \"Pip Installs Packages\" and is the standard package manager for Python. It allows developers to install, upgrade, uninstall, and manage third-par...",
+        "hasCode": true
+      },
+      {
+        "id": "python_32_python_try_except",
+        "filename": "32_python_try_except.md",
+        "order": 32,
+        "title": "Python Try...Except",
+        "readTimeMinutes": 12,
+        "snippet": "Error handling is a critical aspect of writing robust and reliable Python programs. The `try...except` block allows a program to gracefully handle runtime error...",
+        "hasCode": true
+      },
+      {
+        "id": "python_33_python_string_formatting",
+        "filename": "33_python_string_formatting.md",
+        "order": 33,
+        "title": "Python String Formatting",
+        "readTimeMinutes": 12,
+        "snippet": "String formatting is the process of dynamically embedding values into strings to create readable, dynamic output. Python provides four distinct approaches to st...",
+        "hasCode": true
+      },
+      {
+        "id": "python_34_python_none",
+        "filename": "34_python_none.md",
+        "order": 34,
+        "title": "Python None",
+        "readTimeMinutes": 14,
+        "snippet": "`None` is Python's unique null value, representing the absence of a value. It is the sole member of the `NoneType` type and serves as Python's way of saying \"no...",
+        "hasCode": true
+      },
+      {
+        "id": "python_35_python_user_input",
+        "filename": "35_python_user_input.md",
+        "order": 35,
+        "title": "Python User Input",
+        "readTimeMinutes": 13,
+        "snippet": "User input is how programs receive data from users during execution. Python's primary input mechanism is the built-in `input()` function, which pauses program e...",
+        "hasCode": true
+      },
+      {
+        "id": "python_36_python_virtualenv",
+        "filename": "36_python_virtualenv.md",
+        "order": 36,
+        "title": "Python VirtualEnv",
+        "readTimeMinutes": 13,
+        "snippet": "A virtual environment is an isolated Python environment that allows you to manage dependencies for different projects separately. Each virtual environment has i...",
+        "hasCode": true
+      },
+      {
+        "id": "python_37_python_oop",
+        "filename": "37_python_oop.md",
+        "order": 37,
+        "title": "Python OOP Introduction",
+        "readTimeMinutes": 14,
+        "snippet": "## 📘 Introduction\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_38_python_classes_objects",
+        "filename": "38_python_classes_objects.md",
+        "order": 38,
+        "title": "Python Classes/Objects",
+        "readTimeMinutes": 15,
+        "snippet": "Classes and objects are the core building blocks of Object-Oriented Programming in Python. The `class` keyword defines a new type that bundles data (attributes)...",
+        "hasCode": true
+      },
+      {
+        "id": "python_39_python_init_method",
+        "filename": "39_python_init_method.md",
+        "order": 39,
+        "title": "Python __init__ Method",
+        "readTimeMinutes": 14,
+        "snippet": "The `__init__` method is Python's constructor — a special method automatically called when a new instance of a class is created. Its primary purpose is to initi...",
+        "hasCode": true
+      },
+      {
+        "id": "python_40_python_self_parameter",
+        "filename": "40_python_self_parameter.md",
+        "order": 40,
+        "title": "Python self Parameter",
+        "readTimeMinutes": 14,
+        "snippet": "`self` is a cornerstone of Python's object-oriented programming — it is the first parameter of every instance method and refers to the specific instance on whic...",
+        "hasCode": true
+      },
+      {
+        "id": "python_41_python_class_properties",
+        "filename": "41_python_class_properties.md",
+        "order": 41,
+        "title": "Usage",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_42_python_class_methods",
+        "filename": "42_python_class_methods.md",
+        "order": 42,
+        "title": "Usage",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_43_python_inheritance",
+        "filename": "43_python_inheritance.md",
+        "order": 43,
+        "title": "Usage",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_44_python_polymorphism",
+        "filename": "44_python_polymorphism.md",
+        "order": 44,
+        "title": "Operator overloading",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_45_python_encapsulation",
+        "filename": "45_python_encapsulation.md",
+        "order": 45,
+        "title": "Usage",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_46_python_inner_classes",
+        "filename": "46_python_inner_classes.md",
+        "order": 46,
+        "title": "Usage",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_47_python_file_handling",
+        "filename": "47_python_file_handling.md",
+        "order": 47,
+        "title": "Basic",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_48_python_read_files",
+        "filename": "48_python_read_files.md",
+        "order": 48,
+        "title": "Create a sample file",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_49_python_write_create_files",
+        "filename": "49_python_write_create_files.md",
+        "order": 49,
+        "title": "Write (overwrite)",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_50_python_delete_files",
+        "filename": "50_python_delete_files.md",
+        "order": 50,
+        "title": "Delete a file",
+        "readTimeMinutes": 10,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_51_python_numpy_intro",
+        "filename": "51_python_numpy_intro.md",
+        "order": 51,
+        "title": "Create arrays",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_52_python_numpy_operations",
+        "filename": "52_python_numpy_operations.md",
+        "order": 52,
+        "title": "Arithmetic",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_53_python_pandas_intro",
+        "filename": "53_python_pandas_intro.md",
+        "order": 53,
+        "title": "Create Series",
+        "readTimeMinutes": 7,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_54_python_pandas_dataframe",
+        "filename": "54_python_pandas_dataframe.md",
+        "order": 54,
+        "title": "Create DataFrame",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_55_python_pandas_operations",
+        "filename": "55_python_pandas_operations.md",
+        "order": 55,
+        "title": "GroupBy",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_56_python_scipy_intro",
+        "filename": "56_python_scipy_intro.md",
+        "order": 56,
+        "title": "Linear algebra",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_57_python_scipy_stats",
+        "filename": "57_python_scipy_stats.md",
+        "order": 57,
+        "title": "Normal distribution",
+        "readTimeMinutes": 8,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_58_python_django_intro",
+        "filename": "58_python_django_intro.md",
+        "order": 58,
+        "title": "Create project and app",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_59_python_django_models",
+        "filename": "59_python_django_models.md",
+        "order": 59,
+        "title": "Create",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      },
+      {
+        "id": "python_60_python_django_views_urls",
+        "filename": "60_python_django_views_urls.md",
+        "order": 60,
+        "title": "views.py",
+        "readTimeMinutes": 9,
+        "snippet": "\r...",
+        "hasCode": true
+      }
+    ],
+    "isFree": true,
+    "price": "Free"
+  },
+  {
+    "id": "text-scipy",
+    "slug": "scipy",
+    "title": "SciPy Scientific Computing & Optimization",
+    "shortDesc": "Scientific algorithms for optimization, integration, interpolation, signal processing, and statistics.",
+    "category": "Data Science",
+    "icon": "Cpu",
+    "badge": "100% FREE",
+    "level": "Advanced",
+    "instructor": "Skyrovix Team",
+    "rating": 4.86,
+    "enrolledCount": 8400,
+    "type": "text",
+    "lessonsCount": 10,
+    "estimatedHours": "1.5 hrs",
+    "lessons": [
+      {
+        "id": "scipy_01_scipy_intro",
+        "filename": "01_scipy_intro.md",
+        "order": 1,
+        "title": "Standard import",
+        "readTimeMinutes": 8,
+        "snippet": "## 📘 Introduction\r...",
+        "hasCode": true
+      },
+      {
+        "id": "scipy_02_scipy_get_started",
+        "filename": "02_scipy_get_started.md",
+        "order": 2,
+        "title": "Installation (run in terminal)",
+        "readTimeMinutes": 7,
+        "snippet": "Getting started with SciPy involves installing the library, importing it in Python, and understanding how to explore its submodules and utilities. This module a...",
+        "hasCode": true
+      },
+      {
+        "id": "scipy_03_scipy_constants",
+        "filename": "03_scipy_constants.md",
+        "order": 3,
+        "title": "Access constants directly",
+        "readTimeMinutes": 9,
+        "snippet": "The `scipy.constants` submodule provides a comprehensive collection of physical constants in SI units, mathematical constants, and unit conversion utilities. It...",
+        "hasCode": true
+      },
+      {
+        "id": "scipy_04_scipy_optimize",
+        "filename": "04_scipy_optimize.md",
+        "order": 4,
+        "title": "Minimization",
+        "readTimeMinutes": 9,
+        "snippet": "The `scipy.optimize` submodule provides algorithms for function minimization, curve fitting, root finding, and linear programming. It is one of the most widely ...",
+        "hasCode": true
+      },
+      {
+        "id": "scipy_05_scipy_stats",
+        "filename": "05_scipy_stats.md",
+        "order": 5,
+        "title": "Distribution methods",
+        "readTimeMinutes": 10,
+        "snippet": "The `scipy.stats` submodule is a comprehensive library for statistical computing. It provides a wide range of probability distributions (continuous and discrete...",
+        "hasCode": true
+      },
+      {
+        "id": "scipy_06_scipy_interpolation",
+        "filename": "06_scipy_interpolation.md",
+        "order": 6,
+        "title": "1D interpolation",
+        "readTimeMinutes": 10,
+        "snippet": "The `scipy.interpolate` submodule provides tools for constructing interpolating functions that pass through given data points. Interpolation is essential when y...",
+        "hasCode": true
+      },
+      {
+        "id": "scipy_07_scipy_integrate",
+        "filename": "07_scipy_integrate.md",
+        "order": 7,
+        "title": "1D definite integral",
+        "readTimeMinutes": 10,
+        "snippet": "The `scipy.integrate` submodule provides functions for numerical integration (quadrature) and solving ordinary differential equations (ODEs). It includes adapti...",
+        "hasCode": true
+      },
+      {
+        "id": "scipy_08_scipy_signal",
+        "filename": "08_scipy_signal.md",
+        "order": 8,
+        "title": "Filter design and application",
+        "readTimeMinutes": 11,
+        "snippet": "The `scipy.signal` submodule provides tools for signal processing — including convolution, filtering, spectral analysis, and peak detection. It is widely used i...",
+        "hasCode": true
+      },
+      {
+        "id": "scipy_09_scipy_ndimage",
+        "filename": "09_scipy_ndimage.md",
+        "order": 9,
+        "title": "Filtering",
+        "readTimeMinutes": 11,
+        "snippet": "The `scipy.ndimage` submodule provides functions for multi-dimensional image processing. It offers tools for filtering, morphology, measurements, and geometric ...",
+        "hasCode": true
+      },
+      {
+        "id": "scipy_10_scipy_sparse",
+        "filename": "10_scipy_sparse.md",
+        "order": 10,
+        "title": "Create from dense",
+        "readTimeMinutes": 13,
+        "snippet": "The `scipy.sparse` submodule provides efficient storage and computation for matrices where most elements are zero. Sparse matrices are essential for large-scale...",
+        "hasCode": true
+      }
+    ],
+    "isFree": true,
+    "price": "Free"
+  }
+]

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="pyBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070E22" />
+      <stop offset="50%" stop-color="#0E1B42" />
+      <stop offset="100%" stop-color="#050B1B" />
+    </linearGradient>
+
+    <!-- Blue Ambient Glow -->
+    <radialGradient id="pyGlow" cx="40%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#387EB8" stop-opacity="0.3" />
+      <stop offset="60%" stop-color="#FFE873" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#050B1B" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Python Blue Snake Gradient -->
+    <linearGradient id="pyBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#387EB8" />
+      <stop offset="100%" stop-color="#2D6392" />
+    </linearGradient>
+
+    <!-- Python Yellow Snake Gradient -->
+    <linearGradient id="pyYellow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE873" />
+      <stop offset="100%" stop-color="#FFD43B" />
+    </linearGradient>
+
+    <filter id="shadowFilter" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="640" height="360" fill="url(#pyBg)" />
+  <rect width="640" height="360" fill="url(#pyGlow)" />
+
+  <!-- Geometric Grid & Circuit Accents -->
+  <g opacity="0.06" stroke="#FFFFFF" stroke-width="1">
+    <line x1="0" y1="72" x2="640" y2="72" />
+    <line x1="0" y1="144" x2="640" y2="144" />
+    <line x1="0" y1="216" x2="640" y2="216" />
+    <line x1="0" y1="288" x2="640" y2="288" />
+    <line x1="128" y1="0" x2="128" y2="360" />
+    <line x1="256" y1="0" x2="256" y2="360" />
+    <line x1="384" y1="0" x2="384" y2="360" />
+    <line x1="512" y1="0" x2="512" y2="360" />
+  </g>
+
+  <!-- Floating Code Nodes -->
+  <g opacity="0.3" fill="#387EB8">
+    <circle cx="120" cy="80" r="3" />
+    <circle cx="520" cy="90" r="3" />
+    <circle cx="100" cy="270" r="4" fill="#FFE873" />
+    <circle cx="560" cy="260" r="3" fill="#387EB8" />
+  </g>
+
+  <!-- CENTER: Python Icon and "Python" Typography -->
+  <g transform="translate(145, 90)" filter="url(#shadowFilter)">
+    <!-- Python Snake Logo (Scaled to ~140px) -->
+    <g transform="translate(0, 5) scale(1.15)">
+      <!-- Top/Left Blue Snake -->
+      <path d="M60.1 0C27.3 0 29.3 14.2 29.3 14.2L29.4 28.9H59.7V33.3H18.2C18.2 33.3 0 31.2 0 63.9C0 96.6 15.9 95 15.9 95H25.4V81.7C25.4 81.7 24.8 65.8 41.1 65.8H70.9C70.9 65.8 84.8 66.4 84.8 52.8V14.7C84.8 14.7 86.8 0 60.1 0ZM45.6 9.8C49.1 9.8 51.9 12.6 51.9 16.1C51.9 19.6 49.1 22.4 45.6 22.4C42.1 22.4 39.3 19.6 39.3 16.1C39.3 12.6 42.1 9.8 45.6 9.8Z" fill="url(#pyBlue)" />
+      <!-- Bottom/Right Yellow Snake -->
+      <path d="M63.7 127.8C96.5 127.8 94.5 113.6 94.5 113.6L94.4 98.9H64.1V94.5H105.6C105.6 94.5 123.8 96.6 123.8 63.9C123.8 31.2 107.9 32.8 107.9 32.8H98.4V46.1C98.4 46.1 99 62 82.7 62H52.9C52.9 62 39 61.4 39 75V113.1C39 113.1 37 127.8 63.7 127.8ZM78.2 118C74.7 118 71.9 115.2 71.9 111.7C71.9 108.2 74.7 105.4 78.2 105.4C81.7 105.4 84.5 108.2 84.5 111.7C84.5 115.2 81.7 118 78.2 118Z" fill="url(#pyYellow)" />
+    </g>
+
+    <!-- Typography: "Python" -->
+    <text x="175" y="112" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="76" letter-spacing="-1">Python</text>
+  </g>
+</svg>
+

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgDjango" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#04120D" />
+      <stop offset="50%" stop-color="#092E25" />
+      <stop offset="100%" stop-color="#020B07" />
+    </linearGradient>
+    <radialGradient id="glowDjango" cx="35%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#092E20" stop-opacity="0.5" />
+      <stop offset="60%" stop-color="#44B78B" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#020B07" stop-opacity="0" />
+    </radialGradient>
+    <filter id="shadowDjango" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#44B78B" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <rect width="640" height="360" fill="url(#bgDjango)" />
+  <rect width="640" height="360" fill="url(#glowDjango)" />
+
+  <g opacity="0.06" stroke="#FFFFFF" stroke-width="1">
+    <line x1="0" y1="72" x2="640" y2="72" /><line x1="0" y1="144" x2="640" y2="144" />
+    <line x1="0" y1="216" x2="640" y2="216" /><line x1="0" y1="288" x2="640" y2="288" />
+    <line x1="128" y1="0" x2="128" y2="360" /><line x1="256" y1="0" x2="256" y2="360" />
+    <line x1="384" y1="0" x2="384" y2="360" /><line x1="512" y1="0" x2="512" y2="360" />
+  </g>
+
+  <!-- Center Content: Django Logo & Typography -->
+  <g transform="translate(110, 95)" filter="url(#shadowDjango)">
+    <g transform="translate(15, 10)">
+      <rect width="100" height="100" rx="16" fill="#0C4B33" stroke="#44B78B" stroke-width="2" />
+      <text x="50" y="68" fill="#FFFFFF" font-family="system-ui, sans-serif" font-weight="900" font-size="44" text-anchor="middle">dj</text>
+    </g>
+
+    <!-- Typography -->
+    <text x="180" y="95" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="68" letter-spacing="-1">Django</text>
+    <text x="182" y="132" fill="#44B78B" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="14" letter-spacing="4">PYTHON WEB FRAMEWORK &amp; REST</text>
+  </g>
+</svg>

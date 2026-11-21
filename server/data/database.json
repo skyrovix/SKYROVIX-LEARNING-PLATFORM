@@ -1,0 +1,120 @@
+{
+  "users": [
+    {
+      "id": "usr-admin",
+      "name": "Hariharan S",
+      "email": "admin@skyrovix.com",
+      "passwordHash": "hashed_AdminPassword123!",
+      "role": "admin",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+      "xp": 1850,
+      "streakDays": 7,
+      "status": "Active",
+      "createdAt": "2026-11-18T14:52:08.767Z"
+    },
+    {
+      "id": "usr-student",
+      "name": "Student Learner",
+      "email": "student@skyrovix.com",
+      "passwordHash": "hashed_StudentPassword123!",
+      "role": "student",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "xp": 250,
+      "streakDays": 2,
+      "status": "Active",
+      "createdAt": "2026-11-18T14:52:08.767Z"
+    },
+    {
+      "id": "usr-1",
+      "name": "Hariharan S",
+      "email": "hariharan@skyrovix.dev",
+      "passwordHash": "hashed_secret",
+      "role": "admin",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+      "xp": 1850,
+      "streakDays": 7,
+      "status": "Active",
+      "createdAt": "2026-11-18T14:52:08.767Z"
+    },
+    {
+      "id": "usr-2",
+      "name": "Aisha Sharma",
+      "email": "aisha.s@techcorp.io",
+      "passwordHash": "hashed_secret",
+      "role": "student",
+      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+      "xp": 2450,
+      "streakDays": 14,
+      "status": "Active",
+      "createdAt": "2026-11-18T14:52:08.767Z"
+    },
+    {
+      "id": "usr-1795092730129",
+      "name": "hariharan s",
+      "email": "hariharanmahesh34@gmail.com",
+      "passwordHash": "hashed_1234harimahesh",
+      "role": "student",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+      "xp": 100,
+      "streakDays": 1,
+      "status": "Active",
+      "createdAt": "2026-11-19T12:52:10.129Z"
+    }
+  ],
+  "enrollments": [
+    {
+      "userId": "usr-1",
+      "courseId": "vid-fullstack-dev",
+      "enrolledAt": "2026-11-18T14:52:08.767Z"
+    },
+    {
+      "userId": "usr-1",
+      "courseId": "text-html",
+      "enrolledAt": "2026-11-18T14:52:08.767Z"
+    },
+    {
+      "userId": "usr-1",
+      "courseId": "vid-react",
+      "enrolledAt": "2026-11-18T14:52:08.767Z"
+    },
+    {
+      "userId": "usr-1",
+      "courseId": "text-python",
+      "enrolledAt": "2026-11-18T14:52:08.767Z"
+    }
+  ],
+  "completedLessons": {
+    "usr-1:vid-fullstack-dev": [
+      "fs-l1"
+    ],
+    "usr-1:text-html": [
+      "html_01_html_home",
+      "html_02_html_introduction"
+    ]
+  },
+  "notes": [
+    {
+      "id": "note-1",
+      "userId": "usr-1",
+      "courseId": "vid-fullstack-dev",
+      "courseTitle": "Full Stack Web Development Masterclass",
+      "lessonId": "fs-l1",
+      "lessonTitle": "1. Anatomy of a Production Full Stack Application",
+      "content": "Stateless servers permit seamless horizontal autoscaling behind reverse proxy (Nginx/ALB). Decouple session storage to Redis.",
+      "timestamp": "09:30",
+      "createdAt": "Yesterday"
+    }
+  ],
+  "certificates": [
+    {
+      "id": "cert-1",
+      "userId": "usr-1",
+      "studentName": "Hariharan S",
+      "courseTitle": "Full Stack Web Development Masterclass",
+      "certId": "SKX-982410",
+      "issueDate": "November 18, 2026",
+      "instructor": "Skyrovix Team",
+      "type": "video"
+    }
+  ]
+}

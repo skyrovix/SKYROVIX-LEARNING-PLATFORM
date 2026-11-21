@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="aiBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#040817" />
+      <stop offset="50%" stop-color="#081432" />
+      <stop offset="100%" stop-color="#030712" />
+    </linearGradient>
+
+    <!-- Cyan Glow -->
+    <radialGradient id="cyanGlow" cx="30%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00F0FF" stop-opacity="0.35" />
+      <stop offset="50%" stop-color="#0284C7" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#030712" stop-opacity="0" />
+    </radialGradient>
+
+    <filter id="glowFilter" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="640" height="360" fill="url(#aiBg)" />
+  <rect width="640" height="360" fill="url(#cyanGlow)" />
+
+  <!-- Neural Constellation Particles -->
+  <g opacity="0.4" stroke="#00F0FF" stroke-width="0.8">
+    <line x1="80" y1="90" x2="140" y2="60" />
+    <line x1="140" y1="60" x2="220" y2="70" />
+    <line x1="220" y1="70" x2="280" y2="110" />
+    <line x1="80" y1="90" x2="120" y2="150" />
+    <line x1="120" y1="150" x2="190" y2="140" />
+    <line x1="190" y1="140" x2="280" y2="110" />
+    <line x1="120" y1="150" x2="90" y2="230" />
+    <line x1="90" y1="230" x2="160" y2="220" />
+    <line x1="160" y1="220" x2="230" y2="200" />
+    <line x1="230" y1="200" x2="270" y2="240" />
+    <line x1="160" y1="220" x2="180" y2="290" />
+    <line x1="180" y1="290" x2="250" y2="280" />
+  </g>
+
+  <!-- Glowing Neural Brain Graphic -->
+  <g transform="translate(40, 45)" filter="url(#glowFilter)">
+    <!-- Brain Silhouette Outer Shell -->
+    <path d="M 170,40 C 230,30 290,70 290,130 C 290,165 275,190 280,215 C 285,245 255,275 220,270 C 205,268 190,260 175,260 C 160,260 145,268 130,270 C 95,275 65,245 70,215 C 75,190 60,165 60,130 C 60,70 120,30 170,40 Z" fill="none" stroke="#00F0FF" stroke-width="2.5" opacity="0.85" />
+    
+    <!-- Central Fissure -->
+    <path d="M 175,42 C 168,75 182,110 175,145 C 168,180 182,215 175,258" fill="none" stroke="#38BDF8" stroke-width="2" stroke-dasharray="4,4" opacity="0.7" />
+
+    <!-- Neural Lobes Internal Synaptic Loops -->
+    <!-- Left Hemisphere -->
+    <path d="M 120,60 C 90,80 95,120 125,115 C 145,110 160,90 140,70" fill="none" stroke="#00F0FF" stroke-width="1.8" opacity="0.75" />
+    <path d="M 80,140 C 75,170 110,180 135,160 C 150,145 140,125 110,135" fill="none" stroke="#00F0FF" stroke-width="1.8" opacity="0.75" />
+    <path d="M 95,210 C 105,240 145,240 155,210 C 160,190 135,185 120,195" fill="none" stroke="#00F0FF" stroke-width="1.8" opacity="0.75" />
+    
+    <!-- Right Hemisphere -->
+    <path d="M 230,60 C 260,80 255,120 225,115 C 205,110 190,90 210,70" fill="none" stroke="#00F0FF" stroke-width="1.8" opacity="0.75" />
+    <path d="M 270,140 C 275,170 240,180 215,160 C 200,145 210,125 240,135" fill="none" stroke="#00F0FF" stroke-width="1.8" opacity="0.75" />
+    <path d="M 255,210 C 245,240 205,240 195,210 C 190,190 215,185 230,195" fill="none" stroke="#00F0FF" stroke-width="1.8" opacity="0.75" />
+
+    <!-- Bright Synaptic Nodes -->
+    <g fill="#FFFFFF" stroke="#00F0FF" stroke-width="1.5">
+      <circle cx="170" cy="40" r="3.5" />
+      <circle cx="125" cy="115" r="3" />
+      <circle cx="225" cy="115" r="3" />
+      <circle cx="135" cy="160" r="3.5" />
+      <circle cx="215" cy="160" r="3.5" />
+      <circle cx="175" cy="145" r="4" fill="#00F0FF" />
+      <circle cx="155" cy="210" r="3" />
+      <circle cx="195" cy="210" r="3" />
+      <circle cx="175" cy="258" r="3.5" />
+      <circle cx="80" cy="140" r="2.5" />
+      <circle cx="270" cy="140" r="2.5" />
+      <circle cx="120" cy="60" r="2.5" />
+      <circle cx="230" cy="60" r="2.5" />
+    </g>
+  </g>
+
+  <!-- RIGHT: "AI / ML" Futuristic Typography -->
+  <g transform="translate(390, 140)">
+    <text x="0" y="65" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="78" letter-spacing="1">AI / ML</text>
+    <!-- Cyan Accent Underline -->
+    <rect x="4" y="85" width="220" height="5" rx="2.5" fill="#00F0FF" opacity="0.9" filter="url(#glowFilter)" />
+    <!-- Subtitle text -->
+    <text x="6" y="112" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="14" letter-spacing="3">DEEP LEARNING &amp; NEURAL NETS</text>
+  </g>
+</svg>
+

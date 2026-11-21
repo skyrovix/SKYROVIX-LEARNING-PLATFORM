@@ -1,0 +1,38 @@
+<svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg6" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#60A5FA"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="40" fill="url(#bg6)"/>
+  <!-- Body -->
+  <path d="M40 200 C40 148 65 138 100 138 C135 138 160 148 160 200 Z" fill="#1E293B"/>
+  <circle cx="100" cy="170" r="14" fill="#3B82F6"/>
+  <!-- Neck -->
+  <rect x="90" y="118" width="20" height="22" rx="5" fill="#F8D3B4"/>
+  <!-- Head -->
+  <rect x="68" y="62" width="64" height="66" rx="32" fill="#F8D3B4"/>
+  <!-- Backwards Cap -->
+  <path d="M64 68 C64 42 78 36 100 36 C122 36 136 42 136 68 Z" fill="#EF4444"/>
+  <rect x="60" y="66" width="80" height="12" rx="6" fill="#DC2626"/>
+  <!-- Cap snap strap on front -->
+  <rect x="88" y="68" width="24" height="8" rx="4" fill="#B91C1C"/>
+  <circle cx="95" cy="72" r="1.5" fill="#FFFFFF"/>
+  <circle cx="105" cy="72" r="1.5" fill="#FFFFFF"/>
+  <!-- Hair tips under cap -->
+  <path d="M64 78 C62 88 64 96 68 102 C68 94 66 86 66 78 Z" fill="#18181B"/>
+  <path d="M136 78 C138 88 136 96 132 102 C132 94 134 86 134 78 Z" fill="#18181B"/>
+  <!-- Eyes -->
+  <ellipse cx="84" cy="88" rx="4" ry="5" fill="#18181B"/>
+  <ellipse cx="116" cy="88" rx="4" ry="5" fill="#18181B"/>
+  <circle cx="85.5" cy="86.5" r="1.5" fill="#FFFFFF"/>
+  <circle cx="117.5" cy="86.5" r="1.5" fill="#FFFFFF"/>
+  <!-- Eyebrows -->
+  <path d="M78 80 Q84 76 90 80" stroke="#18181B" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M110 80 Q116 76 122 80" stroke="#18181B" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Smile -->
+  <path d="M92 105 Q100 114 108 105" stroke="#EA580C" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <!-- Wireless Earbud -->
+  <rect x="132" y="86" width="4" height="10" rx="2" fill="#FFFFFF"/>
+</svg>

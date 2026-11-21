@@ -1,0 +1,38 @@
+<svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#1E293B"/>
+    </linearGradient>
+    <linearGradient id="screen3" x1="60" y1="60" x2="140" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0284C7"/>
+      <stop offset="1" stop-color="#06B6D4"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="40" fill="url(#bg3)"/>
+  <!-- Antenna -->
+  <line x1="100" y1="36" x2="100" y2="48" stroke="#38BDF8" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="100" cy="30" r="8" fill="#38BDF8"/>
+  <circle cx="100" cy="30" r="4" fill="#FFFFFF"/>
+  <!-- Robot Body -->
+  <path d="M45 200 C45 155 65 145 100 145 C135 145 155 155 155 200 Z" fill="#334155"/>
+  <rect x="80" y="160" width="40" height="24" rx="6" fill="#1E293B"/>
+  <circle cx="92" cy="172" r="3" fill="#22C55E"/>
+  <circle cx="108" cy="172" r="3" fill="#38BDF8"/>
+  <!-- Neck -->
+  <rect x="88" y="132" width="24" height="16" rx="4" fill="#64748B"/>
+  <!-- Robot Head -->
+  <rect x="52" y="50" width="96" height="84" rx="28" fill="#E2E8F0"/>
+  <!-- Head Ears / Audio Sensors -->
+  <rect x="42" y="74" width="10" height="36" rx="5" fill="#38BDF8"/>
+  <rect x="148" y="74" width="10" height="36" rx="5" fill="#38BDF8"/>
+  <!-- Visor Screen -->
+  <rect x="62" y="62" width="76" height="60" rx="18" fill="url(#screen3)"/>
+  <!-- Glowing Digital Eyes -->
+  <rect x="74" y="76" width="16" height="18" rx="8" fill="#FFFFFF"/>
+  <rect x="110" y="76" width="16" height="18" rx="8" fill="#FFFFFF"/>
+  <circle cx="82" cy="85" r="4" fill="#0284C7"/>
+  <circle cx="118" cy="85" r="4" fill="#0284C7"/>
+  <!-- Smile LED -->
+  <path d="M88 104 Q100 112 112 104" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" fill="none"/>
+</svg>

@@ -1,0 +1,31 @@
+<svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg5" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4F46E5"/>
+      <stop offset="1" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="visor5" x1="60" y1="75" x2="140" y2="95" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F43F5E"/>
+      <stop offset="0.5" stop-color="#FB923C"/>
+      <stop offset="1" stop-color="#FBBF24"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="40" fill="url(#bg5)"/>
+  <!-- Body (Cyber Tech Jacket) -->
+  <path d="M40 200 C40 148 65 138 100 138 C135 138 160 148 160 200 Z" fill="#0F172A"/>
+  <path d="M100 138 L100 200" stroke="#06B6D4" stroke-width="3"/>
+  <path d="M75 160 L60 200" stroke="#06B6D4" stroke-width="2"/>
+  <path d="M125 160 L140 200" stroke="#06B6D4" stroke-width="2"/>
+  <!-- Neck -->
+  <rect x="91" y="118" width="18" height="24" rx="5" fill="#FCE7D2"/>
+  <!-- Head -->
+  <rect x="68" y="60" width="64" height="66" rx="32" fill="#FCE7D2"/>
+  <!-- Hair (Sleek Asymmetrical Cyan/Dark Hair) -->
+  <path d="M64 68 C64 42 78 34 100 34 C124 34 136 44 136 70 C136 84 132 94 130 100 C124 88 120 74 110 65 C96 68 84 66 70 76 C66 70 64 68 64 68 Z" fill="#1E1B4B"/>
+  <path d="M64 68 C60 84 62 108 72 120 C70 106 68 92 68 82 Z" fill="#06B6D4"/>
+  <!-- Cyber Visor / Glasses -->
+  <rect x="66" y="76" width="68" height="20" rx="10" fill="url(#visor5)"/>
+  <line x1="72" y1="86" x2="128" y2="86" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="4 2"/>
+  <!-- Smile -->
+  <path d="M94 106 Q100 110 106 106" stroke="#EA580C" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+</svg>

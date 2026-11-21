@@ -1,0 +1,40 @@
+<svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10B981"/>
+      <stop offset="1" stop-color="#34D399"/>
+    </linearGradient>
+    <linearGradient id="hoodie4" x1="50" y1="135" x2="150" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#334155"/>
+      <stop offset="1" stop-color="#1E293B"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="40" fill="url(#bg4)"/>
+  <!-- Body -->
+  <path d="M40 200 C40 148 65 138 100 138 C135 138 160 148 160 200 Z" fill="url(#hoodie4)"/>
+  <!-- Neck -->
+  <rect x="90" y="118" width="20" height="22" rx="5" fill="#E6BA95"/>
+  <!-- Head -->
+  <rect x="68" y="64" width="64" height="66" rx="32" fill="#E6BA95"/>
+  <!-- Beard -->
+  <path d="M68 95 C68 126 82 134 100 134 C118 134 132 126 132 95 C132 102 124 108 116 108 C108 108 104 102 100 102 C96 102 92 108 84 108 C76 108 68 102 68 95 Z" fill="#2E180E"/>
+  <!-- Beanie (Warm Orange) -->
+  <path d="M62 68 C62 38 78 32 100 32 C122 32 138 38 138 68 Z" fill="#EA580C"/>
+  <rect x="58" y="64" width="84" height="14" rx="7" fill="#C2410C"/>
+  <!-- Beanie Fold lines -->
+  <line x1="75" y1="64" x2="75" y2="78" stroke="#9A3412" stroke-width="2"/>
+  <line x1="90" y1="64" x2="90" y2="78" stroke="#9A3412" stroke-width="2"/>
+  <line x1="110" y1="64" x2="110" y2="78" stroke="#9A3412" stroke-width="2"/>
+  <line x1="125" y1="64" x2="125" y2="78" stroke="#9A3412" stroke-width="2"/>
+  <!-- Eyes -->
+  <circle cx="84" cy="88" r="4.5" fill="#1C1917"/>
+  <circle cx="116" cy="88" r="4.5" fill="#1C1917"/>
+  <circle cx="85.5" cy="86.5" r="1.5" fill="#FFFFFF"/>
+  <circle cx="117.5" cy="86.5" r="1.5" fill="#FFFFFF"/>
+  <!-- Stylish Square Glasses -->
+  <rect x="74" y="80" width="22" height="16" rx="4" stroke="#1C1917" stroke-width="2.5" fill="none"/>
+  <rect x="104" y="80" width="22" height="16" rx="4" stroke="#1C1917" stroke-width="2.5" fill="none"/>
+  <line x1="96" y1="87" x2="104" y2="87" stroke="#1C1917" stroke-width="2.5"/>
+  <!-- Smile -->
+  <path d="M94 112 Q100 117 106 112" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" fill="none"/>
+</svg>
