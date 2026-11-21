@@ -437,7 +437,7 @@ export const LearnHubPage: React.FC = () => {
             </button>
             <div className="h-4 w-px bg-slate-200" />
             <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
-              <span>Resources</span>
+              <span>Skyrovix</span>
               <span>/</span>
               <span className="text-[#FB4400] font-bold">Learn Hub & Roadmaps</span>
             </div>

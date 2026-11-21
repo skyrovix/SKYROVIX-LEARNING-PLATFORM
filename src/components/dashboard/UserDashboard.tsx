@@ -77,6 +77,7 @@ export const UserDashboard: React.FC = () => {
     currentUser,
     enrollInCourse,
     openEnrollModal,
+    navigateToCourseDetails,
     resetMyLearningData,
     completeEntireCourse
   } = usePlatform();
@@ -584,6 +585,7 @@ export const UserDashboard: React.FC = () => {
                         isFree={false}
                         isEnrolled={enrolledCourses.includes('vid-fullstack-dev')}
                         actionText={enrolledCourses.includes('vid-fullstack-dev') ? 'Continue' : 'Enroll ₹299'}
+                        onClickCard={() => navigateToCourseDetails('vid-fullstack-dev')}
                         onAction={() => {
                           const course = videoCourses.find(c => c.id === 'vid-fullstack-dev');
                           if (enrolledCourses.includes('vid-fullstack-dev')) {
@@ -608,6 +610,7 @@ export const UserDashboard: React.FC = () => {
                         isFree={true}
                         isEnrolled={enrolledCourses.includes('text-python')}
                         actionText={enrolledCourses.includes('text-python') ? 'Continue' : 'Start Free'}
+                        onClickCard={() => navigateToCourseDetails('text-python', 'text')}
                         onAction={() => {
                           if (enrolledCourses.includes('text-python')) {
                             navigateToTextCourse('text-python');
@@ -632,6 +635,7 @@ export const UserDashboard: React.FC = () => {
                         isFree={true}
                         isEnrolled={enrolledCourses.includes('text-numpy')}
                         actionText={enrolledCourses.includes('text-numpy') ? 'Continue' : 'Start Free'}
+                        onClickCard={() => navigateToCourseDetails('text-numpy', 'text')}
                         onAction={() => {
                           if (enrolledCourses.includes('text-numpy')) {
                             navigateToTextCourse('text-numpy');
@@ -659,6 +663,7 @@ export const UserDashboard: React.FC = () => {
                         isFree={false}
                         isEnrolled={enrolledCourses.includes('vid-html')}
                         actionText={enrolledCourses.includes('vid-html') ? 'Continue' : 'Enroll ₹99'}
+                        onClickCard={() => navigateToCourseDetails('vid-html')}
                         onAction={() => {
                           const course = videoCourses.find(c => c.id === 'vid-html');
                           if (enrolledCourses.includes('vid-html')) {
@@ -684,6 +689,7 @@ export const UserDashboard: React.FC = () => {
                         isFree={false}
                         isEnrolled={enrolledCourses.includes('vid-css')}
                         actionText={enrolledCourses.includes('vid-css') ? 'Continue' : 'Enroll ₹99'}
+                        onClickCard={() => navigateToCourseDetails('vid-css')}
                         onAction={() => {
                           const course = videoCourses.find(c => c.id === 'vid-css');
                           if (enrolledCourses.includes('vid-css')) {
@@ -709,6 +715,7 @@ export const UserDashboard: React.FC = () => {
                         isFree={false}
                         isEnrolled={enrolledCourses.includes('vid-javascript')}
                         actionText={enrolledCourses.includes('vid-javascript') ? 'Continue' : 'Enroll ₹99'}
+                        onClickCard={() => navigateToCourseDetails('vid-javascript')}
                         onAction={() => {
                           const course = videoCourses.find(c => c.id === 'vid-javascript');
                           if (enrolledCourses.includes('vid-javascript')) {
@@ -1087,6 +1094,7 @@ export const UserDashboard: React.FC = () => {
                         isEnrolled={true}
                         progress={pct}
                         actionText="Resume"
+                        onClickCard={() => navigateToCourseDetails(course.id)}
                         onAction={() => {
                           setSelectedCourseId(course.id);
                           if ('modules' in course) {

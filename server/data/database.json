@@ -116,5 +116,35 @@
       "instructor": "Skyrovix Team",
       "type": "video"
     }
+  ],
+  "orders": [
+    {
+      "orderId": "skx_ord_1795284001133_1800",
+      "cfOrderId": "7504339163",
+      "paymentSessionId": "session_LxiIZh8vhrfwrXWVNtK9prF215ogxUeU68d5nl1NN7uRil4n6dqdYoKbhLfjmGgqk8TNqa-qJptupFNFiyMB-6hzOBw7rEAnTYf09I8WCgFubDj_-xwazK64cADq",
+      "amount": 299,
+      "courseId": "vid-fullstack-dev",
+      "courseTitle": "Full Stack Development Masterclass",
+      "userId": "usr-test",
+      "customerName": "Hariharan S",
+      "customerEmail": "hariharan@skyrovix.dev",
+      "customerPhone": "9876543210",
+      "status": "ACTIVE",
+      "createdAt": "2026-11-21T18:00:02.543Z"
+    },
+    {
+      "orderId": "skx_ord_1795284107397_6099",
+      "cfOrderId": "7504344664",
+      "paymentSessionId": "session_b3Q25kBuiGqfqq3HxTDnxI1k07M7ZWYtqufJKudiz-pWDdp1zeXLXCFsXtazDdckkNim1jDBkl9y0r5J9e_ePi9RD07_Tw7xE4zHCNkzv7Omn6vD62oiXUN31Ke4",
+      "amount": 299,
+      "courseId": "vid-fullstack-dev",
+      "courseTitle": "Full Stack Web Development Masterclass",
+      "userId": "38b8d60a-70b3-42d6-95c8-362369ac7392",
+      "customerName": "hariharan s",
+      "customerEmail": "hariharanmahesh34@gmail.com",
+      "customerPhone": "9876543210",
+      "status": "ACTIVE",
+      "createdAt": "2026-11-21T18:01:47.841Z"
+    }
   ]
 }

@@ -10,6 +10,8 @@ import sigFounderImage from '../images/sig-founder.png';
 import sigCofounderImage from '../images/sig-cofounder.png';
 import skyrovixStudentImg from '../images/skyrovix-student.png';
 import skyrovixInternshipImg from '../images/skyrovix-internship-logo.png';
+import founderImg from '../images/founder-hariharan.jpg';
+import cofounderImg from '../images/cofounder-maheshwaran.jpg';
 
 // Illustrated Developer Avatars (Memoji / Cartoon Vector Style)
 import avatar1Svg from '../images/avatars/avatar-1.svg';
@@ -81,6 +83,8 @@ export const brandImages = {
   msme: msmeImage,
   sigFounder: sigFounderImage,
   sigCofounder: sigCofounderImage,
+  founder: founderImg,
+  cofounder: cofounderImg,
   skyrovixStudent: skyrovixStudentImg,
   internship: skyrovixInternshipImg
 };

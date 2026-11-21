@@ -5,5 +5,3 @@ export { ReferralPage } from './ReferralPage';
 export { RewardsPage } from './RewardsPage';
 export { SuccessStoriesPage } from './SuccessStoriesPage';
 export { CommunityHubPage } from './CommunityHubPage';
-export { ResourcesModal } from './ResourcesModal';
-

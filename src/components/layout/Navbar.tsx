@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { usePlatform } from '../../context/PlatformContext';
 import { brandImages } from '../../assets/brandImages';
-import { ResourceTab } from '../resources/ResourcesModal';
 import { signOutUser } from '../../lib/supabase';
 import {
   Home,
@@ -42,7 +41,6 @@ export interface NavbarProps {
   onOpenPlayground: () => void;
   onOpenTutorials: () => void;
   onOpenCourses: () => void;
-  onOpenResource: (tab: ResourceTab) => void;
   onOpenInternship: () => void;
   onOpenLogin: () => void;
   onOpenSignUp?: () => void;
@@ -54,7 +52,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenPlayground,
   onOpenTutorials,
   onOpenCourses,
-  onOpenResource,
   onOpenInternship,
   onOpenLogin,
   activeFormatFilter = 'all'
@@ -67,29 +64,23 @@ export const Navbar: React.FC<NavbarProps> = ({
     currentUser,
     logout,
     navigateToDashboard,
-    navigateToAdmin
+    navigateToAdmin,
+    showGlobalToast
   } = usePlatform();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [resourcesDropdownOpen, setResourcesDropdownOpen] = useState(false);
   const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
   const [categoriesDropdownOpen, setCategoriesDropdownOpen] = useState(false);
-  const [mobileResourcesOpen, setMobileResourcesOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
 
-  const resourcesRef = useRef<HTMLDivElement | null>(null);
   const productsRef = useRef<HTMLDivElement | null>(null);
   const categoriesRef = useRef<HTMLDivElement | null>(null);
-  const resourcesTimerRef = useRef<NodeJS.Timeout | null>(null);
   const productsTimerRef = useRef<NodeJS.Timeout | null>(null);
   const categoriesTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Close dropdowns on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (resourcesRef.current && !resourcesRef.current.contains(event.target as Node)) {
-        setResourcesDropdownOpen(false);
-      }
       if (productsRef.current && !productsRef.current.contains(event.target as Node)) {
         setProductsDropdownOpen(false);
       }
@@ -100,14 +91,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  const handleResourcesEnter = () => {
-    if (resourcesTimerRef.current) clearTimeout(resourcesTimerRef.current);
-    setResourcesDropdownOpen(true);
-  };
-  const handleResourcesLeave = () => {
-    resourcesTimerRef.current = setTimeout(() => setResourcesDropdownOpen(false), 180);
-  };
 
   const handleProductsEnter = () => {
     if (productsTimerRef.current) clearTimeout(productsTimerRef.current);
@@ -129,6 +112,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const isTutorialsActive = currentView === 'catalog' && activeFormatFilter === 'text';
   const isCoursesActive = currentView === 'catalog' && activeFormatFilter !== 'text';
   const isPracticeActive = currentView === 'practice';
+  const isAboutActive = currentView === 'about';
 
   const categoryList = [
     { name: 'Full Stack Development', desc: 'React, Node, DB & Next.js' },
@@ -141,110 +125,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     { name: 'Cyber Security', desc: 'Network & application security' },
     { name: 'Cloud Computing', desc: 'AWS, Docker & Deployment' }
   ];
-
-  const resourceItems: {
-    id: ResourceTab;
-    title: string;
-    desc: string;
-    icon: React.ReactNode;
-    badge?: string;
-  }[] = [
-    {
-      id: 'free-resources',
-      title: 'Free Resources',
-      desc: 'Cheatsheets, guides & PDF roadmaps',
-      icon: <Download size={16} className="text-[#FB4400]" />
-    },
-    {
-      id: 'referral',
-      title: 'Referral',
-      desc: 'Invite friends & earn 500 XP each',
-      icon: <Share2 size={16} className="text-amber-500" />,
-      badge: '500 XP'
-    },
-    {
-      id: 'success-stories',
-      title: 'Success Stories',
-      desc: 'Student hiring outcomes & reviews',
-      icon: <Star size={16} className="text-yellow-500" />
-    },
-    {
-      id: 'blogs',
-      title: 'Blogs',
-      desc: 'Engineering articles & architecture',
-      icon: <BookOpen size={16} className="text-indigo-500" />
-    },
-    {
-      id: 'learn-hub',
-      title: 'Learn Hub',
-      desc: 'Step-by-step developer roadmaps',
-      icon: <Sparkles size={16} className="text-emerald-500" />
-    },
-    {
-      id: 'get-app',
-      title: 'Get The App',
-      desc: 'Skyrovix Mobile for iOS & Android',
-      icon: <Smartphone size={16} className="text-cyan-500" />
-    },
-    {
-      id: 'rewards',
-      title: 'Rewards',
-      desc: 'Redeem XP for merch & discounts',
-      icon: <Gift size={16} className="text-rose-500" />
-    },
-    {
-      id: 'affiliate',
-      title: 'Become an Affiliate',
-      desc: 'Earn 30% lifetime partner payouts',
-      icon: <DollarSign size={16} className="text-emerald-600" />,
-      badge: '30%'
-    },
-    {
-      id: 'leaderboard',
-      title: 'Leaderboard',
-      desc: 'Global student XP & streak rankings',
-      icon: <Trophy size={16} className="text-amber-500" />
-    },
-    {
-      id: 'whats-new',
-      title: "What's New?",
-      desc: 'Changelog, platform & feature updates',
-      icon: <Flame size={16} className="text-[#FB4400]" />,
-      badge: 'NEW'
-    },
-    {
-      id: 'resume-builder',
-      title: 'Resume Builder',
-      desc: 'Interactive ATS-friendly tech CV maker',
-      icon: <FileCheck size={16} className="text-[#FB4400]" />,
-      badge: 'HOT'
-    },
-    {
-      id: 'community-hub',
-      title: 'Community Hub',
-      desc: 'Join 45,000+ developers on Discord',
-      icon: <MessageSquare size={16} className="text-blue-500" />
-    }
-  ];
-
-  const dedicatedViews = [
-    'resume-builder',
-    'learn-hub',
-    'leaderboard',
-    'referral',
-    'rewards',
-    'success-stories',
-    'community-hub'
-  ];
-
-  const handleResourceClick = (id: ResourceTab) => {
-    if (dedicatedViews.includes(id)) {
-      setCurrentView(id);
-    } else {
-      onOpenResource(id);
-    }
-    setResourcesDropdownOpen(false);
-  };
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-orange-100/70 bg-[#FDFBF9]/95 backdrop-blur-md shadow-2xs select-none">
@@ -322,63 +202,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>Practice</span>
             </button>
 
-            {/* Resources ▾ (Free Resources, Referral, Success Stories, Blogs, Learn Hub, Get The App, Rewards, Become an Affiliate, Leaderboard, What's New?, Resume Builder, Community Hub) */}
-            <div
-              ref={resourcesRef}
-              className="relative shrink-0"
-              onMouseEnter={handleResourcesEnter}
-              onMouseLeave={handleResourcesLeave}
-            >
-              <button
-                onClick={() => setResourcesDropdownOpen(!resourcesDropdownOpen)}
-                className={`cursor-pointer flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 whitespace-nowrap ${
-                  resourcesDropdownOpen
-                    ? 'bg-[#FB4400] text-white shadow-sm shadow-orange-500/25'
-                    : 'text-slate-700 hover:bg-[#FB4400] hover:text-white hover:shadow-sm hover:shadow-orange-500/20'
-                }`}
-              >
-                <Sparkles size={14} className="shrink-0 text-current" />
-                <span>Resources</span>
-                <ChevronDown size={12} className="shrink-0 text-current opacity-80" />
-              </button>
-
-              <AnimatePresence>
-                {resourcesDropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 6, scale: 0.98 }}
-                    transition={{ duration: 0.16 }}
-                    className="absolute left-0 top-full mt-2 w-[540px] bg-white border border-slate-200/90 rounded-2xl shadow-2xl p-4 grid grid-cols-2 gap-2 z-50"
-                  >
-                    <div className="absolute -top-1.5 left-8 w-3 h-3 bg-white border-t border-l border-slate-200 rotate-45" />
-                    {resourceItems.map(item => (
-                      <button
-                        key={item.id}
-                        onClick={() => handleResourceClick(item.id)}
-                        className="cursor-pointer flex items-start gap-2.5 p-2 rounded-xl hover:bg-orange-50 text-left group transition-colors"
-                      >
-                        <div className="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-white border border-slate-200 group-hover:border-orange-200 flex items-center justify-center shrink-0">
-                          {item.icon}
-                        </div>
-                        <div className="min-w-0">
-                          <div className="text-xs font-bold text-slate-800 group-hover:text-[#FB4400] truncate flex items-center gap-1.5">
-                            <span>{item.title}</span>
-                            {item.badge && (
-                              <span className="text-[9px] font-extrabold px-1.5 py-0.2 rounded-full bg-orange-100 text-[#FB4400]">
-                                {item.badge}
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-[10px] text-slate-500 truncate">{item.desc}</div>
-                        </div>
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
             {/* Our Product ▾ (Skyrovix Internship) */}
             <div
               ref={productsRef}
@@ -441,6 +264,22 @@ export const Navbar: React.FC<NavbarProps> = ({
                 )}
               </AnimatePresence>
             </div>
+
+            {/* About Skyrovix */}
+            <button
+              onClick={() => {
+                setCurrentView('about');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className={`cursor-pointer flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 whitespace-nowrap ${
+                isAboutActive
+                  ? 'bg-[#FB4400] text-white shadow-sm shadow-orange-500/25'
+                  : 'text-slate-700 hover:bg-[#FB4400] hover:text-white hover:shadow-sm hover:shadow-orange-500/20'
+              }`}
+            >
+              <Sparkles size={14} className="shrink-0 text-current" />
+              <span>About</span>
+            </button>
           </nav>
         </div>
 
@@ -472,7 +311,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Notification Bell with Badge Dot */}
           <button
-            onClick={() => onOpenResource('whats-new')}
+            onClick={() => showGlobalToast && showGlobalToast('🔔 All 2026 courses and features are up to date.')}
             className="cursor-pointer relative p-2 rounded-full hover:bg-slate-100 text-slate-600 transition-colors shrink-0"
             title="Notifications & Updates"
           >
@@ -578,45 +417,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             </button>
 
-            {/* Mobile Resources Accordion */}
-            <div className="border border-slate-100 rounded-xl overflow-hidden">
-              <button
-                onClick={() => setMobileResourcesOpen(!mobileResourcesOpen)}
-                className="w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 text-slate-800 font-bold text-xs"
-              >
-                <div className="flex items-center gap-2">
-                  <Sparkles size={15} className="text-[#FB4400]" />
-                  <span>Resources & Tools ({resourceItems.length})</span>
-                </div>
-                <ChevronDown size={14} className={`transform transition-transform ${mobileResourcesOpen ? 'rotate-180' : ''}`} />
-              </button>
-
-              {mobileResourcesOpen && (
-                <div className="p-2 space-y-1 bg-white border-t border-slate-100">
-                  {resourceItems.map(item => (
-                    <button
-                      key={item.id}
-                      onClick={() => {
-                        handleResourceClick(item.id);
-                        setMobileMenuOpen(false);
-                      }}
-                      className="cursor-pointer w-full flex items-center justify-between p-2 rounded-lg hover:bg-orange-50 text-left text-xs font-semibold text-slate-700 hover:text-[#FB4400]"
-                    >
-                      <div className="flex items-center gap-2">
-                        {item.icon}
-                        <span>{item.title}</span>
-                      </div>
-                      {item.badge && (
-                        <span className="text-[9px] font-extrabold px-1.5 py-0.2 rounded-full bg-orange-100 text-[#FB4400]">
-                          {item.badge}
-                        </span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
             {/* Mobile Our Product: Skyrovix Internship */}
             <a
               href="https://skyrovix.in"
@@ -642,6 +442,23 @@ export const Navbar: React.FC<NavbarProps> = ({
                 HIRING
               </span>
             </a>
+
+            {/* Mobile About Us */}
+            <button
+              onClick={() => {
+                setCurrentView('about');
+                setMobileMenuOpen(false);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className={`cursor-pointer w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left font-semibold ${
+                isAboutActive ? 'bg-orange-50 text-[#FB4400] font-bold' : 'text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <Sparkles size={16} className={isAboutActive ? 'text-[#FB4400]' : 'text-slate-500'} />
+                <span>About Skyrovix</span>
+              </div>
+            </button>
 
             {/* Dashboards - ONLY WHEN AUTHENTICATED */}
             {isAuthenticated && (

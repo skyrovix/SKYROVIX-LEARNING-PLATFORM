@@ -38,3 +38,4 @@ Thumbs.db
 # Agent & Brain cache
 .gemini/
 .system_generated/
+

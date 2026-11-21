@@ -16,7 +16,6 @@ import { CodePlayground } from './components/playground/CodePlayground';
 import { PracticePage } from './components/practice/PracticePage';
 import { AuthModal } from './components/auth/AuthModal';
 import { InternshipModal } from './components/internship/InternshipModal';
-import { ResourcesModal, ResourceTab } from './components/resources/ResourcesModal';
 import { EnrollModal } from './components/catalog/EnrollModal';
 import {
   ResumeBuilderPage,
@@ -32,6 +31,7 @@ import {
   TermsPage,
   RefundPolicyPage
 } from './components/legal';
+import { AboutPage } from './components/about/AboutPage';
 import { brandImages } from './assets/brandImages';
 import {
   Layers,
@@ -67,8 +67,6 @@ const MainContent: React.FC = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('login');
   const [isInternshipModalOpen, setIsInternshipModalOpen] = useState(false);
-  const [isResourcesModalOpen, setIsResourcesModalOpen] = useState(false);
-  const [activeResourceTab, setActiveResourceTab] = useState<ResourceTab>('free-resources');
   const [catalogFormatFilter, setCatalogFormatFilter] = useState<'all' | 'video' | 'text'>('all');
 
   // Strict route protection: unauthenticated users cannot access student or admin dashboards
@@ -77,11 +75,6 @@ const MainContent: React.FC = () => {
       setCurrentView('home');
     }
   }, [isAuthenticated, currentView, setCurrentView]);
-
-  const handleOpenResource = (tab: ResourceTab) => {
-    setActiveResourceTab(tab);
-    setIsResourcesModalOpen(true);
-  };
 
   const handleOpenTutorials = () => {
     setCatalogFormatFilter('text');
@@ -110,7 +103,6 @@ const MainContent: React.FC = () => {
           onOpenPlayground={() => setCurrentView('practice')}
           onOpenTutorials={handleOpenTutorials}
           onOpenCourses={handleOpenCourses}
-          onOpenResource={handleOpenResource}
           onOpenInternship={() => setIsInternshipModalOpen(true)}
           onOpenLogin={handleOpenLogin}
           onOpenSignUp={handleOpenSignUp}
@@ -154,6 +146,9 @@ const MainContent: React.FC = () => {
         {currentView === 'privacy-policy' && <PrivacyPolicyPage />}
         {currentView === 'terms' && <TermsPage />}
         {currentView === 'refund-policy' && <RefundPolicyPage />}
+
+        {/* Dedicated About Us Page */}
+        {currentView === 'about' && <AboutPage />}
       </main>
 
       {/* Global Command Palette (Ctrl+K) */}
@@ -182,13 +177,6 @@ const MainContent: React.FC = () => {
       <InternshipModal
         isOpen={isInternshipModalOpen}
         onClose={() => setIsInternshipModalOpen(false)}
-      />
-
-      {/* 12-Item Resources Hub Modal */}
-      <ResourcesModal
-        isOpen={isResourcesModalOpen}
-        onClose={() => setIsResourcesModalOpen(false)}
-        initialTab={activeResourceTab}
       />
 
       {/* Course Enrollment & Application Modal */}
@@ -353,6 +341,18 @@ const MainContent: React.FC = () => {
                 <ul className="space-y-2 text-xs text-slate-600">
                   <li>
                     <button
+                      onClick={() => {
+                        setCurrentView('about');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="cursor-pointer font-semibold text-slate-900 hover:text-[#FB4400] transition-colors flex items-center gap-1.5"
+                    >
+                      <Sparkles size={12} className="text-[#FB4400]" />
+                      <span>About Us (Skyrovix Story)</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
                       onClick={() => setIsInternshipModalOpen(true)}
                       className="flex items-center gap-1.5 font-semibold text-[#FB4400] hover:underline"
                     >
@@ -362,7 +362,7 @@ const MainContent: React.FC = () => {
                   </li>
                   <li>
                     <button
-                      onClick={() => handleOpenResource('resume-builder')}
+                      onClick={() => setCurrentView('resume-builder')}
                       className="hover:text-[#FB4400] transition-colors"
                     >
                       Resume Builder
@@ -370,10 +370,10 @@ const MainContent: React.FC = () => {
                   </li>
                   <li>
                     <button
-                      onClick={() => handleOpenResource('free-resources')}
+                      onClick={() => setCurrentView('learn-hub')}
                       className="hover:text-[#FB4400] transition-colors"
                     >
-                      Free Cheatsheets & Guides
+                      Learn Hub & Roadmaps
                     </button>
                   </li>
                   <li>
@@ -446,6 +446,15 @@ const MainContent: React.FC = () => {
                 <p>© 2026 SKYROVIX LEARNING PLATFORM. All rights reserved.</p>
               </div>
               <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+                <button
+                  onClick={() => {
+                    setCurrentView('about');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="cursor-pointer hover:text-[#FB4400] transition-colors font-semibold text-slate-800"
+                >
+                  About Us
+                </button>
                 <button
                   onClick={() => {
                     setCurrentView('privacy-policy');

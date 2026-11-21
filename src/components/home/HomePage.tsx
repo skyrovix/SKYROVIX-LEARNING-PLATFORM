@@ -53,7 +53,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAuth }) => {
     openEnrollModal,
     setCurrentView,
     navigateToVideoCourse,
-    navigateToTextCourse
+    navigateToTextCourse,
+    navigateToCourseDetails
   } = usePlatform();
 
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
@@ -784,6 +785,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAuth }) => {
                 isFree={false}
                 isEnrolled={isEnrolled}
                 actionText={isEnrolled ? 'Continue' : `Enroll ${coursePrice}`}
+                onClickCard={() => navigateToCourseDetails(course.id)}
                 onAction={() => {
                   if (isEnrolled) {
                     navigateToVideoCourse(course.id);

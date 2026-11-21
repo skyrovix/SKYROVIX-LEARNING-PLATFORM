@@ -8,6 +8,36 @@ import { supabaseAdmin, testConnection } from './supabase.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Load environment variables from .env
+function loadEnv() {
+  const envPath = path.resolve(__dirname, '../.env');
+  if (fs.existsSync(envPath)) {
+    const lines = fs.readFileSync(envPath, 'utf-8').split('\n');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const idx = trimmed.indexOf('=');
+      if (idx !== -1) {
+        const key = trimmed.slice(0, idx).trim();
+        const val = trimmed.slice(idx + 1).trim();
+        if (!process.env[key]) {
+          process.env[key] = val;
+        }
+      }
+    }
+  }
+}
+loadEnv();
+
+const CASHFREE_APP_ID = process.env.CASHFREE_APP_ID || '14394481c7c769b9f0a9c04eec38449341';
+const CASHFREE_SECRET_KEY = process.env.CASHFREE_SECRET_KEY || 'cfsk_ma_prod_d3b45e16d8c0d277fc90ae6e333e90aa_eb101bb7';
+const CASHFREE_ENV = process.env.CASHFREE_ENV || 'production';
+const CASHFREE_BASE_URL = CASHFREE_ENV === 'production' 
+  ? 'https://api.cashfree.com/pg' 
+  : 'https://sandbox.cashfree.com/pg';
+
+console.log(`[Cashfree Gateway] Environment: ${CASHFREE_ENV} | AppId: ${CASHFREE_APP_ID.slice(0, 8)}...`);
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -280,6 +310,227 @@ app.post('/api/certificates/issue', (req, res) => {
   db.certificates.push(newCert);
   saveDB(db);
   res.status(201).json({ success: true, certificate: newCert });
+});
+
+// 5. Cashfree Payment Gateway Endpoints
+app.get('/api/cashfree/config', (req, res) => {
+  res.json({
+    appId: CASHFREE_APP_ID,
+    environment: CASHFREE_ENV,
+    isProduction: CASHFREE_ENV === 'production'
+  });
+});
+
+app.post('/api/cashfree/create-order', async (req, res) => {
+  try {
+    const {
+      amount,
+      courseId,
+      courseTitle,
+      customerName,
+      customerEmail,
+      customerPhone,
+      userId
+    } = req.body;
+
+    if (!amount || amount <= 0) {
+      return res.status(400).json({ error: 'Valid payment amount is required' });
+    }
+
+    const orderId = `skx_ord_${Date.now()}_${Math.floor(1000 + Math.random() * 9000)}`;
+
+    // Sanitize phone (Cashfree requires 10-digit number)
+    let sanitizedPhone = (customerPhone || '9876543210').replace(/\D/g, '');
+    if (sanitizedPhone.length > 10) {
+      sanitizedPhone = sanitizedPhone.slice(-10);
+    }
+    if (sanitizedPhone.length < 10) {
+      sanitizedPhone = '9876543210';
+    }
+
+    const payload = {
+      order_id: orderId,
+      order_amount: Number(amount),
+      order_currency: 'INR',
+      customer_details: {
+        customer_id: (userId || 'cust_' + Date.now()).replace(/[^a-zA-Z0-9_-]/g, '_'),
+        customer_name: (customerName || 'Skyrovix Student').slice(0, 50),
+        customer_email: customerEmail || 'student@skyrovix.dev',
+        customer_phone: sanitizedPhone
+      },
+      order_meta: {
+        return_url: `https://skyrovix.in/?order_id=${orderId}&course_id=${courseId || ''}`
+      },
+      order_note: `Course Enrollment: ${(courseTitle || 'Masterclass').slice(0, 50)}`
+    };
+
+    console.log(`[Cashfree API] Creating order ${orderId} for ₹${amount} (${customerName})`);
+
+    const cfRes = await fetch(`${CASHFREE_BASE_URL}/orders`, {
+      method: 'POST',
+      headers: {
+        'x-client-id': CASHFREE_APP_ID,
+        'x-client-secret': CASHFREE_SECRET_KEY,
+        'x-api-version': '2023-08-01',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const cfData = await cfRes.json();
+
+    if (!cfRes.ok) {
+      console.error('[Cashfree API Order Error]:', cfData);
+      return res.status(cfRes.status).json({
+        error: cfData.message || 'Failed to create Cashfree order',
+        details: cfData
+      });
+    }
+
+    // Save order record to database.json
+    const db = loadDB();
+    if (!db.orders) db.orders = [];
+    db.orders.push({
+      orderId,
+      cfOrderId: cfData.cf_order_id,
+      paymentSessionId: cfData.payment_session_id,
+      amount: Number(amount),
+      courseId,
+      courseTitle,
+      userId,
+      customerName,
+      customerEmail,
+      customerPhone: sanitizedPhone,
+      status: cfData.order_status,
+      createdAt: new Date().toISOString()
+    });
+    saveDB(db);
+
+    res.json({
+      success: true,
+      orderId,
+      cfOrderId: cfData.cf_order_id,
+      paymentSessionId: cfData.payment_session_id,
+      orderAmount: Number(amount),
+      orderStatus: cfData.order_status,
+      environment: CASHFREE_ENV
+    });
+  } catch (err) {
+    console.error('[Cashfree API Server Exception]:', err);
+    res.status(500).json({ error: 'Internal Cashfree server error', message: err.message });
+  }
+});
+
+app.get('/api/cashfree/verify/:orderId', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    if (!orderId) {
+      return res.status(400).json({ error: 'Order ID is required' });
+    }
+
+    console.log(`[Cashfree API] Verifying order ${orderId}...`);
+
+    const cfRes = await fetch(`${CASHFREE_BASE_URL}/orders/${orderId}`, {
+      method: 'GET',
+      headers: {
+        'x-client-id': CASHFREE_APP_ID,
+        'x-client-secret': CASHFREE_SECRET_KEY,
+        'x-api-version': '2023-08-01',
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const cfData = await cfRes.json();
+
+    if (!cfRes.ok) {
+      return res.status(cfRes.status).json({
+        error: cfData.message || 'Failed to verify Cashfree order',
+        details: cfData
+      });
+    }
+
+    const isPaid = cfData.order_status === 'PAID';
+
+    const db = loadDB();
+    if (!db.orders) db.orders = [];
+    const orderRecord = db.orders.find(o => o.orderId === orderId);
+
+    if (orderRecord) {
+      orderRecord.status = cfData.order_status;
+      orderRecord.paidAt = isPaid ? new Date().toISOString() : null;
+    }
+
+    if (isPaid && orderRecord?.userId && orderRecord?.courseId) {
+      const alreadyEnrolled = db.enrollments.some(
+        e => e.userId === orderRecord.userId && e.courseId === orderRecord.courseId
+      );
+      if (!alreadyEnrolled) {
+        db.enrollments.push({
+          userId: orderRecord.userId,
+          courseId: orderRecord.courseId,
+          orderId,
+          enrolledAt: new Date().toISOString(),
+          paymentGateway: 'Cashfree',
+          amountPaid: orderRecord.amount
+        });
+      }
+    }
+    saveDB(db);
+
+    res.json({
+      success: true,
+      orderId,
+      orderStatus: cfData.order_status,
+      isPaid,
+      orderAmount: cfData.order_amount,
+      courseId: orderRecord?.courseId,
+      details: cfData
+    });
+  } catch (err) {
+    console.error('[Cashfree Verification Error]:', err);
+    res.status(500).json({ error: 'Failed to verify payment with Cashfree', message: err.message });
+  }
+});
+
+// Cashfree Webhook Endpoint
+app.post('/api/cashfree/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+  try {
+    const event = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    console.log('[Cashfree Webhook Event]:', event?.type);
+
+    if (event?.type === 'PAYMENT_SUCCESS_WEBHOOK') {
+      const orderId = event.data?.order?.order_id;
+      if (orderId) {
+        const db = loadDB();
+        if (!db.orders) db.orders = [];
+        const orderRecord = db.orders.find(o => o.orderId === orderId);
+        if (orderRecord) {
+          orderRecord.status = 'PAID';
+          orderRecord.paidAt = new Date().toISOString();
+          if (orderRecord.userId && orderRecord.courseId) {
+            const alreadyEnrolled = db.enrollments.some(
+              e => e.userId === orderRecord.userId && e.courseId === orderRecord.courseId
+            );
+            if (!alreadyEnrolled) {
+              db.enrollments.push({
+                userId: orderRecord.userId,
+                courseId: orderRecord.courseId,
+                orderId,
+                enrolledAt: new Date().toISOString(),
+                paymentGateway: 'Cashfree Webhook',
+                amountPaid: orderRecord.amount
+              });
+            }
+          }
+          saveDB(db);
+        }
+      }
+    }
+    res.json({ received: true });
+  } catch (err) {
+    console.error('[Cashfree Webhook Exception]:', err);
+    res.status(400).json({ error: 'Webhook processing failed' });
+  }
 });
 
 // 4. Analytics & KPIs
