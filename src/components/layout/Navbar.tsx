@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { usePlatform } from '../../context/PlatformContext';
 import { brandImages } from '../../assets/brandImages';
-import { signOutUser } from '../../lib/supabase';
 import {
   Home,
   Compass,

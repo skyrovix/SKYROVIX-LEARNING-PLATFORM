@@ -60,47 +60,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAuth }) => {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  // Dynamic Running Letters Animation State for Hero Headline
-  const rotatingWords = [
-    'Future.',
-    'Career.',
-    'Portfolio.',
-    'Tomorrow.',
-    'Success.',
-    'Potential.'
-  ];
-  const [currentWordIdx, setCurrentWordIdx] = useState(0);
-  const [displayedText, setDisplayedText] = useState('Future.');
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    const targetWord = rotatingWords[currentWordIdx];
-    let timer: NodeJS.Timeout;
-
-    if (!isDeleting && displayedText.length < targetWord.length) {
-      // Typing characters letter-by-letter (running letters in)
-      timer = setTimeout(() => {
-        setDisplayedText(targetWord.slice(0, displayedText.length + 1));
-      }, 95);
-    } else if (!isDeleting && displayedText.length === targetWord.length) {
-      // Pause at full word before backspacing
-      timer = setTimeout(() => {
-        setIsDeleting(true);
-      }, 1900);
-    } else if (isDeleting && displayedText.length > 0) {
-      // Backspacing characters
-      timer = setTimeout(() => {
-        setDisplayedText(targetWord.slice(0, displayedText.length - 1));
-      }, 45);
-    } else if (isDeleting && displayedText.length === 0) {
-      // Advance to next word
-      setIsDeleting(false);
-      setCurrentWordIdx((prev) => (prev + 1) % rotatingWords.length);
-    }
-
-    return () => clearTimeout(timer);
-  }, [displayedText, isDeleting, currentWordIdx]);
-
   const scrollCarousel = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
       const scrollAmount = direction === 'left' ? -280 : 280;
@@ -272,26 +231,40 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAuth }) => {
               </div>
 
               {/* Headline with Running Letters Animation Style */}
-              <h1 className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[50px] font-black tracking-tight text-[#111827] leading-[1.14]">
-                <span className="block">Upgrade Your Skills.</span>
-                <span className="text-[#FB4400] inline-flex items-baseline flex-wrap justify-center lg:justify-start">
-                  <span className="mr-2">Shape Your</span>
-                  <span className="relative inline-flex items-center min-w-[130px] sm:min-w-[170px] text-left">
-                    <span className="bg-gradient-to-r from-[#FB4400] via-orange-500 to-[#FB4400] bg-clip-text text-transparent animate-shimmer-text">
-                      {displayedText.split('').map((char, index) => (
+              <h1 className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[50px] font-black tracking-tight leading-[1.14]">
+                {/* Line 1: Upgrade Your Skills. with Kinetic Running Letters */}
+                <span className="block text-[#111827]">
+                  {'Upgrade Your Skills.'.split('').map((char, index) => (
+                    char === ' ' ? (
+                      <span key={`line1-space-${index}`}>&nbsp;</span>
+                    ) : (
+                      <span
+                        key={`line1-${index}-${char}`}
+                        style={{ animationDelay: `${index * 0.07}s` }}
+                        className="inline-block animate-running-letter-dark transition-transform hover:-translate-y-2 hover:scale-110 duration-200 cursor-default select-none"
+                      >
+                        {char}
+                      </span>
+                    )
+                  ))}
+                </span>
+
+                {/* Line 2: Shape Your Future. with Vibrant Orange Running Letters & Shimmer */}
+                <span className="block text-[#FB4400] mt-1 sm:mt-1.5">
+                  <span className="bg-gradient-to-r from-[#FB4400] via-orange-400 to-[#FB4400] bg-clip-text text-transparent animate-shimmer-text inline-block">
+                    {'Shape Your Future.'.split('').map((char, index) => (
+                      char === ' ' ? (
+                        <span key={`line2-space-${index}`}>&nbsp;</span>
+                      ) : (
                         <span
-                          key={`${currentWordIdx}-${index}-${char}`}
-                          className="inline-block transition-transform hover:-translate-y-1 duration-200 cursor-default"
+                          key={`line2-${index}-${char}`}
+                          style={{ animationDelay: `${0.35 + index * 0.07}s` }}
+                          className="inline-block animate-running-letter transition-transform hover:-translate-y-2 hover:scale-110 duration-200 cursor-default select-none"
                         >
                           {char}
                         </span>
-                      ))}
-                    </span>
-                    {/* Running Letters Pulsing Blinking Caret */}
-                    <span
-                      aria-hidden="true"
-                      className="inline-block w-[3.5px] sm:w-[4.5px] h-[0.88em] bg-[#FB4400] ml-1 rounded-full animate-pulse shadow-xs shadow-orange-500/50"
-                    />
+                      )
+                    ))}
                   </span>
                 </span>
               </h1>

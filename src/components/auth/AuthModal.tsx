@@ -328,7 +328,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
           <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400 font-mono">
             <span className="flex items-center gap-1.5 text-emerald-700 font-semibold">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Supabase Cloud Auth Active
+              SQL Database Auth Active
             </span>
             <span className="text-[10px] text-slate-400">Secure 256-bit SSL</span>
           </div>

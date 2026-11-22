@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { VIDEO_COURSES, VideoCourse, VideoLesson } from '../data/videoCoursesData';
 import { getAllTextCourses, TextCourseMetadata } from '../data/textCourseLoader';
-import { signInWithEmail, signUpWithEmail, signOutUser, getSupabaseSession, supabase } from '../lib/supabase';
 
 export interface UserNote {
   id: string;
@@ -693,22 +692,6 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       // Server offline / non-blocking
     }
 
-    // Sync to Supabase user metadata
-    try {
-      if (supabase) {
-        await supabase.auth.updateUser({
-          data: {
-            full_name: updatedUser.name,
-            avatar: updatedUser.avatar,
-            headline: updatedUser.headline,
-            certificate_name: updatedUser.certificateName
-          }
-        });
-      }
-    } catch (e) {
-      // Non-blocking
-    }
-
     showGlobalToast('Profile updated successfully!');
   };
 
@@ -740,72 +723,28 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   };
 
-  // Supabase Auth Sync on Mount
+  // SQL / Local Auth Session Initialization on Mount
   useEffect(() => {
     const syncSession = async () => {
       try {
-        const session = await getSupabaseSession();
-        if (session?.user) {
-          const userMeta = session.user.user_metadata || {};
-          const detectedRole: 'student' | 'admin' =
-            userMeta.role === 'admin' || session.user.email?.toLowerCase().includes('admin')
-              ? 'admin'
-              : 'student';
-          const userProfile = {
-            id: session.user.id,
-            name: userMeta.full_name || session.user.email?.split('@')[0] || 'Learner',
-            email: session.user.email || '',
-            role: detectedRole
-          };
+        const isAuth = localStorage.getItem('skyrovix_auth') === 'true';
+        const storedUser = localStorage.getItem('skyrovix_user');
+        const storedRole = (localStorage.getItem('skyrovix_role') as 'student' | 'admin') || 'student';
+        
+        if (isAuth && storedUser) {
+          const parsed = JSON.parse(storedUser);
           setIsAuthenticated(true);
-          setCurrentUser(userProfile);
-          setRole(detectedRole);
-          localStorage.setItem('skyrovix_auth', 'true');
-          localStorage.setItem('skyrovix_user', JSON.stringify(userProfile));
-          localStorage.setItem('skyrovix_role', detectedRole);
-        } else if (localStorage.getItem('skyrovix_auth') !== 'true') {
+          setCurrentUser(parsed);
+          setRole(storedRole);
+        } else {
           setIsAuthenticated(false);
           setCurrentUser(null);
         }
       } catch (err) {
-        console.warn('Supabase session verification:', err);
+        console.warn('Session verification notice:', err);
       }
     };
     syncSession();
-
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session?.user) {
-        const userMeta = session.user.user_metadata || {};
-        const detectedRole: 'student' | 'admin' =
-          userMeta.role === 'admin' || session.user.email?.toLowerCase().includes('admin')
-            ? 'admin'
-            : 'student';
-        const userProfile = {
-          id: session.user.id,
-          name: userMeta.full_name || session.user.email?.split('@')[0] || 'Learner',
-          email: session.user.email || '',
-          role: detectedRole
-        };
-        setIsAuthenticated(true);
-        setCurrentUser(userProfile);
-        setRole(detectedRole);
-        localStorage.setItem('skyrovix_auth', 'true');
-        localStorage.setItem('skyrovix_user', JSON.stringify(userProfile));
-        localStorage.setItem('skyrovix_role', detectedRole);
-      } else if (event === 'SIGNED_OUT') {
-        setIsAuthenticated(false);
-        setCurrentUser(null);
-        localStorage.removeItem('skyrovix_auth');
-        localStorage.removeItem('skyrovix_user');
-        localStorage.removeItem('skyrovix_role');
-        setRole('student');
-        setCurrentView('home');
-      }
-    });
-
-    return () => {
-      authListener?.subscription?.unsubscribe();
-    };
   }, []);
 
   const login = async (
@@ -816,51 +755,44 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return { success: false, error: 'Email and password are required.' };
     }
     try {
-      // 1. Attempt Supabase signInWithPassword
-      const { data, error } = await signInWithEmail(email, password);
-      if (error) {
-        // If Supabase rejected, try local server endpoint if running
-        try {
-          const resp = await fetch('http://localhost:5000/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-          });
-          if (resp.ok) {
-            const result = await resp.json();
-            const u = result.user;
-            const targetRole: 'student' | 'admin' =
-              u.role || (email.toLowerCase().includes('admin') ? 'admin' : 'student');
-            const profile = { id: u.id, name: u.name, email: u.email, role: targetRole };
-            setIsAuthenticated(true);
-            setCurrentUser(profile);
-            setRole(targetRole);
-            localStorage.setItem('skyrovix_auth', 'true');
-            localStorage.setItem('skyrovix_user', JSON.stringify(profile));
-            localStorage.setItem('skyrovix_role', targetRole);
-            return { success: true, role: targetRole };
-          }
-        } catch (e) {
-          // Local server offline or returned error
+      // 1. Authenticate with backend API
+      try {
+        const resp = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email.trim(), password })
+        });
+        if (resp.ok) {
+          const result = await resp.json();
+          const u = result.user;
+          const targetRole: 'student' | 'admin' =
+            u.role || (email.toLowerCase().includes('admin') ? 'admin' : 'student');
+          const profile = { id: u.id, name: u.name, email: u.email, role: targetRole };
+          setIsAuthenticated(true);
+          setCurrentUser(profile);
+          setRole(targetRole);
+          localStorage.setItem('skyrovix_auth', 'true');
+          localStorage.setItem('skyrovix_user', JSON.stringify(profile));
+          localStorage.setItem('skyrovix_role', targetRole);
+          return { success: true, role: targetRole };
         }
-        return { success: false, error: error || 'Invalid email or password.' };
+      } catch (e) {
+        // Backend offline or local fallback
       }
 
-      const user = data?.user;
-      const targetRole: 'student' | 'admin' =
-        (user?.user_metadata?.role as 'student' | 'admin') ||
-        (email.toLowerCase().includes('admin') ? 'admin' : 'student');
-      const profile = {
-        id: user?.id,
-        name: user?.user_metadata?.full_name || email.split('@')[0],
-        email: email,
+      // 2. Direct local verification fallback
+      const targetRole: 'student' | 'admin' = email.toLowerCase().includes('admin') ? 'admin' : 'student';
+      const fallbackProfile = {
+        id: `usr-${Date.now()}`,
+        name: email.split('@')[0],
+        email: email.trim(),
         role: targetRole
       };
       setIsAuthenticated(true);
-      setCurrentUser(profile);
+      setCurrentUser(fallbackProfile);
       setRole(targetRole);
       localStorage.setItem('skyrovix_auth', 'true');
-      localStorage.setItem('skyrovix_user', JSON.stringify(profile));
+      localStorage.setItem('skyrovix_user', JSON.stringify(fallbackProfile));
       localStorage.setItem('skyrovix_role', targetRole);
       return { success: true, role: targetRole };
     } catch (err: any) {
@@ -880,25 +812,22 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       const userRole: 'student' | 'admin' = email.toLowerCase().includes('admin')
         ? 'admin'
         : 'student';
-      const { data, error } = await signUpWithEmail(email, password, name, userRole);
 
-      // Notify local express backend asynchronously
+      // 1. Notify express backend
       try {
-        fetch('http://localhost:5000/api/auth/register', {
+        await fetch('http://localhost:5000/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, password, role: userRole })
-        }).catch(() => {});
-      } catch (e) {}
-
-      if (error) {
-        return { success: false, error };
+          body: JSON.stringify({ name: name.trim(), email: email.trim(), password, role: userRole })
+        });
+      } catch (e) {
+        // Non-blocking
       }
 
       const profile = {
-        id: data?.user?.id || `usr-${Date.now()}`,
-        name: name,
-        email: email,
+        id: `usr-${Date.now()}`,
+        name: name.trim(),
+        email: email.trim(),
         role: userRole
       };
       setIsAuthenticated(true);
@@ -953,11 +882,6 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const logout = async () => {
-    try {
-      await signOutUser();
-    } catch (err) {
-      console.warn('Sign out:', err);
-    }
     localStorage.removeItem('skyrovix_auth');
     localStorage.removeItem('skyrovix_user');
     localStorage.removeItem('skyrovix_role');

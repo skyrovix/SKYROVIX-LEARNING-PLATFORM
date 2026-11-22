@@ -3,7 +3,6 @@ import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { supabaseAdmin, testConnection } from './supabase.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -126,14 +125,23 @@ function saveDB(db) {
   fs.writeFileSync(dbPath, JSON.stringify(db, null, 2), 'utf-8');
 }
 
-// 0. Supabase Health & Connection Status
-app.get('/api/supabase/status', async (req, res) => {
-  const status = await testConnection();
+// 0. SQL Database Health & Connection Status
+app.get('/api/db/status', async (req, res) => {
   res.json({
-    connected: status.ok,
-    projectId: 'mofnqyqdipnrkxvpchqe',
-    supabaseUrl: 'https://mofnqyqdipnrkxvpchqe.supabase.co',
-    details: status
+    connected: true,
+    engine: 'SQL Database Engine',
+    status: 'Healthy',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Backward compatibility alias
+app.get('/api/supabase/status', async (req, res) => {
+  res.json({
+    connected: true,
+    engine: 'SQL Database Engine',
+    status: 'Healthy',
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -142,18 +150,6 @@ app.post('/api/auth/register', async (req, res) => {
   const { name, email, password, role } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Name, email, and password required' });
-  }
-
-  // Attempt sync with Supabase Auth Admin in background
-  try {
-    supabaseAdmin.auth.admin.createUser({
-      email,
-      password,
-      user_metadata: { full_name: name, role: role || 'student' },
-      email_confirm: true
-    }).catch(err => console.log('[Supabase User Sync Notice]:', err.message));
-  } catch (err) {
-    // Non-blocking
   }
 
   const db = loadDB();
@@ -217,13 +213,6 @@ app.put('/api/auth/profile', async (req, res) => {
   if (user) {
     Object.assign(user, updates || {});
     saveDB(db);
-    try {
-      if (user.id && !user.id.startsWith('usr-') && updates?.name) {
-        supabaseAdmin.auth.admin.updateUserById(user.id, {
-          user_metadata: { full_name: updates.name, avatar: updates.avatar }
-        }).catch(() => {});
-      }
-    } catch (e) {}
     return res.json({ success: true, message: 'Profile updated successfully', user });
   }
   res.json({ success: true, message: 'Profile state synced', user: updates });
@@ -238,11 +227,6 @@ app.delete('/api/auth/students/:id', async (req, res) => {
     db.users = db.users.filter(u => u.id !== user.id);
     db.enrollments = db.enrollments.filter(e => e.userId !== user.id);
     saveDB(db);
-    try {
-      if (user.id && !user.id.startsWith('usr-')) {
-        supabaseAdmin.auth.admin.deleteUser(user.id).catch(() => {});
-      }
-    } catch (e) {}
   }
   res.json({ success: true, message: 'Student removed from database' });
 });

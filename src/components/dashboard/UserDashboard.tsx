@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { usePlatform } from '../../context/PlatformContext';
 import { brandImages, defaultStudentAvatar, flagshipBanners, getCourseBanner } from '../../assets/brandImages';
 import { CodePlayground } from '../playground/CodePlayground';
-import { signOutUser } from '../../lib/supabase';
 import { COMPANY } from '../../lib/constants';
 import { EditProfilePage } from './EditProfilePage';
 import { ModernCourseCard } from '../common/ModernCourseCard';

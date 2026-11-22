@@ -96,6 +96,45 @@
   animation: shimmer-sweep 4s linear infinite;
 }
 
+/* Running Letters Kinetic Wave Animations */
+@keyframes running-letters-wave {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  20% {
+    transform: translateY(-6px) scale(1.05);
+    text-shadow: 0 4px 14px rgba(251, 68, 0, 0.45);
+  }
+  40% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-running-letter {
+  display: inline-block;
+  will-change: transform;
+  animation: running-letters-wave 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes running-letters-dark-wave {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  20% {
+    transform: translateY(-5px) scale(1.04);
+    text-shadow: 0 4px 10px rgba(17, 24, 39, 0.25);
+  }
+  40% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-running-letter-dark {
+  display: inline-block;
+  will-change: transform;
+  animation: running-letters-dark-wave 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 @keyframes letter-wave {
   0%, 100% {
     transform: translateY(0);

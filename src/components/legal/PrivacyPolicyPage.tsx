@@ -178,7 +178,7 @@ export const PrivacyPolicyPage: React.FC = () => {
             </p>
             <ul className="list-disc pl-5 space-y-1.5 text-xs text-slate-600">
               <li><strong>Cashfree Payments:</strong> To authorize enrollment payments and return eligible refunds.</li>
-              <li><strong>Supabase Cloud:</strong> Encrypted PostgreSQL database storage with Row-Level Security (RLS).</li>
+              <li><strong>Secure Database Engine:</strong> Encrypted SQL database storage and REST API authentication.</li>
               <li><strong>Government & Regulatory Authorities:</strong> Only when strictly mandated by law or court order under Indian jurisdiction.</li>
             </ul>
           </section>

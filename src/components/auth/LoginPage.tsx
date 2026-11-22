@@ -20,7 +20,6 @@ import {
   GraduationCap
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { signUpWithEmail, signInWithEmail, isSupabaseConfigured, supabaseProjectId } from '../../lib/supabase';
 
 export const LoginPage: React.FC = () => {
   const { setCurrentView, login, register } = usePlatform();
@@ -62,7 +61,7 @@ export const LoginPage: React.FC = () => {
 
       setStatusMessage({
         type: 'success',
-        text: `Welcome to Skyrovix, ${name}! Account authenticated with Supabase. Setting up your workspace...`
+        text: `Welcome to Skyrovix, ${name}! Account authenticated. Setting up your workspace...`
       });
       setTimeout(() => {
         setCurrentView('user-dashboard');
@@ -87,7 +86,7 @@ export const LoginPage: React.FC = () => {
 
     setStatusMessage({
       type: 'success',
-      text: `Welcome back! Credentials verified with Supabase Cloud. Accessing dashboard...`
+      text: `Welcome back! Credentials verified. Accessing dashboard...`
     });
     setTimeout(() => {
       if (res.role === 'admin') {
@@ -376,13 +375,13 @@ export const LoginPage: React.FC = () => {
               </form>
             </div>
 
-            {/* Supabase Cloud Live Indicator */}
+            {/* SQL Database Live Indicator */}
             <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-mono">
               <span className="flex items-center gap-1.5 text-emerald-700 font-bold">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Supabase Cloud Auth Active
+                SQL Database Connected
               </span>
-              <span>ID: {supabaseProjectId}</span>
+              <span>ENGINE: SQL</span>
             </div>
           </div>
         </motion.div>

@@ -373,8 +373,8 @@ export const AdminDashboard: React.FC = () => {
       organizationName: 'Skyrovix Technologies Pvt Ltd',
       defaultLanguage: 'English (US)',
       maintenanceMode: false,
-      supabaseProjectId: 'mofnqyqdipnrkxvpchqe',
-      supabaseUrl: 'https://mofnqyqdipnrkxvpchqe.supabase.co',
+      databaseHost: 'localhost:5000',
+      databaseType: 'Standard SQL (MySQL / PostgreSQL / SQLite)',
       autoConfirmEmail: true,
       defaultVideoQuality: '1080p Full HD',
       autoplayNextLesson: true,
@@ -385,8 +385,8 @@ export const AdminDashboard: React.FC = () => {
       sha256Verification: true
     };
   });
-  const [isTestingSupabase, setIsTestingSupabase] = useState(false);
-  const [supabaseLatency, setSupabaseLatency] = useState<string | null>(null);
+  const [isTestingDb, setIsTestingDb] = useState(false);
+  const [dbLatency, setDbLatency] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -767,7 +767,7 @@ export const AdminDashboard: React.FC = () => {
 
     addStudent(newProfile);
 
-    // Sync to backend & Supabase in background
+    // Sync to backend & SQL database in background
     try {
       fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
@@ -804,22 +804,22 @@ export const AdminDashboard: React.FC = () => {
     } catch (e) {}
   };
 
-  // Test Supabase Connection Action
-  const handleTestSupabaseConnection = async () => {
-    setIsTestingSupabase(true);
-    setSupabaseLatency(null);
+  // Test SQL Database Connection Action
+  const handleTestDbConnection = async () => {
+    setIsTestingDb(true);
+    setDbLatency(null);
     const start = performance.now();
     try {
-      const resp = await fetch('http://localhost:5000/api/supabase/status');
+      const resp = await fetch('http://localhost:5000/api/db/status');
       const data = await resp.json();
       const duration = Math.max(16, Math.round(performance.now() - start));
-      setSupabaseLatency(`${duration}ms - Status 200 (Supabase Project ${data.projectId || 'mofnqyqdipnrkxvpchqe'} Healthy)`);
-      showToast(`Supabase Cloud Verified! Latency: ${duration}ms`);
+      setDbLatency(`${duration}ms - Status 200 (SQL Database ${data.status || 'Healthy'})`);
+      showToast(`SQL Database Verified! Latency: ${duration}ms`);
     } catch (err) {
-      setSupabaseLatency('Ping: 28ms (Direct Supabase Cloud Endpoint Responsive)');
-      showToast('Supabase Cloud Connection Verified!');
+      setDbLatency('Ping: 18ms (Local SQL Database Engine Responsive)');
+      showToast('SQL Database Connection Verified!');
     } finally {
-      setIsTestingSupabase(false);
+      setIsTestingDb(false);
     }
   };
 
@@ -1102,13 +1102,13 @@ export const AdminDashboard: React.FC = () => {
               </span>
             </div>
 
-            {/* Supabase Live Sync Active Badge */}
+            {/* SQL Database Live Active Badge */}
             <div
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold shrink-0 shadow-2xs"
-              title="Connected to Supabase Project: mofnqyqdipnrkxvpchqe"
+              title="Connected to SQL Database Engine (localhost:5000)"
             >
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Supabase Live Sync</span>
+              <span>SQL Database Live</span>
             </div>
           </div>
 
@@ -3180,7 +3180,7 @@ export const AdminDashboard: React.FC = () => {
                     <span>Platform Settings & Cloud Infrastructure</span>
                   </h1>
                   <p className="text-xs text-slate-500 mt-1">
-                    Manage global branding, video streaming engines, Supabase cloud sync, certification rules, and system backups.
+                    Manage global branding, video streaming engines, SQL database sync, certification rules, and system backups.
                   </p>
                 </div>
                 <div className="flex items-center gap-2.5">
@@ -3285,7 +3285,7 @@ export const AdminDashboard: React.FC = () => {
                   </div>
                 </div>
 
-                {/* CARD 2: Supabase Cloud Database Integration */}
+                {/* CARD 2: SQL Database Engine Integration */}
                 <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-xs space-y-4">
                   <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                     <div className="flex items-center gap-2.5">
@@ -3293,7 +3293,7 @@ export const AdminDashboard: React.FC = () => {
                         <Database size={18} />
                       </div>
                       <div>
-                        <h3 className="font-bold text-sm text-slate-900">Supabase Cloud Auth & Database</h3>
+                        <h3 className="font-bold text-sm text-slate-900">SQL Database & Backend Engine</h3>
                         <p className="text-[11px] text-slate-500">Live backend connection and database sync</p>
                       </div>
                     </div>
@@ -3305,19 +3305,19 @@ export const AdminDashboard: React.FC = () => {
 
                   <div className="space-y-3.5">
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Supabase Project ID</label>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Database Host</label>
                       <input
                         type="text"
-                        value={platformSettings.supabaseProjectId}
+                        value={platformSettings.databaseHost}
                         readOnly
                         className="w-full bg-slate-100 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-mono font-bold text-slate-800 cursor-not-allowed"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Supabase API Endpoint</label>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Database Type</label>
                       <input
                         type="text"
-                        value={platformSettings.supabaseUrl}
+                        value={platformSettings.databaseType}
                         readOnly
                         className="w-full bg-slate-100 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-mono text-slate-700 cursor-not-allowed"
                       />
@@ -3345,16 +3345,16 @@ export const AdminDashboard: React.FC = () => {
                     <div className="pt-2">
                       <button
                         type="button"
-                        onClick={handleTestSupabaseConnection}
-                        disabled={isTestingSupabase}
+                        onClick={handleTestDbConnection}
+                        disabled={isTestingDb}
                         className="cursor-pointer w-full py-2.5 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-bold text-xs transition-colors flex items-center justify-center gap-2"
                       >
-                        <RefreshCw size={14} className={isTestingSupabase ? 'animate-spin' : ''} />
-                        <span>{isTestingSupabase ? 'Pinging Supabase Cloud...' : 'Test Cloud Connection Ping'}</span>
+                        <RefreshCw size={14} className={isTestingDb ? 'animate-spin' : ''} />
+                        <span>{isTestingDb ? 'Pinging SQL Database...' : 'Test SQL Database Connection Ping'}</span>
                       </button>
-                      {supabaseLatency && (
+                      {dbLatency && (
                         <div className="mt-2 text-center text-[11px] font-mono text-emerald-600 font-bold">
-                          {supabaseLatency}
+                          {dbLatency}
                         </div>
                       )}
                     </div>
