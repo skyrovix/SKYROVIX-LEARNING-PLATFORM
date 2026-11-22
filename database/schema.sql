@@ -124,3 +124,4 @@ VALUES
     ('usr-founder', 'Hariharan S.', 'hariharan@skyrovix.in', 'admin', 'https://api.dicebear.com/7.x/bottts/svg?seed=Hariharan', 'Founder & Lead Developer, Skyrovix', 2500, 42, 'Active'),
     ('usr-cofounder', 'Maheshwaran S.', 'maheshwaran@skyrovix.in', 'admin', 'https://api.dicebear.com/7.x/bottts/svg?seed=Maheshwaran', 'Co-Founder & Lead Architect, Skyrovix', 2400, 38, 'Active')
 ON DUPLICATE KEY UPDATE updated_at = CURRENT_TIMESTAMP;
+
