@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { usePlatform } from '../../context/PlatformContext';
 import { brandImages, developerAvatars, getCourseThumbnail, courseThumbnails, flagshipBanners, getCourseBanner } from '../../assets/brandImages';
 import { ModernCourseCard } from '../common/ModernCourseCard';
@@ -59,6 +59,47 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAuth }) => {
 
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+
+  // Dynamic Running Letters Animation State for Hero Headline
+  const rotatingWords = [
+    'Future.',
+    'Career.',
+    'Portfolio.',
+    'Tomorrow.',
+    'Success.',
+    'Potential.'
+  ];
+  const [currentWordIdx, setCurrentWordIdx] = useState(0);
+  const [displayedText, setDisplayedText] = useState('Future.');
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const targetWord = rotatingWords[currentWordIdx];
+    let timer: NodeJS.Timeout;
+
+    if (!isDeleting && displayedText.length < targetWord.length) {
+      // Typing characters letter-by-letter (running letters in)
+      timer = setTimeout(() => {
+        setDisplayedText(targetWord.slice(0, displayedText.length + 1));
+      }, 95);
+    } else if (!isDeleting && displayedText.length === targetWord.length) {
+      // Pause at full word before backspacing
+      timer = setTimeout(() => {
+        setIsDeleting(true);
+      }, 1900);
+    } else if (isDeleting && displayedText.length > 0) {
+      // Backspacing characters
+      timer = setTimeout(() => {
+        setDisplayedText(targetWord.slice(0, displayedText.length - 1));
+      }, 45);
+    } else if (isDeleting && displayedText.length === 0) {
+      // Advance to next word
+      setIsDeleting(false);
+      setCurrentWordIdx((prev) => (prev + 1) % rotatingWords.length);
+    }
+
+    return () => clearTimeout(timer);
+  }, [displayedText, isDeleting, currentWordIdx]);
 
   const scrollCarousel = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -226,14 +267,33 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAuth }) => {
             >
               {/* Tag Badge */}
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-100/90 border border-orange-200 text-[#FB4400] text-xs font-bold shadow-2xs w-fit mx-auto lg:mx-0">
-                <span>🚀</span>
+                <span>🎉</span>
                 <span>Learn Today. Build Tomorrow.</span>
               </div>
 
-              {/* Headline */}
-              <h1 className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[50px] font-black tracking-tight text-[#111827] leading-[1.12]">
-                Upgrade Your Skills.<br />
-                <span className="text-[#FB4400]">Shape Your Future.</span>
+              {/* Headline with Running Letters Animation Style */}
+              <h1 className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[50px] font-black tracking-tight text-[#111827] leading-[1.14]">
+                <span className="block">Upgrade Your Skills.</span>
+                <span className="text-[#FB4400] inline-flex items-baseline flex-wrap justify-center lg:justify-start">
+                  <span className="mr-2">Shape Your</span>
+                  <span className="relative inline-flex items-center min-w-[130px] sm:min-w-[170px] text-left">
+                    <span className="bg-gradient-to-r from-[#FB4400] via-orange-500 to-[#FB4400] bg-clip-text text-transparent animate-shimmer-text">
+                      {displayedText.split('').map((char, index) => (
+                        <span
+                          key={`${currentWordIdx}-${index}-${char}`}
+                          className="inline-block transition-transform hover:-translate-y-1 duration-200 cursor-default"
+                        >
+                          {char}
+                        </span>
+                      ))}
+                    </span>
+                    {/* Running Letters Pulsing Blinking Caret */}
+                    <span
+                      aria-hidden="true"
+                      className="inline-block w-[3.5px] sm:w-[4.5px] h-[0.88em] bg-[#FB4400] ml-1 rounded-full animate-pulse shadow-xs shadow-orange-500/50"
+                    />
+                  </span>
+                </span>
               </h1>
 
               {/* Subheading */}
@@ -490,6 +550,45 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAuth }) => {
                 </motion.div>
               </div>
             </motion.div>
+          </div>
+
+          {/* Running Letters Marquee Ticker Strip */}
+          <div className="w-full overflow-hidden rounded-2xl bg-white/85 backdrop-blur-md border border-orange-200/80 py-2.5 px-3 sm:px-4 shadow-sm relative z-20">
+            <div className="flex items-center gap-3">
+              <span className="shrink-0 text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-white bg-[#FB4400] px-2.5 py-1 rounded-lg shadow-2xs flex items-center gap-1.5">
+                <Sparkles size={12} />
+                <span>HIGHLIGHTS</span>
+              </span>
+              <div className="overflow-hidden whitespace-nowrap flex-1 relative">
+                <div className="inline-flex gap-8 animate-marquee whitespace-nowrap text-xs sm:text-sm font-bold text-slate-700 select-none">
+                  <span className="flex items-center gap-2">🚀 <strong className="text-slate-900">1,000+ Active Students</strong></span>
+                  <span className="text-orange-400 font-black">•</span>
+                  <span className="flex items-center gap-2">💼 <strong className="text-slate-900">Govt. MSME UDYAM Certified Internships</strong></span>
+                  <span className="text-orange-400 font-black">•</span>
+                  <span className="flex items-center gap-2">⚡ <strong className="text-slate-900">Live In-Browser Code Sandboxes</strong></span>
+                  <span className="text-orange-400 font-black">•</span>
+                  <span className="flex items-center gap-2">🎓 <strong className="text-slate-900">Tamper-Proof QR Verified Credentials</strong></span>
+                  <span className="text-orange-400 font-black">•</span>
+                  <span className="flex items-center gap-2">🔥 <strong className="text-slate-900">Production Full-Stack Projects</strong></span>
+                  <span className="text-orange-400 font-black">•</span>
+                  <span className="flex items-center gap-2">🐍 <strong className="text-slate-900">Python, AI/ML, React & Cloud Masterclasses</strong></span>
+                  <span className="text-orange-400 font-black">•</span>
+                  {/* Seamless Duplicate for Infinite Marquee */}
+                  <span className="flex items-center gap-2">🚀 <strong className="text-slate-900">1,000+ Active Students</strong></span>
+                  <span className="text-orange-400 font-black">•</span>
+                  <span className="flex items-center gap-2">💼 <strong className="text-slate-900">Govt. MSME UDYAM Certified Internships</strong></span>
+                  <span className="text-orange-400 font-black">•</span>
+                  <span className="flex items-center gap-2">⚡ <strong className="text-slate-900">Live In-Browser Code Sandboxes</strong></span>
+                  <span className="text-orange-400 font-black">•</span>
+                  <span className="flex items-center gap-2">🎓 <strong className="text-slate-900">Tamper-Proof QR Verified Credentials</strong></span>
+                  <span className="text-orange-400 font-black">•</span>
+                  <span className="flex items-center gap-2">🔥 <strong className="text-slate-900">Production Full-Stack Projects</strong></span>
+                  <span className="text-orange-400 font-black">•</span>
+                  <span className="flex items-center gap-2">🐍 <strong className="text-slate-900">Python, AI/ML, React & Cloud Masterclasses</strong></span>
+                  <span className="text-orange-400 font-black">•</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Popular Languages Card (Directly Inside Hero Section) */}
