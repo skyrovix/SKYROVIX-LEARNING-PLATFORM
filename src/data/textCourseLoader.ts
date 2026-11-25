@@ -29,6 +29,9 @@ export interface TextCourseMetadata {
   type: string;
   lessonsCount: number;
   estimatedHours: string;
+  isFree?: boolean;
+  price?: string;
+  originalPrice?: string;
   lessons: TextLessonSummary[];
 }
 

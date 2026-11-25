@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { usePlatform } from '../../context/PlatformContext';
+import { isYouTubeUrl, toYouTubeEmbedUrl } from '../../utils/youtube';
 import {
   Play,
   Pause,
@@ -219,9 +220,9 @@ export const VideoPlayerView: React.FC = () => {
         <div className="flex-1 flex flex-col overflow-y-auto">
           {/* Video Container (Cinematic dark theater frame) */}
           <div className="w-full bg-slate-950 aspect-video max-h-[65vh] flex items-center justify-center relative shadow-xl">
-            {activeLesson.videoUrl.includes('youtube.com') ? (
+            {isYouTubeUrl(activeLesson.videoUrl) ? (
               <iframe
-                src={`${activeLesson.videoUrl}?autoplay=0&rel=0&modestbranding=1`}
+                src={`${toYouTubeEmbedUrl(activeLesson.videoUrl)}?autoplay=0&rel=0&modestbranding=1`}
                 title={activeLesson.title}
                 className="w-full h-full border-0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

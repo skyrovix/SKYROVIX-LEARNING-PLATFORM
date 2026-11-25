@@ -230,9 +230,10 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({ initialFormatFilte
                 const progress = isEnrolled ? getCourseProgress(course.id, course.totalLectures) : 0;
                 const banner = course.thumbnail || getCourseBanner(course.id);
                 const isFullStack = course.id === 'vid-fullstack-dev';
-                const coursePrice = isFullStack ? '₹299' : (course.price || '₹99');
-                const courseOrigPrice = isFullStack ? '₹2,999' : (course.originalPrice || '₹999');
-                const courseBadge = course.badge || (isFullStack ? 'FLAGSHIP • ₹299' : 'VIDEO PASS • ₹99');
+                const isCourseFree = Boolean(course.isFree);
+                const coursePrice = isCourseFree ? 'Free' : (course.price || (isFullStack ? '₹299' : '₹99'));
+                const courseOrigPrice = isCourseFree ? '' : (course.originalPrice || (isFullStack ? '₹2,999' : '₹999'));
+                const courseBadge = course.badge || (isCourseFree ? 'FREE PASS' : isFullStack ? `FLAGSHIP • ${coursePrice}` : `VIDEO PASS • ${coursePrice}`);
 
                 return (
                   <ModernCourseCard
@@ -248,10 +249,10 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({ initialFormatFilte
                     badge={courseBadge}
                     price={coursePrice}
                     originalPrice={courseOrigPrice}
-                    isFree={false}
+                    isFree={isCourseFree}
                     isEnrolled={isEnrolled}
                     progress={progress}
-                    actionText={isEnrolled ? 'Continue' : `Enroll ${coursePrice}`}
+                    actionText={isEnrolled ? 'Continue' : isCourseFree ? 'Enroll Free' : `Enroll ${coursePrice}`}
                     onAction={() => {
                       if (isEnrolled) {
                         navigateToVideoCourse(course.id);
@@ -306,17 +307,17 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({ initialFormatFilte
                     lessonsCount={`${course.lessonsCount} Chapters`}
                     duration={`~${course.estimatedHours}`}
                     level={course.level}
-                    badge="100% FREE"
-                    price="Free"
-                    isFree={true}
+                    badge={course.isFree === false ? (course.badge || course.price || 'PRO') : '100% FREE'}
+                    price={course.isFree === false && course.price ? course.price : 'Free'}
+                    isFree={course.isFree !== false}
                     isEnrolled={isEnrolled}
                     progress={progress}
-                    actionText={isEnrolled ? 'Continue' : 'Start Free'}
+                    actionText={isEnrolled ? 'Continue' : course.isFree === false && course.price ? `Enroll ${course.price}` : 'Start Free'}
                     onAction={() => {
                       enrollInCourse(course.id);
                       navigateToTextCourse(course.slug);
                     }}
-                    onClickCard={() => navigateToCourseDetails(course.id, 'text')}
+                    onClickCard={() => navigateToCourseDetails(course.id)}
                   />
                 );
               })}

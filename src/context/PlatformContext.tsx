@@ -83,6 +83,7 @@ export interface PlatformContextType {
   addVideoCourse: (course: VideoCourse) => void;
   updateVideoCourse: (course: VideoCourse) => void;
   addTextCourse: (course: TextCourseMetadata) => void;
+  updateTextCourse: (course: TextCourseMetadata) => void;
   deleteCourse: (id: string) => void;
 
   // Student State
@@ -318,23 +319,55 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     localStorage.setItem('skyrovix_students_live_v2', JSON.stringify(students));
   }, [students]);
 
-  // Fetch real students from backend SQL/DB API on mount
+  // Fetch real students and synced course overrides from backend DB on mount
   useEffect(() => {
     let active = true;
-    const fetchRealUsers = async () => {
+    const fetchRealUsersAndCourses = async () => {
       try {
-        const resp = await fetch('http://localhost:5000/api/admin/overview');
-        if (resp.ok) {
-          const data = await resp.json();
+        const [ovResp, courseResp] = await Promise.all([
+          fetch('http://localhost:5000/api/admin/overview').catch(() => null),
+          fetch('http://localhost:5000/api/courses/sync').catch(() => null)
+        ]);
+        if (ovResp && ovResp.ok) {
+          const data = await ovResp.json();
           if (active && Array.isArray(data.students)) {
             setStudents(data.students);
+          }
+        }
+        if (courseResp && courseResp.ok) {
+          const cData = await courseResp.json();
+          if (!active) return;
+          const deletedIds = new Set<string>(cData.deletedCourseIds || []);
+          if (Array.isArray(cData.videoCourses) && (cData.videoCourses.length > 0 || deletedIds.size > 0)) {
+            setVideoCourses(prev => {
+              const map = new Map<string, VideoCourse>();
+              prev.forEach(c => {
+                if (!deletedIds.has(c.id)) map.set(c.id, c);
+              });
+              cData.videoCourses.forEach((c: VideoCourse) => {
+                if (!deletedIds.has(c.id)) map.set(c.id, c);
+              });
+              return Array.from(map.values());
+            });
+          }
+          if (Array.isArray(cData.textCourses) && (cData.textCourses.length > 0 || deletedIds.size > 0)) {
+            setTextCourses(prev => {
+              const map = new Map<string, TextCourseMetadata>();
+              prev.forEach(c => {
+                if (!deletedIds.has(c.id)) map.set(c.id, c);
+              });
+              cData.textCourses.forEach((c: TextCourseMetadata) => {
+                if (!deletedIds.has(c.id)) map.set(c.id, c);
+              });
+              return Array.from(map.values());
+            });
           }
         }
       } catch (e) {
         // Backend offline; keep cached live data
       }
     };
-    fetchRealUsers();
+    fetchRealUsersAndCourses();
     return () => {
       active = false;
     };
@@ -530,7 +563,7 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (vidCourse) {
       totalCount = vidCourse.modules.reduce((acc, m) => acc + m.lessons.length, 0);
     } else if (txtCourse) {
-      totalCount = txtCourse.lessons?.length || txtCourse.totalLessons || 0;
+      totalCount = txtCourse.lessons?.length || txtCourse.lessonsCount || 0;
     }
     if (totalCount === 0) return false;
     const doneCount = (completedLessons[courseId] || []).length;
@@ -577,20 +610,47 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const addVideoCourse = (course: VideoCourse) => {
     setVideoCourses(prev => [course, ...prev]);
+    fetch(`http://localhost:5000/api/admin/courses/video/${course.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(course)
+    }).catch(() => {});
   };
 
   const updateVideoCourse = (course: VideoCourse) => {
     setVideoCourses(prev => prev.map(c => c.id === course.id ? course : c));
+    fetch(`http://localhost:5000/api/admin/courses/video/${course.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(course)
+    }).catch(() => {});
   };
 
   const addTextCourse = (course: TextCourseMetadata) => {
     setTextCourses(prev => [course, ...prev]);
+    fetch(`http://localhost:5000/api/admin/courses/text/${course.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(course)
+    }).catch(() => {});
+  };
+
+  const updateTextCourse = (course: TextCourseMetadata) => {
+    setTextCourses(prev => prev.map(c => c.id === course.id ? course : c));
+    fetch(`http://localhost:5000/api/admin/courses/text/${course.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(course)
+    }).catch(() => {});
   };
 
   const deleteCourse = (id: string) => {
     setVideoCourses(prev => prev.filter(c => c.id !== id));
     setTextCourses(prev => prev.filter(c => c.id !== id));
     setEnrolledCourses(prev => prev.filter(cId => cId !== id));
+    fetch(`http://localhost:5000/api/admin/courses/${id}`, {
+      method: 'DELETE'
+    }).catch(() => {});
   };
 
   const updateStudent = (student: StudentProfile) => {
@@ -898,6 +958,7 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         addVideoCourse,
         updateVideoCourse,
         addTextCourse,
+        updateTextCourse,
         deleteCourse,
         enrolledCourses,
         enrollInCourse,

@@ -218,14 +218,22 @@ export const CourseDetailsPage: React.FC<CourseDetailsPageProps> = ({ courseId, 
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-2xl font-extrabold text-slate-900 font-display">
-                    {isVideo && !videoCourse?.isFree ? (videoCourse?.price || (videoCourse?.id === 'vid-fullstack-dev' ? '₹299' : '₹99')) : '100% Free'}
+                    {isVideo
+                      ? videoCourse?.isFree
+                        ? '100% Free'
+                        : videoCourse?.price || (videoCourse?.id === 'vid-fullstack-dev' ? '₹299' : '₹99')
+                      : textCourse?.isFree === false && textCourse?.price
+                      ? textCourse.price
+                      : '100% Free'}
                   </div>
                   <div className="text-xs text-emerald-600 font-semibold">
                     {isVideo && !videoCourse?.isFree ? 'Scholarship & Discount Codes Available' : 'Free Lifetime Access with Pro Certificate'}
                   </div>
                 </div>
                 <span className="px-2.5 py-1 rounded-md text-[10px] uppercase font-mono font-bold bg-orange-100 text-[#FB4400]">
-                  {isVideo && !videoCourse?.isFree ? (videoCourse?.id === 'vid-fullstack-dev' ? 'Flagship • ₹299' : 'Video Pass • ₹99') : '100% Free'}
+                  {isVideo && !videoCourse?.isFree
+                    ? videoCourse?.badge || (videoCourse?.id === 'vid-fullstack-dev' ? 'Flagship • ₹299' : `Video Pass • ${videoCourse?.price || '₹99'}`)
+                    : '100% Free'}
                 </span>
               </div>
 
@@ -322,24 +330,34 @@ export const CourseDetailsPage: React.FC<CourseDetailsPageProps> = ({ courseId, 
 
                       {isOpen && (
                         <div className="border-t border-slate-100 divide-y divide-slate-100">
-                          {mod.lessons.map(lesson => (
-                            <div
-                              key={lesson.id}
-                              onClick={() => {
-                                enrollInCourse(courseId);
-                                navigateToVideoCourse(courseId, lesson.id);
-                              }}
-                              className="p-3.5 pl-6 flex items-center justify-between hover:bg-orange-50/50 cursor-pointer transition-colors group"
-                            >
-                              <div className="flex items-center gap-3">
-                                <Play size={13} className="text-[#FB4400] group-hover:scale-110 transition-transform" />
-                                <span className="text-xs font-medium text-slate-700 group-hover:text-[#FB4400] transition-colors">
-                                  {lesson.title}
-                                </span>
-                              </div>
-                              <span className="text-xs font-mono text-slate-400">{lesson.duration}</span>
-                            </div>
-                          ))}
+                          {mod.lessons.map((lesson, lIdx) => {
+                            const prevSub = lIdx > 0 ? mod.lessons[lIdx - 1].subModule : undefined;
+                            const showSubHeader = Boolean(lesson.subModule && lesson.subModule !== prevSub);
+                            return (
+                              <React.Fragment key={lesson.id}>
+                                {showSubHeader && (
+                                  <div className="px-5 py-2 bg-orange-50/60 text-[11px] font-extrabold uppercase tracking-wider text-[#FB4400] flex items-center gap-2">
+                                    <span>Sub-Module: {lesson.subModule}</span>
+                                  </div>
+                                )}
+                                <div
+                                  onClick={() => {
+                                    enrollInCourse(courseId);
+                                    navigateToVideoCourse(courseId, lesson.id);
+                                  }}
+                                  className="p-3.5 pl-6 flex items-center justify-between hover:bg-orange-50/50 cursor-pointer transition-colors group"
+                                >
+                                  <div className="flex items-center gap-3">
+                                    <Play size={13} className="text-[#FB4400] group-hover:scale-110 transition-transform" />
+                                    <span className="text-xs font-medium text-slate-700 group-hover:text-[#FB4400] transition-colors">
+                                      {lesson.title}
+                                    </span>
+                                  </div>
+                                  <span className="text-xs font-mono text-slate-400">{lesson.duration}</span>
+                                </div>
+                              </React.Fragment>
+                            );
+                          })}
                         </div>
                       )}
                     </div>

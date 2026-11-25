@@ -40,9 +40,10 @@ export interface ResourceLink {
 export interface VideoLesson {
   id: string;
   title: string;
+  subModule?: string;
   duration: string;
   durationSeconds: number;
-  videoUrl: string; // Embed or MP4 URL
+  videoUrl: string; // YouTube URL (watch, youtu.be, shorts, live, or embed)
   summary: string;
   chapters: VideoChapter[];
   notes: string;
@@ -51,10 +52,17 @@ export interface VideoLesson {
   quiz?: QuizQuestion;
 }
 
+export interface SubModuleItem {
+  id: string;
+  title: string;
+  duration?: string;
+}
+
 export interface CourseModule {
   id: string;
   title: string;
   duration: string;
+  subModules?: SubModuleItem[];
   lessons: VideoLesson[];
 }
 

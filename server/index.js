@@ -88,6 +88,9 @@ function loadDB() {
       capstones: [],
       announcements: [],
       coupons: [],
+      customVideoCourses: [],
+      customTextCourses: [],
+      deletedCourseIds: [],
       settings: null
     };
     fs.writeFileSync(dbPath, JSON.stringify(initialDB, null, 2), 'utf-8');
@@ -104,6 +107,9 @@ function loadDB() {
   if (!Array.isArray(parsed.capstones)) parsed.capstones = [];
   if (!Array.isArray(parsed.announcements)) parsed.announcements = [];
   if (!Array.isArray(parsed.coupons)) parsed.coupons = [];
+  if (!Array.isArray(parsed.customVideoCourses)) parsed.customVideoCourses = [];
+  if (!Array.isArray(parsed.customTextCourses)) parsed.customTextCourses = [];
+  if (!Array.isArray(parsed.deletedCourseIds)) parsed.deletedCourseIds = [];
   return parsed;
 }
 
@@ -786,6 +792,74 @@ app.post('/api/admin/coupons', (req, res) => {
   db.coupons.unshift(item);
   saveDB(db);
   res.status(201).json({ success: true, coupon: item });
+});
+
+app.delete('/api/admin/coupons/:id', (req, res) => {
+  const { id } = req.params;
+  const db = loadDB();
+  db.coupons = (db.coupons || []).filter(c => c.id !== id);
+  saveDB(db);
+  res.json({ success: true });
+});
+
+// Enterprise Course Synchronization & CRUD Persistence
+app.get('/api/courses/sync', (req, res) => {
+  const db = loadDB();
+  res.json({
+    videoCourses: db.customVideoCourses || [],
+    textCourses: db.customTextCourses || [],
+    deletedCourseIds: db.deletedCourseIds || []
+  });
+});
+
+app.put('/api/admin/courses/video/:id', (req, res) => {
+  const { id } = req.params;
+  const course = req.body;
+  if (!course || !course.title) {
+    return res.status(400).json({ error: 'Valid course payload with title required' });
+  }
+  const db = loadDB();
+  const idx = db.customVideoCourses.findIndex(c => c.id === id);
+  const record = { ...course, id, updatedAt: new Date().toISOString() };
+  if (idx >= 0) {
+    db.customVideoCourses[idx] = record;
+  } else {
+    db.customVideoCourses.unshift(record);
+  }
+  db.deletedCourseIds = db.deletedCourseIds.filter(d => d !== id);
+  saveDB(db);
+  res.json({ success: true, course: record });
+});
+
+app.put('/api/admin/courses/text/:id', (req, res) => {
+  const { id } = req.params;
+  const course = req.body;
+  if (!course || !course.title) {
+    return res.status(400).json({ error: 'Valid text course payload with title required' });
+  }
+  const db = loadDB();
+  const idx = db.customTextCourses.findIndex(c => c.id === id);
+  const record = { ...course, id, updatedAt: new Date().toISOString() };
+  if (idx >= 0) {
+    db.customTextCourses[idx] = record;
+  } else {
+    db.customTextCourses.unshift(record);
+  }
+  db.deletedCourseIds = db.deletedCourseIds.filter(d => d !== id);
+  saveDB(db);
+  res.json({ success: true, course: record });
+});
+
+app.delete('/api/admin/courses/:id', (req, res) => {
+  const { id } = req.params;
+  const db = loadDB();
+  db.customVideoCourses = db.customVideoCourses.filter(c => c.id !== id);
+  db.customTextCourses = db.customTextCourses.filter(c => c.id !== id);
+  if (!db.deletedCourseIds.includes(id)) {
+    db.deletedCourseIds.push(id);
+  }
+  saveDB(db);
+  res.json({ success: true });
 });
 
 app.put('/api/admin/settings', (req, res) => {

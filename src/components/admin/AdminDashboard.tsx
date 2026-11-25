@@ -1,8 +1,14 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { usePlatform, StudentProfile } from '../../context/PlatformContext';
-import { VideoCourse, VideoLesson, CourseModule } from '../../data/videoCoursesData';
+import { VideoCourse, VideoLesson, CourseModule, SubModuleItem } from '../../data/videoCoursesData';
 import { TextCourseMetadata } from '../../data/textCourseLoader';
 import { brandImages } from '../../assets/brandImages';
+import {
+  SKYROVIX_YOUTUBE_CHANNEL,
+  toYouTubeEmbedUrl,
+  extractYouTubeId,
+  getYouTubeThumbnail
+} from '../../utils/youtube';
 import {
   LayoutDashboard,
   FileText,
@@ -30,6 +36,7 @@ import {
   Search,
   Bell,
   ChevronDown,
+  ChevronUp,
   Calendar,
   ArrowRight,
   Plus,
@@ -56,9 +63,7 @@ import {
   Play,
   Settings,
   Sliders,
-  Upload,
   Video,
-  FileVideo,
   FolderPlus,
   UserPlus,
   PlayCircle,
@@ -68,7 +73,9 @@ import {
   Info,
   SlidersHorizontal,
   Server,
-  Key
+  Key,
+  Menu,
+  Youtube
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -139,6 +146,7 @@ export const AdminDashboard: React.FC = () => {
     addVideoCourse,
     updateVideoCourse,
     addTextCourse,
+    updateTextCourse,
     deleteCourse,
     students,
     setStudents,
@@ -152,8 +160,14 @@ export const AdminDashboard: React.FC = () => {
     logout
   } = usePlatform();
 
-  // Active Menu Section
+  // Active Menu Section & Mobile Drawer
   const [activeMenu, setActiveMenu] = useState<string>('dashboard');
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+  const handleSelectMenu = (menu: string) => {
+    setActiveMenu(menu);
+    setMobileSidebarOpen(false);
+  };
 
   // Search in Top Bar
   const [topSearch, setTopSearch] = useState('');
@@ -221,33 +235,48 @@ export const AdminDashboard: React.FC = () => {
   // Email state
   const [emailSubject, setEmailSubject] = useState('');
   const [emailBody, setEmailBody] = useState('');
-  // Coupon state
+  // Coupon state (live synced)
   const [couponCode, setCouponCode] = useState('SKYROVIX2026');
   const [discountPercent, setDiscountPercent] = useState('20');
+  const [liveCoupons, setLiveCoupons] = useState<Array<{ id: string; code: string; discountPercent: number; active: boolean }>>([]);
   // New Category state
   const [newCategoryName, setNewCategoryName] = useState('');
 
-  // Course Management State
+  // Course Management & Enterprise Editor State
   const [courseFormat, setCourseFormat] = useState<'video' | 'text'>('video');
   const [newTitle, setNewTitle] = useState('');
+  const [newSubtitle, setNewSubtitle] = useState('');
   const [newCategory, setNewCategory] = useState('Full Stack');
   const [newLevel, setNewLevel] = useState<'Beginner' | 'Intermediate' | 'Advanced' | 'All Levels'>('All Levels');
-  const [newInstructor, setNewInstructor] = useState('Staff Architect');
+  const [newInstructor, setNewInstructor] = useState('Skyrovix Team');
   const [newDuration, setNewDuration] = useState('18h 30m');
+  const [newPrice, setNewPrice] = useState('₹299');
+  const [newOriginalPrice, setNewOriginalPrice] = useState('₹2,999');
+  const [newIsFree, setNewIsFree] = useState(false);
+  const [newBadge, setNewBadge] = useState('NEW COURSE');
+  const [newThumbnailUrl, setNewThumbnailUrl] = useState('');
+  const [newInitialYouTubeUrl, setNewInitialYouTubeUrl] = useState('https://www.youtube.com/watch?v=nu_pCVPKzTk');
   const [newDescription, setNewDescription] = useState('');
   const [tableSearch, setTableSearch] = useState('');
   const [tableTypeFilter, setTableTypeFilter] = useState<'all' | 'video' | 'text'>('all');
 
-  // Curriculum Studio Selection
+  // Text Course Edit Modal State
+  const [editingTextCourse, setEditingTextCourse] = useState<TextCourseMetadata | null>(null);
+
+  // Studio Modes & Enterprise Course Details State
+  const [studioTab, setStudioTab] = useState<'curriculum' | 'details'>('curriculum');
   const [selectedCourseForStudio, setSelectedCourseForStudio] = useState<string>(videoCourses[0]?.id || '');
+  const [editingLessonId, setEditingLessonId] = useState<string | null>(null);
   const [newLessonTitle, setNewLessonTitle] = useState('');
+  const [newLessonSubModule, setNewLessonSubModule] = useState('');
   const [newLessonDuration, setNewLessonDuration] = useState('15:00');
-  const [newLessonVideoUrl, setNewLessonVideoUrl] = useState('https://www.youtube.com/embed/nu_pCVPKzTk');
+  const [newLessonVideoUrl, setNewLessonVideoUrl] = useState('https://www.youtube.com/watch?v=nu_pCVPKzTk');
+  const [newLessonSummary, setNewLessonSummary] = useState('');
   const [newLessonMarkdown, setNewLessonMarkdown] = useState(
     `# New Curriculum Chapter\n\n## 📘 Overview\nWrite modern architectural guidelines here.\n\n\`\`\`javascript\nconsole.log("Hello from Skyrovix!");\n\`\`\``
   );
 
-  // Module Management State
+  // Module & Sub-Module Management State
   const targetStudioCourse = useMemo(() => {
     return videoCourses.find(c => c.id === selectedCourseForStudio) || videoCourses[0];
   }, [videoCourses, selectedCourseForStudio]);
@@ -255,6 +284,44 @@ export const AdminDashboard: React.FC = () => {
   const [selectedModuleId, setSelectedModuleId] = useState<string>(() => {
     return videoCourses[0]?.modules[0]?.id || '';
   });
+
+  // Enterprise Course Details Editor Form synced to targetStudioCourse
+  const [editCourseTitle, setEditCourseTitle] = useState('');
+  const [editCourseSubtitle, setEditCourseSubtitle] = useState('');
+  const [editCourseDescription, setEditCourseDescription] = useState('');
+  const [editCourseCategory, setEditCourseCategory] = useState('Full Stack');
+  const [editCourseLevel, setEditCourseLevel] = useState<'Beginner' | 'Intermediate' | 'Advanced' | 'All Levels'>('All Levels');
+  const [editCourseDuration, setEditCourseDuration] = useState('');
+  const [editCoursePrice, setEditCoursePrice] = useState('₹99');
+  const [editCourseOriginalPrice, setEditCourseOriginalPrice] = useState('₹999');
+  const [editCourseIsFree, setEditCourseIsFree] = useState(false);
+  const [editCourseBadge, setEditCourseBadge] = useState('');
+  const [editCourseThumbnail, setEditCourseThumbnail] = useState('');
+  const [editCourseInstructorName, setEditCourseInstructorName] = useState('');
+  const [editCourseInstructorRole, setEditCourseInstructorRole] = useState('');
+  const [editCourseOutcomesText, setEditCourseOutcomesText] = useState('');
+  const [editCoursePrereqsText, setEditCoursePrereqsText] = useState('');
+
+  useEffect(() => {
+    if (!targetStudioCourse) return;
+    setEditCourseTitle(targetStudioCourse.title || '');
+    setEditCourseSubtitle(targetStudioCourse.subtitle || '');
+    setEditCourseDescription(targetStudioCourse.description || '');
+    setEditCourseCategory(targetStudioCourse.category || 'Full Stack');
+    setEditCourseLevel(targetStudioCourse.level || 'All Levels');
+    setEditCourseDuration(targetStudioCourse.totalDuration || '10h 00m');
+    const defaultCost = targetStudioCourse.id === 'vid-fullstack-dev' ? '₹299' : '₹99';
+    const defaultOrig = targetStudioCourse.id === 'vid-fullstack-dev' ? '₹2,999' : '₹999';
+    setEditCoursePrice(targetStudioCourse.price || defaultCost);
+    setEditCourseOriginalPrice(targetStudioCourse.originalPrice || defaultOrig);
+    setEditCourseIsFree(Boolean(targetStudioCourse.isFree));
+    setEditCourseBadge(targetStudioCourse.badge || '');
+    setEditCourseThumbnail(targetStudioCourse.thumbnail || '');
+    setEditCourseInstructorName(targetStudioCourse.instructor?.name || 'Skyrovix Team');
+    setEditCourseInstructorRole(targetStudioCourse.instructor?.role || 'Skyrovix Curriculum & Technical Team');
+    setEditCourseOutcomesText((targetStudioCourse.learningOutcomes || []).join('\n'));
+    setEditCoursePrereqsText((targetStudioCourse.prerequisites || []).join('\n'));
+  }, [targetStudioCourse]);
 
   // Keep selectedModuleId aligned with current course
   useEffect(() => {
@@ -268,11 +335,12 @@ export const AdminDashboard: React.FC = () => {
   const [isAddModuleModalOpen, setIsAddModuleModalOpen] = useState(false);
   const [newModuleTitle, setNewModuleTitle] = useState('');
   const [newModuleDuration, setNewModuleDuration] = useState('2h 15m');
+  const [newSubModuleInput, setNewSubModuleInput] = useState('');
+  const [editingModuleId, setEditingModuleId] = useState<string | null>(null);
+  const [editingModuleTitle, setEditingModuleTitle] = useState('');
+  const [editingModuleDuration, setEditingModuleDuration] = useState('');
 
-  // Video Upload & Lesson State
-  const [videoSourceMode, setVideoSourceMode] = useState<'upload' | 'url'>('url');
-  const [uploadedVideoName, setUploadedVideoName] = useState<string | null>(null);
-  const [uploadedVideoSize, setUploadedVideoSize] = useState<string | null>(null);
+  // Lesson Preview State
   const [previewingLesson, setPreviewingLesson] = useState<VideoLesson | null>(null);
 
   // Dedicated Add Student State
@@ -320,7 +388,7 @@ export const AdminDashboard: React.FC = () => {
     setTimeout(() => setToastMessage(null), 3500);
   };
 
-  // Combine courses for table
+  // Combine courses for table (with cost, modules, badge)
   const allCoursesList = useMemo(() => {
     const list: Array<{
       id: string;
@@ -328,36 +396,55 @@ export const AdminDashboard: React.FC = () => {
       category: string;
       type: 'video' | 'text';
       lessonsCount: number;
+      modulesCount: number;
       level: string;
       instructor: string;
       duration: string;
+      price: string;
+      originalPrice?: string;
+      isFree: boolean;
+      badge?: string;
       slug?: string;
     }> = [];
 
     videoCourses.forEach(v => {
+      const isFullStack = v.id === 'vid-fullstack-dev';
+      const isFree = Boolean(v.isFree);
+      const price = isFree ? 'Free' : (v.price || (isFullStack ? '₹299' : '₹99'));
       list.push({
         id: v.id,
         title: v.title,
         category: v.category,
         type: 'video',
         lessonsCount: v.totalLectures,
+        modulesCount: v.modules?.length || 0,
         level: v.level,
         instructor: v.instructor.name,
         duration: v.totalDuration,
+        price,
+        originalPrice: isFree ? undefined : (v.originalPrice || (isFullStack ? '₹2,999' : '₹999')),
+        isFree,
+        badge: v.badge,
         slug: v.slug
       });
     });
 
     textCourses.forEach(t => {
+      const isFree = t.isFree !== false;
       list.push({
         id: t.id,
         title: t.title,
         category: t.category,
         type: 'text',
         lessonsCount: t.lessonsCount,
+        modulesCount: 1,
         level: t.level,
         instructor: t.instructor,
         duration: t.estimatedHours,
+        price: isFree ? 'Free' : (t.price || 'Free'),
+        originalPrice: t.originalPrice,
+        isFree,
+        badge: t.badge,
         slug: t.slug
       });
     });
@@ -441,6 +528,7 @@ export const AdminDashboard: React.FC = () => {
       if (Array.isArray(data.recentActivity)) setLiveActivity(data.recentActivity);
       if (Array.isArray(data.submissions)) setSubmissions(data.submissions);
       if (Array.isArray(data.capstones)) setCapstones(data.capstones);
+      if (Array.isArray(data.coupons)) setLiveCoupons(data.coupons);
       if (data.stats) setLiveStats(data.stats);
       if (data.settings) {
         setPlatformSettings((prev: any) => ({ ...prev, ...data.settings }));
@@ -522,16 +610,58 @@ export const AdminDashboard: React.FC = () => {
       .sort((a, b) => b.count - a.count);
   }, [allCoursesList, liveEnrollments]);
 
-  // Video File Upload Handler
-  const handleVideoFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setUploadedVideoName(file.name);
-      setUploadedVideoSize((file.size / (1024 * 1024)).toFixed(1) + ' MB');
-      const blobUrl = URL.createObjectURL(file);
-      setNewLessonVideoUrl(blobUrl);
-      showToast(`Video loaded: "${file.name}" (${(file.size / (1024 * 1024)).toFixed(1)} MB)!`);
+  // Save Enterprise Course Details & Cost (Title, Subtitle, Description, Cost, Outcomes, Prerequisites, Thumbnail)
+  const handleSaveCourseDetails = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!targetStudioCourse) return;
+    if (!editCourseTitle.trim()) {
+      showToast('Course title cannot be empty.');
+      return;
     }
+
+    const formattedPrice = editCourseIsFree
+      ? 'Free'
+      : editCoursePrice.trim().startsWith('₹')
+      ? editCoursePrice.trim()
+      : `₹${editCoursePrice.replace(/[^0-9]/g, '') || '99'}`;
+
+    const formattedOrig =
+      !editCourseIsFree && editCourseOriginalPrice.trim()
+        ? editCourseOriginalPrice.trim().startsWith('₹')
+          ? editCourseOriginalPrice.trim()
+          : `₹${editCourseOriginalPrice.replace(/[^0-9]/g, '')}`
+        : undefined;
+
+    const updatedCourse: VideoCourse = {
+      ...targetStudioCourse,
+      title: editCourseTitle.trim(),
+      subtitle: editCourseSubtitle.trim() || targetStudioCourse.subtitle,
+      description: editCourseDescription.trim() || targetStudioCourse.description,
+      category: editCourseCategory,
+      level: editCourseLevel,
+      totalDuration: editCourseDuration.trim() || targetStudioCourse.totalDuration,
+      isFree: editCourseIsFree,
+      price: formattedPrice,
+      originalPrice: formattedOrig,
+      badge: editCourseBadge.trim() || (editCourseIsFree ? 'FREE PASS' : `VIDEO PASS • ${formattedPrice}`),
+      thumbnail: editCourseThumbnail.trim() || targetStudioCourse.thumbnail,
+      instructor: {
+        ...targetStudioCourse.instructor,
+        name: editCourseInstructorName.trim() || targetStudioCourse.instructor.name,
+        role: editCourseInstructorRole.trim() || targetStudioCourse.instructor.role
+      },
+      learningOutcomes: editCourseOutcomesText
+        .split('\n')
+        .map(s => s.trim())
+        .filter(Boolean),
+      prerequisites: editCoursePrereqsText
+        .split('\n')
+        .map(s => s.trim())
+        .filter(Boolean)
+    };
+
+    updateVideoCourse(updatedCourse);
+    showToast(`Saved "${updatedCourse.title}" details & pricing (${formattedPrice})!`);
   };
 
   // Add Module to Selected Course
@@ -549,6 +679,7 @@ export const AdminDashboard: React.FC = () => {
       id: `mod-${Date.now()}`,
       title: newModuleTitle.trim(),
       duration: newModuleDuration || '1h 30m',
+      subModules: [],
       lessons: []
     };
     const updatedModules = [...(targetCourse.modules || []), newMod];
@@ -561,6 +692,55 @@ export const AdminDashboard: React.FC = () => {
     setIsAddModuleModalOpen(false);
     setNewModuleTitle('');
     showToast(`Added module "${newMod.title}" to ${targetCourse.title}!`);
+  };
+
+  // Rename / Update Existing Module
+  const handleSaveModuleEdit = (modId: string) => {
+    if (!targetStudioCourse || !editingModuleTitle.trim()) return;
+    const updatedModules = targetStudioCourse.modules.map(m =>
+      m.id === modId
+        ? { ...m, title: editingModuleTitle.trim(), duration: editingModuleDuration.trim() || m.duration }
+        : m
+    );
+    updateVideoCourse({ ...targetStudioCourse, modules: updatedModules });
+    setEditingModuleId(null);
+    showToast('Module updated!');
+  };
+
+  // Add Sub-Module inside Active Module
+  const handleAddSubModule = (modId: string) => {
+    if (!targetStudioCourse || !newSubModuleInput.trim()) {
+      showToast('Enter a sub-module name first.');
+      return;
+    }
+    const subTitle = newSubModuleInput.trim();
+    const updatedModules = targetStudioCourse.modules.map(m => {
+      if (m.id !== modId) return m;
+      const existing = m.subModules || [];
+      if (existing.some(s => s.title.toLowerCase() === subTitle.toLowerCase())) return m;
+      const item: SubModuleItem = { id: `sub-${Date.now()}`, title: subTitle };
+      return { ...m, subModules: [...existing, item] };
+    });
+    updateVideoCourse({ ...targetStudioCourse, modules: updatedModules });
+    setNewLessonSubModule(subTitle);
+    setNewSubModuleInput('');
+    showToast(`Sub-module "${subTitle}" added!`);
+  };
+
+  // Delete Sub-Module tag from Module
+  const handleDeleteSubModule = (modId: string, subTitle: string) => {
+    if (!targetStudioCourse) return;
+    const updatedModules = targetStudioCourse.modules.map(m => {
+      if (m.id !== modId) return m;
+      return {
+        ...m,
+        subModules: (m.subModules || []).filter(s => s.title !== subTitle),
+        lessons: m.lessons.map(l => (l.subModule === subTitle ? { ...l, subModule: undefined } : l))
+      };
+    });
+    updateVideoCourse({ ...targetStudioCourse, modules: updatedModules });
+    if (newLessonSubModule === subTitle) setNewLessonSubModule('');
+    showToast(`Sub-module "${subTitle}" removed.`);
   };
 
   // Delete Module from Selected Course
@@ -599,10 +779,28 @@ export const AdminDashboard: React.FC = () => {
       totalLectures: updatedModules.reduce((acc, m) => acc + m.lessons.length, 0)
     };
     updateVideoCourse(updatedCourse);
+    if (editingLessonId === lessonId) {
+      setEditingLessonId(null);
+      setNewLessonTitle('');
+    }
     showToast('Video lesson removed.');
   };
 
-  // Real-time Action: Publish Lesson to Selected Module & Video Course
+  // Load Existing Lesson into YouTube Lesson Studio for Editing
+  const handleStartEditLesson = (modId: string, lesson: VideoLesson) => {
+    setStudioTab('curriculum');
+    setSelectedModuleId(modId);
+    setEditingLessonId(lesson.id);
+    setNewLessonTitle(lesson.title);
+    setNewLessonSubModule(lesson.subModule || '');
+    setNewLessonDuration(lesson.duration || '15:00');
+    setNewLessonVideoUrl(lesson.videoUrl || '');
+    setNewLessonSummary(lesson.summary || '');
+    setNewLessonMarkdown(lesson.notes || lesson.transcript || '');
+    showToast(`Editing "${lesson.title}"`);
+  };
+
+  // Real-time Action: Publish or Update YouTube Lesson in Selected Module & Sub-Module
   const handlePublishLesson = () => {
     if (!newLessonTitle.trim()) {
       showToast('Please enter a lesson title.');
@@ -613,18 +811,65 @@ export const AdminDashboard: React.FC = () => {
       showToast('Selected course not found.');
       return;
     }
-    if (!newLessonVideoUrl.trim()) {
-      showToast('Please select or enter a video stream URL.');
+    const ytId = extractYouTubeId(newLessonVideoUrl);
+    if (!ytId) {
+      showToast('Please enter a valid YouTube video URL (youtube.com/watch?v=..., youtu.be/..., or @skyrovix video link).');
+      return;
+    }
+
+    const embedUrl = toYouTubeEmbedUrl(newLessonVideoUrl);
+    const subModClean = newLessonSubModule.trim() || undefined;
+
+    if (editingLessonId) {
+      const updatedModules = targetCourse.modules.map(mod => {
+        if (mod.id !== selectedModuleId) return mod;
+        const existingSubs = mod.subModules || [];
+        const nextSubs =
+          subModClean && !existingSubs.some(s => s.title.toLowerCase() === subModClean.toLowerCase())
+            ? [...existingSubs, { id: `sub-${Date.now()}`, title: subModClean }]
+            : existingSubs;
+
+        return {
+          ...mod,
+          subModules: nextSubs,
+          lessons: mod.lessons.map(l =>
+            l.id === editingLessonId
+              ? {
+                  ...l,
+                  title: newLessonTitle.trim(),
+                  subModule: subModClean,
+                  duration: newLessonDuration.trim() || l.duration,
+                  videoUrl: embedUrl,
+                  summary: newLessonSummary.trim() || newLessonMarkdown.slice(0, 140),
+                  notes: newLessonMarkdown,
+                  transcript: newLessonMarkdown
+                }
+              : l
+          )
+        };
+      });
+
+      const updatedCourse: VideoCourse = {
+        ...targetCourse,
+        totalLectures: updatedModules.reduce((acc, m) => acc + m.lessons.length, 0),
+        modules: updatedModules
+      };
+      updateVideoCourse(updatedCourse);
+      setEditingLessonId(null);
+      setNewLessonTitle('');
+      setNewLessonSummary('');
+      showToast(`Updated lesson "${newLessonTitle}" with YouTube link!`);
       return;
     }
 
     const newLesson: VideoLesson = {
       id: `lesson-${Date.now()}`,
       title: newLessonTitle.trim(),
+      subModule: subModClean,
       duration: newLessonDuration || '15:00',
       durationSeconds: 900,
-      videoUrl: newLessonVideoUrl.trim(),
-      summary: newLessonMarkdown.slice(0, 140),
+      videoUrl: embedUrl,
+      summary: newLessonSummary.trim() || newLessonMarkdown.slice(0, 140),
       chapters: [
         { title: 'Lecture Intro', time: '00:00', timeSeconds: 0 },
         { title: 'Implementation & Build', time: '04:30', timeSeconds: 270 }
@@ -632,6 +877,7 @@ export const AdminDashboard: React.FC = () => {
       notes: newLessonMarkdown,
       transcript: newLessonMarkdown,
       resources: [
+        { title: 'Skyrovix Official YouTube Channel', url: SKYROVIX_YOUTUBE_CHANNEL, type: 'link' },
         { title: 'Lecture Source Code Repository', url: 'https://github.com/skyrovix', type: 'github' }
       ]
     };
@@ -642,21 +888,24 @@ export const AdminDashboard: React.FC = () => {
         id: `mod-${Date.now()}`,
         title: 'Module 1: Foundations',
         duration: '1h 00m',
+        subModules: subModClean ? [{ id: `sub-${Date.now()}`, title: subModClean }] : [],
         lessons: [newLesson]
       }];
     } else {
       const modIndex = updatedModules.findIndex(m => m.id === selectedModuleId);
-      if (modIndex >= 0) {
-        updatedModules[modIndex] = {
-          ...updatedModules[modIndex],
-          lessons: [...updatedModules[modIndex].lessons, newLesson]
-        };
-      } else {
-        updatedModules[0] = {
-          ...updatedModules[0],
-          lessons: [...updatedModules[0].lessons, newLesson]
-        };
-      }
+      const idx = modIndex >= 0 ? modIndex : 0;
+      const mod = updatedModules[idx];
+      const existingSubs = mod.subModules || [];
+      const nextSubs =
+        subModClean && !existingSubs.some(s => s.title.toLowerCase() === subModClean.toLowerCase())
+          ? [...existingSubs, { id: `sub-${Date.now()}`, title: subModClean }]
+          : existingSubs;
+
+      updatedModules[idx] = {
+        ...mod,
+        subModules: nextSubs,
+        lessons: [...mod.lessons, newLesson]
+      };
     }
 
     const totalCount = updatedModules.reduce((acc, m) => acc + m.lessons.length, 0);
@@ -667,9 +916,9 @@ export const AdminDashboard: React.FC = () => {
     };
 
     updateVideoCourse(updatedCourse);
-    showToast(`Published "${newLessonTitle}" to ${targetCourse.title}! Video lecture live.`);
+    showToast(`Published "${newLessonTitle}" via YouTube to ${targetCourse.title}!`);
     setNewLessonTitle('');
-    setUploadedVideoName(null);
+    setNewLessonSummary('');
   };
 
   // Delete Student Action (persisted in backend DB)
@@ -944,70 +1193,99 @@ export const AdminDashboard: React.FC = () => {
     e.preventDefault();
     if (!newTitle.trim()) return;
 
+    const normalizedPrice = newIsFree
+      ? 'Free'
+      : newPrice.trim().startsWith('₹')
+      ? newPrice.trim()
+      : `₹${newPrice.replace(/[^0-9]/g, '') || '99'}`;
+    const normalizedOrig =
+      !newIsFree && newOriginalPrice.trim()
+        ? newOriginalPrice.trim().startsWith('₹')
+          ? newOriginalPrice.trim()
+          : `₹${newOriginalPrice.replace(/[^0-9]/g, '')}`
+        : undefined;
+
     if (courseFormat === 'video') {
+      const embedUrl = toYouTubeEmbedUrl(newInitialYouTubeUrl || 'https://www.youtube.com/watch?v=nu_pCVPKzTk');
+      const ytThumb = getYouTubeThumbnail(embedUrl);
+      const courseId = `vid-${Date.now()}`;
       const newVid: VideoCourse = {
-        id: `vid-${Date.now()}`,
+        id: courseId,
         slug: newTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
         title: newTitle.trim(),
-        subtitle: newDescription.trim() || 'Comprehensive video series for engineering teams.',
+        subtitle: newSubtitle.trim() || newDescription.trim() || 'Comprehensive YouTube-powered video series.',
         category: newCategory,
         level: newLevel,
         rating: 5.0,
         reviewsCount: 1,
         enrolledCount: 1,
         totalDuration: newDuration || '12h 00m',
-        totalLectures: 8,
+        totalLectures: 1,
         accentColor: '#FB4400',
-        badge: 'Newly Published',
+        badge: newBadge.trim() || (newIsFree ? 'FREE PASS' : `VIDEO PASS • ${normalizedPrice}`),
+        isFree: newIsFree,
+        price: normalizedPrice,
+        originalPrice: normalizedOrig,
         instructor: {
           name: newInstructor || 'Skyrovix Team',
           role: 'Skyrovix Curriculum & Technical Team',
           avatar: brandImages.icon,
-          bio: 'Curriculum authored by Skyrovix Engineering Academy.'
+          bio: 'Official curriculum authored by Skyrovix Engineering Academy.'
         },
-        thumbnail: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80',
-        description: newDescription || 'Newly authored course.',
-        learningOutcomes: ['Core principles', 'Hands-on practice', 'Production architectures'],
-        prerequisites: ['Basic programming experience'],
+        thumbnail:
+          newThumbnailUrl.trim() ||
+          ytThumb ||
+          'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80',
+        description: newDescription || 'Newly authored Skyrovix course.',
+        learningOutcomes: ['Core architectural principles', 'Hands-on coding exercises', 'Production deployments'],
+        prerequisites: ['Basic programming fundamentals'],
         modules: [
           {
             id: `mod-1-${Date.now()}`,
-            title: 'Module 1: Foundations',
+            title: 'Module 1: Foundations & Setup',
             duration: '2h 00m',
+            subModules: [{ id: `sub-1-${Date.now()}`, title: '1.1 Getting Started' }],
             lessons: [
               {
                 id: `l-1-${Date.now()}`,
-                title: '1. Welcome & Setup',
+                title: '1. Welcome & Architecture Overview',
+                subModule: '1.1 Getting Started',
                 duration: '14:20',
                 durationSeconds: 860,
-                videoUrl: 'https://www.youtube.com/embed/nu_pCVPKzTk',
+                videoUrl: embedUrl,
                 summary: 'Foundations and workflow setup.',
                 chapters: [{ title: 'Overview', time: '00:00', timeSeconds: 0 }],
-                notes: 'Welcome to this curriculum!',
-                transcript: 'Welcome everyone to the new course...',
-                resources: []
+                notes: 'Welcome to this Skyrovix curriculum!',
+                transcript: 'Welcome everyone to this Skyrovix course...',
+                resources: [
+                  { title: 'Skyrovix YouTube Channel', url: SKYROVIX_YOUTUBE_CHANNEL, type: 'link' }
+                ]
               }
             ]
           }
         ]
       };
       addVideoCourse(newVid);
+      setSelectedCourseForStudio(courseId);
     } else {
       const newTxt: TextCourseMetadata = {
         id: `text-${Date.now()}`,
         slug: newTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
         title: newTitle.trim(),
-        shortDesc: newDescription.trim() || 'Comprehensive text and code reference.',
+        shortDesc: newSubtitle.trim() || newDescription.trim() || 'Comprehensive text and code reference.',
         category: newCategory,
         icon: 'BookOpen',
-        badge: 'Text Track',
+        badge: newBadge.trim() || (newIsFree ? '100% FREE' : `PRO • ${normalizedPrice}`),
         level: newLevel,
-        instructor: newInstructor || 'Skyrovix Staff',
+        instructor: newInstructor || 'Skyrovix Team',
         rating: 5.0,
         enrolledCount: 1,
         type: 'text',
-        lessonsCount: 4,
-        estimatedHours: '4.5 hrs',
+        isFree: newIsFree,
+        price: normalizedPrice,
+        originalPrice: normalizedOrig,
+        lessonsCount: 1,
+        estimatedHours: newDuration || '4.5 hrs',
         lessons: [
           {
             id: `txt-l1-${Date.now()}`,
@@ -1025,8 +1303,10 @@ export const AdminDashboard: React.FC = () => {
 
     setIsCreateModalOpen(false);
     setNewTitle('');
+    setNewSubtitle('');
     setNewDescription('');
-    showToast(`Published course "${newTitle}"!`);
+    setNewThumbnailUrl('');
+    showToast(`Published course "${newTitle}" (${normalizedPrice})!`);
   };
 
   const handleLogout = async () => {
@@ -1035,7 +1315,7 @@ export const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-slate-800 flex flex-col font-sans selection:bg-[#FF5A36] selection:text-white">
+    <div className="min-h-screen bg-[#FAF8F5] text-slate-800 flex flex-col font-sans selection:bg-[#FF5A36] selection:text-white overflow-x-hidden">
       {/* Toast Alert */}
       <AnimatePresence>
         {toastMessage && (
@@ -1043,30 +1323,38 @@ export const AdminDashboard: React.FC = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-5 right-5 z-50 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-slate-700 text-xs font-bold"
+            className="fixed top-4 right-4 left-4 sm:left-auto z-[60] bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-slate-700 text-xs font-bold max-w-md"
           >
-            <CheckCircle2 size={16} className="text-emerald-400" />
-            <span>{toastMessage}</span>
+            <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />
+            <span className="truncate">{toastMessage}</span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Top Navigation Bar Matching Reference Design */}
-      <header className="sticky top-0 z-40 bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 py-3 shadow-2xs">
-        <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-4">
-          {/* Left: Official Skyrovix Logo + Admin Badge */}
-          <div className="flex items-center gap-3 shrink-0">
+      {/* Top Navigation Bar (100% Responsive Mobile + Desktop) */}
+      <header className="sticky top-0 z-40 bg-white border-b border-slate-200/80 px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3 shadow-2xs">
+        <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-2 sm:gap-4">
+          {/* Left: Mobile Drawer Button + Official Skyrovix Logo + Admin Badge */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={() => setMobileSidebarOpen(true)}
+              className="lg:hidden cursor-pointer p-2 rounded-xl bg-slate-100 hover:bg-orange-50 text-slate-700 hover:text-[#FF5A36] transition-colors"
+              aria-label="Open Admin Navigation Menu"
+            >
+              <Menu size={18} />
+            </button>
             <button
               onClick={() => setCurrentView('home')}
-              className="flex items-center gap-3 group cursor-pointer text-left transition-transform active:scale-95"
+              className="flex items-center gap-2 sm:gap-3 group cursor-pointer text-left transition-transform active:scale-95"
               title="Return to Skyrovix Home"
             >
               <img
                 src={brandImages.logo}
                 alt="Skyrovix"
-                className="h-7 sm:h-8 w-auto object-contain drop-shadow-2xs group-hover:scale-102 transition-transform"
+                className="h-6 sm:h-8 w-auto object-contain drop-shadow-2xs group-hover:scale-102 transition-transform"
               />
-              <span className="px-2 py-0.5 rounded text-[10px] uppercase font-mono font-extrabold bg-slate-900 text-white shadow-xs tracking-wider">
+              <span className="hidden xs:inline-block px-2 py-0.5 rounded text-[9px] sm:text-[10px] uppercase font-mono font-extrabold bg-slate-900 text-white shadow-xs tracking-wider">
                 ADMIN STUDIO
               </span>
             </button>
@@ -1112,8 +1400,22 @@ export const AdminDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Right: Notification Bell + Real Admin Profile */}
-          <div className="flex items-center gap-3 shrink-0">
+          {/* Right: Compact Mobile Sync + Notification Bell + Real Admin Profile */}
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            {/* Mobile compact Live DB Sync */}
+            <button
+              onClick={() => fetchAdminOverview(true)}
+              className={`md:hidden cursor-pointer flex items-center gap-1 px-2.5 py-1.5 rounded-full border text-[10px] font-bold ${
+                dbConnected
+                  ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                  : 'bg-rose-50 border-rose-200 text-rose-700'
+              }`}
+              title="Tap to refresh live database"
+            >
+              <span className={`w-1.5 h-1.5 rounded-full ${dbConnected ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`}></span>
+              <span>{dbConnected ? 'Live' : 'Offline'}</span>
+              <RefreshCw size={10} className={isSyncingLive ? 'animate-spin' : ''} />
+            </button>
             {/* Notification Bell */}
             <div className="relative">
               <button
@@ -1221,10 +1523,117 @@ export const AdminDashboard: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Layout: Left Fixed-Width Sidebar + Right Content Area */}
+      {/* Mobile Search Bar (< md screens) */}
+      <div className="md:hidden bg-white border-b border-slate-200/80 px-3 py-2">
+        <div className="relative">
+          <input
+            type="text"
+            value={topSearch}
+            onChange={e => setTopSearch(e.target.value)}
+            placeholder="Search courses, students, orders..."
+            className="w-full bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-xs rounded-xl px-3.5 py-2 pl-9 outline-none focus:border-[#FF5A36]"
+          />
+          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+        </div>
+      </div>
+
+      {/* Mobile Slide-Out Navigation Drawer */}
+      <AnimatePresence>
+        {mobileSidebarOpen && (
+          <div className="fixed inset-0 z-50 lg:hidden flex">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileSidebarOpen(false)}
+              className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs"
+            />
+            <motion.aside
+              initial={{ x: -290 }}
+              animate={{ x: 0 }}
+              exit={{ x: -290 }}
+              transition={{ type: 'spring', damping: 26, stiffness: 280 }}
+              className="relative z-10 w-72 max-w-[85vw] bg-white h-full shadow-2xl p-4 flex flex-col justify-between overflow-y-auto"
+            >
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
+                <div className="flex items-center gap-2">
+                  <img src={brandImages.logo} alt="Skyrovix" className="h-6 w-auto" />
+                  <span className="px-2 py-0.5 rounded text-[9px] font-mono font-extrabold bg-slate-900 text-white">
+                    ADMIN
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setMobileSidebarOpen(false)}
+                  className="p-1.5 rounded-xl bg-slate-100 text-slate-600 hover:text-slate-900"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto space-y-4 text-xs font-bold">
+                <button onClick={() => handleSelectMenu('dashboard')} className={`w-full text-left px-3.5 py-2.5 rounded-2xl flex items-center gap-3 ${activeMenu === 'dashboard' ? 'bg-[#FF6B4A] text-white' : 'text-slate-700 hover:bg-slate-50'}`}>
+                  <LayoutDashboard size={16} /><span>Dashboard</span>
+                </button>
+                <button onClick={() => handleSelectMenu('orders')} className={`w-full text-left px-3.5 py-2.5 rounded-2xl flex items-center justify-between ${activeMenu === 'orders' ? 'bg-[#FF6B4A] text-white' : 'text-slate-700 hover:bg-slate-50'}`}>
+                  <span className="flex items-center gap-3"><CreditCard size={16} /><span>Cashfree Orders</span></span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] bg-emerald-100 text-emerald-700">{liveOrders.length}</span>
+                </button>
+                <button onClick={() => handleSelectMenu('courses')} className={`w-full text-left px-3.5 py-2.5 rounded-2xl flex items-center justify-between ${activeMenu === 'courses' ? 'bg-[#FF6B4A] text-white' : 'text-slate-700 hover:bg-slate-50'}`}>
+                  <span className="flex items-center gap-3"><BookOpen size={16} /><span>All Courses</span></span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700">{allCoursesList.length}</span>
+                </button>
+                <button onClick={() => handleSelectMenu('studio')} className={`w-full text-left px-3.5 py-2.5 rounded-2xl flex items-center gap-3 ${activeMenu === 'studio' ? 'bg-[#FF6B4A] text-white' : 'text-slate-700 hover:bg-slate-50'}`}>
+                  <Youtube size={16} /><span>YouTube & Course Studio</span>
+                </button>
+                <button onClick={() => handleSelectMenu('categories')} className={`w-full text-left px-3.5 py-2.5 rounded-2xl flex items-center gap-3 ${activeMenu === 'categories' ? 'bg-[#FF6B4A] text-white' : 'text-slate-700 hover:bg-slate-50'}`}>
+                  <Layers size={16} /><span>Course Categories</span>
+                </button>
+                <button onClick={() => handleSelectMenu('students')} className={`w-full text-left px-3.5 py-2.5 rounded-2xl flex items-center justify-between ${activeMenu === 'students' ? 'bg-[#FF6B4A] text-white' : 'text-slate-700 hover:bg-slate-50'}`}>
+                  <span className="flex items-center gap-3"><Users size={16} /><span>Students</span></span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700">{students.length}</span>
+                </button>
+                <button onClick={() => handleSelectMenu('tasks')} className={`w-full text-left px-3.5 py-2.5 rounded-2xl flex items-center justify-between ${activeMenu === 'tasks' ? 'bg-[#FF6B4A] text-white' : 'text-slate-700 hover:bg-slate-50'}`}>
+                  <span className="flex items-center gap-3"><CheckCircle2 size={16} /><span>Review Assignments</span></span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] bg-amber-100 text-amber-700">{submissions.filter(s => s.status === 'Pending').length}</span>
+                </button>
+                <button onClick={() => handleSelectMenu('projects')} className={`w-full text-left px-3.5 py-2.5 rounded-2xl flex items-center justify-between ${activeMenu === 'projects' ? 'bg-[#FF6B4A] text-white' : 'text-slate-700 hover:bg-slate-50'}`}>
+                  <span className="flex items-center gap-3"><FolderGit2 size={16} /><span>Final Projects</span></span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700">{capstones.length}</span>
+                </button>
+                <button onClick={() => handleSelectMenu('certificates')} className={`w-full text-left px-3.5 py-2.5 rounded-2xl flex items-center justify-between ${activeMenu === 'certificates' ? 'bg-[#FF6B4A] text-white' : 'text-slate-700 hover:bg-slate-50'}`}>
+                  <span className="flex items-center gap-3"><Award size={16} /><span>Certificates Issued</span></span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] bg-amber-100 text-amber-700">{issuedCertificates.length}</span>
+                </button>
+                <button onClick={() => handleSelectMenu('mentorship')} className={`w-full text-left px-3.5 py-2.5 rounded-2xl flex items-center gap-3 ${activeMenu === 'mentorship' ? 'bg-[#FF6B4A] text-white' : 'text-slate-700 hover:bg-slate-50'}`}>
+                  <Headphones size={16} /><span>1-on-1 Mentorship</span>
+                </button>
+                <button onClick={() => handleSelectMenu('sandboxes')} className={`w-full text-left px-3.5 py-2.5 rounded-2xl flex items-center gap-3 ${activeMenu === 'sandboxes' ? 'bg-[#FF6B4A] text-white' : 'text-slate-700 hover:bg-slate-50'}`}>
+                  <Terminal size={16} /><span>Code Sandbox</span>
+                </button>
+                <button onClick={() => handleSelectMenu('vault')} className={`w-full text-left px-3.5 py-2.5 rounded-2xl flex items-center gap-3 ${activeMenu === 'vault' ? 'bg-[#FF6B4A] text-white' : 'text-slate-700 hover:bg-slate-50'}`}>
+                  <FolderCode size={16} /><span>Starter Templates</span>
+                </button>
+                <button onClick={() => { setMobileSidebarOpen(false); setIsCouponModalOpen(true); }} className="w-full text-left px-3.5 py-2.5 rounded-2xl flex items-center gap-3 text-slate-700 hover:bg-slate-50">
+                  <Tag size={16} /><span>Discount Coupons</span>
+                </button>
+                <button onClick={() => handleSelectMenu('settings')} className={`w-full text-left px-3.5 py-2.5 rounded-2xl flex items-center gap-3 ${activeMenu === 'settings' ? 'bg-[#FF6B4A] text-white' : 'text-slate-700 hover:bg-slate-50'}`}>
+                  <Settings size={16} /><span>Platform Settings</span>
+                </button>
+              </div>
+              <div className="pt-3 mt-3 border-t border-slate-200">
+                <button onClick={handleLogout} className="w-full text-left px-3.5 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-3 text-rose-600 hover:bg-rose-50">
+                  <LogOut size={16} /><span>Logout</span>
+                </button>
+              </div>
+            </motion.aside>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Main Layout: Left Fixed-Width Desktop Sidebar + Right Content Area */}
       <div className="max-w-[1600px] w-full mx-auto flex-1 flex flex-col lg:flex-row">
-        {/* Left Sidebar with Learning Management Menus */}
-        <aside className="w-full lg:w-64 xl:w-72 bg-white/70 lg:bg-transparent border-b lg:border-b-0 lg:border-r border-slate-200/80 p-4 lg:py-6 lg:px-4 shrink-0 flex flex-col justify-between lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)]">
+        {/* Left Sidebar with Learning Management Menus (Hidden on mobile, Slide Drawer used instead) */}
+        <aside className="hidden lg:flex w-64 xl:w-72 bg-white/60 border-r border-slate-200/80 py-6 px-4 shrink-0 flex-col justify-between sticky top-16 h-[calc(100vh-4rem)]">
           {/* Top Navigation Menu List */}
           <div className="flex-1 overflow-y-auto pr-1 scrollbar-thin space-y-4">
             {/* GROUP 1: OVERVIEW */}
@@ -1296,9 +1705,9 @@ export const AdminDashboard: React.FC = () => {
                   </span>
                 </button>
 
-                {/* 3. Upload Videos & Lessons */}
+                {/* 3. YouTube Video & Course Studio */}
                 <button
-                  onClick={() => setActiveMenu('studio')}
+                  onClick={() => handleSelectMenu('studio')}
                   className={`cursor-pointer w-full text-left px-3.5 py-2.5 rounded-2xl text-xs font-bold flex items-center justify-between transition-all ${
                     activeMenu === 'studio'
                       ? 'bg-[#FF6B4A] text-white shadow-sm'
@@ -1306,8 +1715,8 @@ export const AdminDashboard: React.FC = () => {
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <Video size={16} className={activeMenu === 'studio' ? 'text-white' : 'text-slate-400'} />
-                    <span>Upload Videos & Lessons</span>
+                    <Youtube size={16} className={activeMenu === 'studio' ? 'text-white' : 'text-rose-500'} />
+                    <span>YouTube & Course Studio</span>
                   </div>
                 </button>
 
@@ -2078,22 +2487,22 @@ export const AdminDashboard: React.FC = () => {
             </div>
           )}
 
-          {/* VIEW 2: All Courses */}
+          {/* VIEW 2: All Courses (Responsive Table + Mobile Cards + Cost + Enterprise Edit) */}
           {activeMenu === 'courses' && (
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h1 className="text-2xl font-extrabold text-slate-900 font-display flex items-center gap-2.5">
+                  <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 font-display flex items-center gap-2.5">
                     <BookOpen className="text-[#FF5A36]" size={24} />
                     <span>All Courses ({allCoursesList.length})</span>
                   </h1>
                   <p className="text-xs text-slate-500 mt-1">
-                    View all published video masterclasses and text tutorials, search by title, or create new courses.
+                    Manage titles, descriptions, pricing/cost (₹), YouTube modules & sub-modules across every curriculum.
                   </p>
                 </div>
                 <button
                   onClick={() => setIsCreateModalOpen(true)}
-                  className="cursor-pointer flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#FF5A36] hover:bg-[#E03D00] text-white font-bold text-xs transition-all shadow-md shadow-orange-500/20 active:scale-95"
+                  className="cursor-pointer w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-[#FF5A36] hover:bg-[#E03D00] text-white font-bold text-xs transition-all shadow-md shadow-orange-500/20 active:scale-95"
                 >
                   <Plus size={16} />
                   <span>Create New Course</span>
@@ -2101,8 +2510,8 @@ export const AdminDashboard: React.FC = () => {
               </div>
 
               {/* Table Filters */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div className="flex items-center flex-wrap gap-2">
                   <button
                     onClick={() => setTableTypeFilter('all')}
                     className={`cursor-pointer px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors ${
@@ -2121,7 +2530,7 @@ export const AdminDashboard: React.FC = () => {
                         : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900'
                     }`}
                   >
-                    Video Masterclasses ({videoCourses.length})
+                    YouTube Video Tracks ({videoCourses.length})
                   </button>
                   <button
                     onClick={() => setTableTypeFilter('text')}
@@ -2135,28 +2544,82 @@ export const AdminDashboard: React.FC = () => {
                   </button>
                 </div>
 
-                <div className="relative">
+                <div className="relative w-full md:w-64">
                   <input
                     type="text"
                     value={tableSearch}
                     onChange={e => setTableSearch(e.target.value)}
                     placeholder="Filter courses in catalog..."
-                    className="bg-white border border-slate-200 text-slate-800 placeholder-slate-400 text-xs rounded-xl px-3.5 py-2 pl-9 outline-none focus:border-[#FF5A36] w-64 shadow-2xs"
+                    className="w-full bg-white border border-slate-200 text-slate-800 placeholder-slate-400 text-xs rounded-xl px-3.5 py-2 pl-9 outline-none focus:border-[#FF5A36] shadow-2xs"
                   />
                   <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
                 </div>
               </div>
 
-              {/* Courses Table */}
-              <div className="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+              {/* Mobile Card View (< md) */}
+              <div className="grid grid-cols-1 gap-3 md:hidden">
+                {filteredTableCourses.map(course => (
+                  <div key={course.id} className="bg-white rounded-2xl border border-slate-200 p-4 shadow-2xs space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${course.type === 'video' ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}`}>
+                            {course.type === 'video' ? 'YouTube Video' : 'Text'}
+                          </span>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-orange-50 text-[#FF5A36]">
+                            {course.price}
+                          </span>
+                        </div>
+                        <h3 className="font-bold text-sm text-slate-900 leading-snug">{course.title}</h3>
+                        <p className="text-[11px] text-slate-500 mt-0.5">{course.category} • {course.modulesCount} Modules • {course.lessonsCount} Items</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                      <button
+                        onClick={() => {
+                          if (course.type === 'video') {
+                            setSelectedCourseForStudio(course.id);
+                            setStudioTab('details');
+                            setActiveMenu('studio');
+                          } else {
+                            const found = textCourses.find(t => t.id === course.id);
+                            if (found) setEditingTextCourse(found);
+                          }
+                        }}
+                        className="cursor-pointer px-3 py-1.5 rounded-xl bg-orange-50 text-[#FF5A36] font-bold text-xs flex items-center gap-1"
+                      >
+                        <Edit3 size={12} /><span>Edit Details & Cost</span>
+                      </button>
+                      <button
+                        onClick={() => course.type === 'video' ? navigateToVideoCourse(course.id) : navigateToTextCourse(course.slug || course.id)}
+                        className="cursor-pointer p-2 rounded-xl bg-slate-100 text-slate-700"
+                        title="Preview"
+                      >
+                        <Eye size={13} />
+                      </button>
+                      <button
+                        onClick={() => deleteCourse(course.id)}
+                        className="cursor-pointer p-2 rounded-xl bg-rose-50 text-rose-600"
+                        title="Delete"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop Courses Table (md+) */}
+              <div className="hidden md:block rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs text-slate-700">
                     <thead className="bg-slate-50 text-[10px] uppercase tracking-wider text-slate-500 font-bold border-b border-slate-200">
                       <tr>
                         <th className="px-5 py-3.5">Course Title</th>
                         <th className="px-4 py-3.5">Format</th>
+                        <th className="px-4 py-3.5">Cost / Price</th>
                         <th className="px-4 py-3.5">Category</th>
-                        <th className="px-4 py-3.5">Lectures/Chapters</th>
+                        <th className="px-4 py-3.5">Curriculum</th>
                         <th className="px-4 py-3.5">Instructor</th>
                         <th className="px-4 py-3.5 text-right">Actions</th>
                       </tr>
@@ -2175,16 +2638,39 @@ export const AdminDashboard: React.FC = () => {
                                   : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                               }`}
                             >
-                              {course.type === 'video' ? 'Video' : 'Text'}
+                              {course.type === 'video' ? 'YouTube Video' : 'Text'}
                             </span>
+                          </td>
+                          <td className="px-4 py-4">
+                            <div className="font-mono font-extrabold text-slate-900">{course.price}</div>
+                            {course.originalPrice && (
+                              <div className="text-[10px] font-mono text-slate-400 line-through">{course.originalPrice}</div>
+                            )}
                           </td>
                           <td className="px-4 py-4 text-slate-600 font-medium">{course.category}</td>
                           <td className="px-4 py-4 font-mono font-semibold text-slate-800">
-                            {course.lessonsCount} items
+                            {course.modulesCount} mod • {course.lessonsCount} items
                           </td>
                           <td className="px-4 py-4 text-slate-700 font-medium">{course.instructor}</td>
                           <td className="px-4 py-4 text-right">
-                            <div className="flex items-center justify-end gap-2">
+                            <div className="flex items-center justify-end gap-1.5">
+                              <button
+                                onClick={() => {
+                                  if (course.type === 'video') {
+                                    setSelectedCourseForStudio(course.id);
+                                    setStudioTab('details');
+                                    setActiveMenu('studio');
+                                  } else {
+                                    const found = textCourses.find(t => t.id === course.id);
+                                    if (found) setEditingTextCourse(found);
+                                  }
+                                }}
+                                className="cursor-pointer px-2.5 py-1.5 rounded-xl bg-orange-50 hover:bg-orange-100 text-[#FF5A36] font-bold text-[11px] transition-colors flex items-center gap-1"
+                                title="Edit Title, Cost, Description, Modules & Sub-modules"
+                              >
+                                <Edit3 size={12} />
+                                <span>Edit</span>
+                              </button>
                               <button
                                 onClick={() => {
                                   if (course.type === 'video') {
@@ -2216,34 +2702,40 @@ export const AdminDashboard: React.FC = () => {
             </div>
           )}
 
-          {/* VIEW 3: Upload Videos & Lessons */}
+          {/* VIEW 3: Enterprise YouTube-Only Course & Curriculum Studio */}
           {activeMenu === 'studio' && (
             <div className="space-y-6">
-              {/* Studio Course Selection & Header Bar */}
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-5 rounded-3xl bg-white border border-slate-200/90 shadow-2xs">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-orange-100 text-[#FF5A36]">
-                      VIDEO & LESSON UPLOADER
+              {/* Studio Course Selection & YouTube Channel Header Bar */}
+              <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/90 shadow-2xs">
+                <div className="space-y-1">
+                  <div className="flex items-center flex-wrap gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-rose-100 text-rose-700 flex items-center gap-1">
+                      <Youtube size={12} />
+                      <span>YOUTUBE-ONLY STUDIO</span>
                     </span>
-                    <span className="text-xs font-bold text-slate-400">
-                      {targetStudioCourse?.modules?.length || 0} Modules • {targetStudioCourse?.totalLectures || 0} Lessons
+                    <span className="text-xs font-bold text-slate-500">
+                      {targetStudioCourse?.modules?.length || 0} Modules • {targetStudioCourse?.totalLectures || 0} Lessons •{' '}
+                      <span className="text-[#FF5A36]">
+                        {targetStudioCourse?.isFree ? 'Free' : targetStudioCourse?.price || (targetStudioCourse?.id === 'vid-fullstack-dev' ? '₹299' : '₹99')}
+                      </span>
                     </span>
                   </div>
-                  <h3 className="font-extrabold text-slate-900 text-lg font-display mt-1 flex items-center gap-2">
-                    <Video className="text-[#FF5A36]" size={20} />
-                    <span>Upload Videos & Lessons</span>
+                  <h3 className="font-extrabold text-slate-900 text-lg font-display flex items-center gap-2">
+                    <span>Enterprise Course &amp; YouTube Curriculum Studio</span>
                   </h3>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    Select a course, upload video files (.mp4 / webm) or enter video links, add modules, and publish lessons.
+                  <p className="text-xs text-slate-500">
+                    Manage course details, pricing/cost, modules, sub-modules, and YouTube lessons from your official channel.
                   </p>
                 </div>
 
-                <div className="flex items-center flex-wrap gap-2.5">
+                <div className="flex items-center flex-wrap gap-2">
                   <select
                     value={selectedCourseForStudio}
-                    onChange={e => setSelectedCourseForStudio(e.target.value)}
-                    className="bg-slate-50 border border-slate-200/90 text-slate-800 text-xs rounded-2xl px-4 py-2.5 outline-none focus:border-[#FF5A36] font-bold shadow-2xs"
+                    onChange={e => {
+                      setSelectedCourseForStudio(e.target.value);
+                      setEditingLessonId(null);
+                    }}
+                    className="w-full sm:w-auto max-w-xs bg-slate-50 border border-slate-200/90 text-slate-800 text-xs rounded-2xl px-3.5 py-2.5 outline-none focus:border-[#FF5A36] font-bold shadow-2xs"
                   >
                     {videoCourses.map(v => (
                       <option key={v.id} value={v.id}>
@@ -2252,10 +2744,22 @@ export const AdminDashboard: React.FC = () => {
                     ))}
                   </select>
 
+                  <a
+                    href={SKYROVIX_YOUTUBE_CHANNEL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="cursor-pointer flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition-all shadow-xs"
+                    title="Open Skyrovix Official YouTube Channel"
+                  >
+                    <Youtube size={14} />
+                    <span>@skyrovix Channel</span>
+                    <ExternalLink size={11} />
+                  </a>
+
                   <button
                     type="button"
                     onClick={() => setIsAddModuleModalOpen(true)}
-                    className="cursor-pointer flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-all shadow-xs"
+                    className="cursor-pointer flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-all shadow-xs"
                   >
                     <FolderPlus size={14} className="text-orange-400" />
                     <span>New Module</span>
@@ -2265,7 +2769,7 @@ export const AdminDashboard: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => navigateToVideoCourse(selectedCourseForStudio)}
-                      className="cursor-pointer flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-orange-50 hover:bg-orange-100 text-[#FF5A36] border border-orange-200 font-bold text-xs transition-all"
+                      className="cursor-pointer flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-orange-50 hover:bg-orange-100 text-[#FF5A36] border border-orange-200 font-bold text-xs transition-all"
                     >
                       <Play size={14} />
                       <span>Live Player</span>
@@ -2274,334 +2778,678 @@ export const AdminDashboard: React.FC = () => {
                 </div>
               </div>
 
-              {/* Two Column Layout: Left Video Upload & Publisher, Right Interactive Curriculum Tree */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                
-                {/* LEFT: Video Upload & Lesson Publisher (7 Cols) */}
-                <div className="lg:col-span-7 bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs space-y-5">
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-xl bg-orange-100 text-[#FF5A36] flex items-center justify-center font-bold">
-                        <Upload size={16} />
-                      </div>
-                      <div>
-                        <h4 className="font-extrabold text-sm text-slate-900">Upload & Author Video Lecture</h4>
-                        <p className="text-[11px] text-slate-500">Publish video lessons into target course module</p>
-                      </div>
-                    </div>
+              {/* Enterprise Studio Tabs: Modules/Sub-Modules/YouTube vs Course Details & Cost */}
+              <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-white border border-slate-200 w-fit shadow-2xs">
+                <button
+                  type="button"
+                  onClick={() => setStudioTab('curriculum')}
+                  className={`cursor-pointer px-4 py-2 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 ${
+                    studioTab === 'curriculum'
+                      ? 'bg-[#FF5A36] text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <Youtube size={14} />
+                  <span>Modules, Sub-Modules &amp; YouTube Links</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setStudioTab('details')}
+                  className={`cursor-pointer px-4 py-2 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 ${
+                    studioTab === 'details'
+                      ? 'bg-[#FF5A36] text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <SlidersHorizontal size={14} />
+                  <span>Course Details, Cost &amp; Metadata</span>
+                </button>
+              </div>
 
-                    {/* Mode Selector Tabs */}
-                    <div className="flex p-1 bg-slate-100 rounded-xl">
-                      <button
-                        type="button"
-                        onClick={() => setVideoSourceMode('upload')}
-                        className={`cursor-pointer px-3 py-1 text-[11px] font-bold rounded-lg transition-all ${
-                          videoSourceMode === 'upload' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500 hover:text-slate-900'
-                        }`}
-                      >
-                        File Upload
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setVideoSourceMode('url')}
-                        className={`cursor-pointer px-3 py-1 text-[11px] font-bold rounded-lg transition-all ${
-                          videoSourceMode === 'url' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500 hover:text-slate-900'
-                        }`}
-                      >
-                        Embed / Stream
-                      </button>
+              {studioTab === 'details' ? (
+                /* ENTERPRISE COURSE DETAILS & COST EDITOR */
+                <form
+                  onSubmit={handleSaveCourseDetails}
+                  className="bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/90 shadow-xs space-y-6"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                    <div>
+                      <h4 className="font-extrabold text-base text-slate-900">
+                        Enterprise Course Configuration: {targetStudioCourse?.title}
+                      </h4>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        Changes update Catalog cards, Course Details page, and Cashfree checkout amount immediately.
+                      </p>
                     </div>
+                    <button
+                      type="submit"
+                      className="cursor-pointer px-5 py-2.5 rounded-2xl bg-[#FF5A36] hover:bg-[#E03D00] text-white font-extrabold text-xs shadow-md shadow-orange-500/20 flex items-center justify-center gap-2"
+                    >
+                      <Save size={14} />
+                      <span>Save Course Details &amp; Cost</span>
+                    </button>
                   </div>
 
-                  {/* Target Module Picker */}
-                  <div>
-                    <div className="flex items-center justify-between mb-1.5">
-                      <label className="text-xs font-bold text-slate-700">Target Curriculum Module</label>
-                      <button
-                        type="button"
-                        onClick={() => setIsAddModuleModalOpen(true)}
-                        className="cursor-pointer text-[11px] font-bold text-[#FF5A36] hover:underline flex items-center gap-1"
-                      >
-                        <Plus size={12} />
-                        <span>Create Another Module</span>
-                      </button>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">Course Title</label>
+                        <input
+                          type="text"
+                          value={editCourseTitle}
+                          onChange={e => setEditCourseTitle(e.target.value)}
+                          className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2.5 text-xs font-bold text-slate-900 outline-none focus:border-[#FF5A36]"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">Subtitle / Short Tagline</label>
+                        <input
+                          type="text"
+                          value={editCourseSubtitle}
+                          onChange={e => setEditCourseSubtitle(e.target.value)}
+                          className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36]"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">Full Course Description</label>
+                        <textarea
+                          rows={4}
+                          value={editCourseDescription}
+                          onChange={e => setEditCourseDescription(e.target.value)}
+                          className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36] resize-none leading-relaxed"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 mb-1">Category</label>
+                          <select
+                            value={editCourseCategory}
+                            onChange={e => setEditCourseCategory(e.target.value)}
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-900 outline-none focus:border-[#FF5A36]"
+                          >
+                            <option value="Full Stack">Full Stack</option>
+                            <option value="Frontend">Frontend</option>
+                            <option value="Backend">Backend</option>
+                            <option value="Cloud Architecture">Cloud Architecture</option>
+                            <option value="AI & ML">AI &amp; ML</option>
+                            <option value="Cyber Security">Cyber Security</option>
+                            <option value="Databases">Databases</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 mb-1">Difficulty Level</label>
+                          <select
+                            value={editCourseLevel}
+                            onChange={e => setEditCourseLevel(e.target.value as any)}
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-900 outline-none focus:border-[#FF5A36]"
+                          >
+                            <option value="All Levels">All Levels</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 mb-1">Total Duration</label>
+                          <input
+                            type="text"
+                            value={editCourseDuration}
+                            onChange={e => setEditCourseDuration(e.target.value)}
+                            placeholder="18h 30m"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-mono font-bold text-slate-900 outline-none focus:border-[#FF5A36]"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    {targetStudioCourse?.modules?.length ? (
-                      <select
-                        value={selectedModuleId}
-                        onChange={e => setSelectedModuleId(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-200/90 rounded-2xl px-4 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36] font-bold"
-                      >
-                        {targetStudioCourse.modules.map((m, idx) => (
-                          <option key={m.id} value={m.id}>
-                            Module {idx + 1}: {m.title} ({m.lessons.length} lessons)
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <div className="p-3 bg-amber-50 rounded-2xl border border-amber-200 text-xs text-amber-800 flex items-center justify-between">
-                        <span>No modules created yet for this track.</span>
+
+                    <div className="space-y-4">
+                      {/* Enterprise Cost / Pricing Panel */}
+                      <div className="p-4 rounded-2xl bg-orange-50/60 border border-orange-200 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
+                            <DollarSign size={14} className="text-[#FF5A36]" />
+                            <span>Course Cost &amp; Cashfree Pricing</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setEditCourseIsFree(!editCourseIsFree)}
+                            className={`cursor-pointer px-3 py-1 rounded-full text-[11px] font-bold transition-all ${
+                              editCourseIsFree ? 'bg-emerald-600 text-white' : 'bg-slate-900 text-white'
+                            }`}
+                          >
+                            {editCourseIsFree ? '100% Free Course' : 'Paid Enrollment'}
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                          <div>
+                            <label className="block text-[11px] font-bold text-slate-600 mb-1">Selling Cost (INR)</label>
+                            <input
+                              type="text"
+                              disabled={editCourseIsFree}
+                              value={editCourseIsFree ? 'Free' : editCoursePrice}
+                              onChange={e => setEditCoursePrice(e.target.value)}
+                              placeholder="₹299"
+                              className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono font-extrabold text-slate-900 outline-none focus:border-[#FF5A36] disabled:opacity-50"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[11px] font-bold text-slate-600 mb-1">Original MRP (Strike)</label>
+                            <input
+                              type="text"
+                              disabled={editCourseIsFree}
+                              value={editCourseIsFree ? '—' : editCourseOriginalPrice}
+                              onChange={e => setEditCourseOriginalPrice(e.target.value)}
+                              placeholder="₹2,999"
+                              className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono text-slate-600 outline-none focus:border-[#FF5A36] disabled:opacity-50"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[11px] font-bold text-slate-600 mb-1">Course Badge</label>
+                            <input
+                              type="text"
+                              value={editCourseBadge}
+                              onChange={e => setEditCourseBadge(e.target.value)}
+                              placeholder="FLAGSHIP • ₹299"
+                              className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-[#FF5A36] outline-none focus:border-[#FF5A36]"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 mb-1">Instructor Name</label>
+                          <input
+                            type="text"
+                            value={editCourseInstructorName}
+                            onChange={e => setEditCourseInstructorName(e.target.value)}
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-900 outline-none focus:border-[#FF5A36]"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 mb-1">Instructor Role</label>
+                          <input
+                            type="text"
+                            value={editCourseInstructorRole}
+                            onChange={e => setEditCourseInstructorRole(e.target.value)}
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 outline-none focus:border-[#FF5A36]"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-xs font-bold text-slate-700">Course Thumbnail URL</label>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const thumb = getYouTubeThumbnail(newLessonVideoUrl);
+                              if (thumb) {
+                                setEditCourseThumbnail(thumb);
+                                showToast('Fetched thumbnail from active YouTube URL!');
+                              } else {
+                                showToast('Enter a valid YouTube link in Curriculum tab first.');
+                              }
+                            }}
+                            className="cursor-pointer text-[11px] font-bold text-rose-600 hover:underline"
+                          >
+                            Use YouTube Thumbnail
+                          </button>
+                        </div>
+                        <input
+                          type="text"
+                          value={editCourseThumbnail}
+                          onChange={e => setEditCourseThumbnail(e.target.value)}
+                          placeholder="https://img.youtube.com/vi/.../hqdefault.jpg"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-mono text-slate-800 outline-none focus:border-[#FF5A36]"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 mb-1">Learning Outcomes (1 per line)</label>
+                          <textarea
+                            rows={3}
+                            value={editCourseOutcomesText}
+                            onChange={e => setEditCourseOutcomesText(e.target.value)}
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36] resize-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 mb-1">Prerequisites (1 per line)</label>
+                          <textarea
+                            rows={3}
+                            value={editCoursePrereqsText}
+                            onChange={e => setEditCoursePrereqsText(e.target.value)}
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36] resize-none"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              ) : (
+                /* YOUTUBE-ONLY MODULES, SUB-MODULES & LESSONS STUDIO */
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                  {/* LEFT: YouTube Video Link Publisher (7 Cols) */}
+                  <div className="lg:col-span-7 bg-white rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-xs space-y-5">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-9 h-9 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold shrink-0">
+                          <Youtube size={18} />
+                        </div>
+                        <div>
+                          <h4 className="font-extrabold text-sm text-slate-900">
+                            {editingLessonId ? 'Edit YouTube Lesson' : 'Add YouTube Video Lesson'}
+                          </h4>
+                          <p className="text-[11px] text-slate-500">
+                            Paste any video link from <a href={SKYROVIX_YOUTUBE_CHANNEL} target="_blank" rel="noreferrer" className="text-rose-600 font-bold hover:underline">youtube.com/@skyrovix</a>
+                          </p>
+                        </div>
+                      </div>
+
+                      {editingLessonId && (
                         <button
                           type="button"
-                          onClick={() => setIsAddModuleModalOpen(true)}
-                          className="px-3 py-1 rounded-xl bg-amber-200 hover:bg-amber-300 font-bold"
+                          onClick={() => {
+                            setEditingLessonId(null);
+                            setNewLessonTitle('');
+                            setNewLessonSummary('');
+                          }}
+                          className="cursor-pointer px-3 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold"
                         >
-                          + Add First Module
+                          Cancel Edit
                         </button>
+                      )}
+                    </div>
+
+                    {/* Target Module & Sub-Module Picker */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <label className="text-xs font-bold text-slate-700">Target Module</label>
+                          <button
+                            type="button"
+                            onClick={() => setIsAddModuleModalOpen(true)}
+                            className="cursor-pointer text-[11px] font-bold text-[#FF5A36] hover:underline flex items-center gap-1"
+                          >
+                            <Plus size={12} />
+                            <span>New Module</span>
+                          </button>
+                        </div>
+                        {targetStudioCourse?.modules?.length ? (
+                          <select
+                            value={selectedModuleId}
+                            onChange={e => setSelectedModuleId(e.target.value)}
+                            className="w-full bg-slate-50 border border-slate-200/90 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36] font-bold"
+                          >
+                            {targetStudioCourse.modules.map((m, idx) => (
+                              <option key={m.id} value={m.id}>
+                                M{idx + 1}: {m.title} ({m.lessons.length})
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => setIsAddModuleModalOpen(true)}
+                            className="w-full py-2.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs font-bold text-amber-800"
+                          >
+                            + Add First Module
+                          </button>
+                        )}
                       </div>
-                    )}
-                  </div>
 
-                  {/* Lesson Title & Duration Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div className="sm:col-span-2">
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Lecture Title</label>
-                      <input
-                        type="text"
-                        value={newLessonTitle}
-                        onChange={e => setNewLessonTitle(e.target.value)}
-                        placeholder="e.g. 4. Production Microservices with Node.js & Docker"
-                        className="w-full bg-slate-50 border border-slate-200/90 rounded-2xl px-4 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36] font-medium"
-                      />
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                          Sub-Module Name (Optional)
+                        </label>
+                        <div className="flex gap-1.5">
+                          <input
+                            type="text"
+                            list="submodule-suggestions"
+                            value={newLessonSubModule}
+                            onChange={e => setNewLessonSubModule(e.target.value)}
+                            placeholder="e.g. 1.1 Environment & Tools"
+                            className="flex-1 bg-slate-50 border border-slate-200/90 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36] font-medium"
+                          />
+                          <datalist id="submodule-suggestions">
+                            {(targetStudioCourse?.modules.find(m => m.id === selectedModuleId)?.subModules || []).map(sm => (
+                              <option key={sm.id} value={sm.title} />
+                            ))}
+                          </datalist>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Duration (MM:SS)</label>
-                      <input
-                        type="text"
-                        value={newLessonDuration}
-                        onChange={e => setNewLessonDuration(e.target.value)}
-                        placeholder="15:30"
-                        className="w-full bg-slate-50 border border-slate-200/90 rounded-2xl px-4 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36] font-mono text-center font-bold"
-                      />
-                    </div>
-                  </div>
 
-                  {/* Video Upload Area or Video Stream Input */}
-                  {videoSourceMode === 'upload' ? (
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                        Upload Video File (.mp4, .webm, .mov)
-                      </label>
-                      <div className="border-2 border-dashed border-slate-200 rounded-3xl p-5 text-center bg-slate-50/70 hover:bg-orange-50/30 hover:border-orange-300 transition-all cursor-pointer relative">
+                    {/* Lesson Title & Duration Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div className="sm:col-span-2">
+                        <label className="block text-xs font-bold text-slate-700 mb-1">Lesson Title</label>
                         <input
-                          type="file"
-                          accept="video/mp4,video/webm,video/quicktime,video/x-matroska"
-                          onChange={handleVideoFileUpload}
-                          className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                          type="text"
+                          value={newLessonTitle}
+                          onChange={e => setNewLessonTitle(e.target.value)}
+                          placeholder="e.g. 4. Production REST APIs with Node.js"
+                          className="w-full bg-slate-50 border border-slate-200/90 rounded-2xl px-4 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36] font-medium"
                         />
-                        <div className="w-12 h-12 rounded-2xl bg-orange-100 text-[#FF5A36] mx-auto flex items-center justify-center mb-2 shadow-xs">
-                          <FileVideo size={24} />
-                        </div>
-                        <div className="text-xs font-bold text-slate-800">
-                          {uploadedVideoName ? (
-                            <span className="text-emerald-700 flex items-center justify-center gap-1.5">
-                              <CheckCircle2 size={14} className="text-emerald-500" />
-                              {uploadedVideoName} ({uploadedVideoSize})
-                            </span>
-                          ) : (
-                            <span>Drag and drop video file, or <span className="text-[#FF5A36]">browse your computer</span></span>
-                          )}
-                        </div>
-                        <p className="text-[10px] text-slate-400 mt-1">
-                          Supports MP4, WebM, MOV. Instant local browser playback sandbox.
-                        </p>
                       </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">Duration (MM:SS)</label>
+                        <input
+                          type="text"
+                          value={newLessonDuration}
+                          onChange={e => setNewLessonDuration(e.target.value)}
+                          placeholder="15:30"
+                          className="w-full bg-slate-50 border border-slate-200/90 rounded-2xl px-4 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36] font-mono text-center font-bold"
+                        />
+                      </div>
+                    </div>
 
-                      {/* Video Player Live Preview */}
-                      {newLessonVideoUrl && (
+                    {/* YouTube Video Link Only + Live Preview */}
+                    <div>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                          <Youtube size={14} className="text-rose-600" />
+                          <span>YouTube Video Link (Only YouTube URLs Supported)</span>
+                        </label>
+                        <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-bold">
+                          {extractYouTubeId(newLessonVideoUrl) ? `ID: ${extractYouTubeId(newLessonVideoUrl)}` : 'Enter YouTube URL'}
+                        </span>
+                      </div>
+                      <input
+                        type="url"
+                        value={newLessonVideoUrl}
+                        onChange={e => setNewLessonVideoUrl(e.target.value)}
+                        placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."
+                        className="w-full bg-slate-50 border border-slate-200/90 rounded-2xl px-4 py-2.5 text-xs text-slate-900 outline-none focus:border-rose-500 font-mono font-medium"
+                      />
+                      <p className="text-[10px] text-slate-400 mt-1">
+                        Supports watch links, youtu.be short links, YouTube Shorts, Live streams, and embed URLs from{' '}
+                        <a href={SKYROVIX_YOUTUBE_CHANNEL} target="_blank" rel="noreferrer" className="text-rose-600 underline">
+                          @skyrovix
+                        </a>.
+                      </p>
+
+                      {extractYouTubeId(newLessonVideoUrl) && (
                         <div className="mt-3 p-3 rounded-2xl bg-slate-900 text-white space-y-2">
                           <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
                             <span className="flex items-center gap-1.5 text-emerald-400">
                               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                              Live Video Player Preview
+                              YouTube Player Live Preview
                             </span>
-                            <span>{newLessonDuration}</span>
+                            <span>Embed Ready</span>
                           </div>
-                          <video
-                            controls
-                            src={newLessonVideoUrl}
-                            className="w-full aspect-video rounded-xl bg-black max-h-52 object-contain"
+                          <iframe
+                            src={toYouTubeEmbedUrl(newLessonVideoUrl)}
+                            className="w-full aspect-video rounded-xl max-h-56 bg-black border-0"
+                            title="YouTube Lesson Preview"
+                            allowFullScreen
                           />
                         </div>
                       )}
                     </div>
-                  ) : (
+
+                    {/* Lecture Summary & Notes */}
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                        Video Stream Embed / Hosted MP4 URL
-                      </label>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Lesson Summary</label>
                       <input
                         type="text"
-                        value={newLessonVideoUrl}
-                        onChange={e => setNewLessonVideoUrl(e.target.value)}
-                        placeholder="https://www.youtube.com/embed/... or https://cdn.skyrovix.com/lesson1.mp4"
-                        className="w-full bg-slate-50 border border-slate-200/90 rounded-2xl px-4 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36] font-mono font-medium"
+                        value={newLessonSummary}
+                        onChange={e => setNewLessonSummary(e.target.value)}
+                        placeholder="Brief takeaway covered in this YouTube lecture..."
+                        className="w-full bg-slate-50 border border-slate-200/90 rounded-2xl px-4 py-2 text-xs text-slate-900 outline-none focus:border-[#FF5A36]"
                       />
-
-                      {/* Embed Player Live Preview */}
-                      {newLessonVideoUrl && (
-                        <div className="mt-3 p-3 rounded-2xl bg-slate-900 text-white space-y-2">
-                          <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
-                            <span className="flex items-center gap-1.5 text-emerald-400">
-                              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                              Live Embed Stream Preview
-                            </span>
-                            <span>Embed Status: 200 OK</span>
-                          </div>
-                          {newLessonVideoUrl.includes('youtube') || newLessonVideoUrl.includes('youtu.be') ? (
-                            <iframe
-                              src={newLessonVideoUrl}
-                              className="w-full aspect-video rounded-xl max-h-52 bg-black border-0"
-                              title="Embed Stream Preview"
-                              allowFullScreen
-                            />
-                          ) : (
-                            <video
-                              controls
-                              src={newLessonVideoUrl}
-                              className="w-full aspect-video rounded-xl bg-black max-h-52 object-contain"
-                            />
-                          )}
-                        </div>
-                      )}
                     </div>
-                  )}
 
-                  {/* Lecture Notes & Documentation */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Lecture Markdown Notes & Technical Guide
-                    </label>
-                    <textarea
-                      value={newLessonMarkdown}
-                      onChange={e => setNewLessonMarkdown(e.target.value)}
-                      rows={4}
-                      className="w-full bg-slate-50 border border-slate-200/90 rounded-2xl p-3.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36] font-mono resize-none leading-relaxed"
-                      placeholder="Write technical guidelines, code snippets, and instructions..."
-                    />
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="pt-2">
-                    <button
-                      onClick={handlePublishLesson}
-                      className="cursor-pointer w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#FF5A36] to-[#FA4032] hover:from-[#E04928] hover:to-[#E03528] text-white font-extrabold text-xs shadow-lg shadow-orange-500/25 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
-                    >
-                      <Plus size={16} />
-                      <span>Publish Video Lecture to Module 🚀</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* RIGHT: Interactive Modules & Curriculum Tree View (5 Cols) */}
-                <div className="lg:col-span-5 bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                     <div>
-                      <h4 className="font-extrabold text-sm text-slate-900">Curriculum Structure</h4>
-                      <p className="text-[11px] text-slate-500">Modules & lessons in {targetStudioCourse?.title}</p>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
+                        Lecture Markdown Notes &amp; Technical Guide
+                      </label>
+                      <textarea
+                        value={newLessonMarkdown}
+                        onChange={e => setNewLessonMarkdown(e.target.value)}
+                        rows={4}
+                        className="w-full bg-slate-50 border border-slate-200/90 rounded-2xl p-3.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36] font-mono resize-none leading-relaxed"
+                        placeholder="Write technical guidelines, code snippets, and instructions..."
+                      />
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => setIsAddModuleModalOpen(true)}
-                      className="cursor-pointer p-2 rounded-xl bg-orange-50 text-[#FF5A36] hover:bg-orange-100 font-bold text-xs flex items-center gap-1 transition-colors"
-                      title="Add New Module"
-                    >
-                      <FolderPlus size={15} />
-                      <span>Add Module</span>
-                    </button>
+
+                    <div className="pt-1">
+                      <button
+                        type="button"
+                        onClick={handlePublishLesson}
+                        className="cursor-pointer w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#FF5A36] to-[#FA4032] hover:from-[#E04928] hover:to-[#E03528] text-white font-extrabold text-xs shadow-lg shadow-orange-500/25 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                      >
+                        {editingLessonId ? <Save size={16} /> : <Plus size={16} />}
+                        <span>{editingLessonId ? 'Save Updated YouTube Lesson' : 'Publish YouTube Lecture to Module 🚀'}</span>
+                      </button>
+                    </div>
                   </div>
 
-                  {/* Module Cards List */}
-                  <div className="space-y-3 max-h-[680px] overflow-y-auto pr-1 scrollbar-thin">
-                    {targetStudioCourse?.modules?.map((mod, idx) => (
-                      <div
-                        key={mod.id}
-                        className={`rounded-2xl border p-4 transition-all ${
-                          selectedModuleId === mod.id
-                            ? 'border-[#FF5A36] bg-orange-50/20 shadow-xs'
-                            : 'border-slate-200 bg-slate-50/60'
-                        }`}
+                  {/* RIGHT: Interactive Modules, Sub-Modules & Curriculum Tree View (5 Cols) */}
+                  <div className="lg:col-span-5 bg-white rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-xs space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                      <div>
+                        <h4 className="font-extrabold text-sm text-slate-900">Modules &amp; Sub-Modules Tree</h4>
+                        <p className="text-[11px] text-slate-500 truncate max-w-[220px]">{targetStudioCourse?.title}</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setIsAddModuleModalOpen(true)}
+                        className="cursor-pointer p-2 rounded-xl bg-orange-50 text-[#FF5A36] hover:bg-orange-100 font-bold text-xs flex items-center gap-1 transition-colors"
                       >
-                        <div className="flex items-center justify-between gap-2">
-                          <button
-                            type="button"
-                            onClick={() => setSelectedModuleId(mod.id)}
-                            className="cursor-pointer text-left min-w-0 flex-1"
-                          >
-                            <div className="flex items-center gap-2">
-                              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-900 text-white font-mono">
-                                M{idx + 1}
-                              </span>
-                              <span className="font-bold text-xs text-slate-900 truncate">{mod.title}</span>
-                            </div>
-                            <div className="text-[10px] text-slate-500 mt-1 flex items-center gap-2">
-                              <span>{mod.lessons.length} lessons</span>
-                              <span>•</span>
-                              <span>{mod.duration || '1h 30m'}</span>
-                            </div>
-                          </button>
+                        <FolderPlus size={15} />
+                        <span>Add Module</span>
+                      </button>
+                    </div>
 
-                          <div className="flex items-center gap-1 shrink-0">
-                            {targetStudioCourse.modules.length > 1 && (
+                    {/* Quick Add Sub-Module into Selected Module */}
+                    {selectedModuleId && (
+                      <div className="flex items-center gap-2 p-2.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+                        <input
+                          type="text"
+                          value={newSubModuleInput}
+                          onChange={e => setNewSubModuleInput(e.target.value)}
+                          placeholder="Add sub-module to selected module..."
+                          className="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs outline-none focus:border-[#FF5A36]"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleAddSubModule(selectedModuleId)}
+                          className="cursor-pointer px-3 py-1.5 rounded-xl bg-slate-900 text-white font-bold text-[11px] shrink-0"
+                        >
+                          + Sub-Module
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Module Cards List */}
+                    <div className="space-y-3 max-h-[680px] overflow-y-auto pr-1 scrollbar-thin">
+                      {targetStudioCourse?.modules?.map((mod, idx) => (
+                        <div
+                          key={mod.id}
+                          className={`rounded-2xl border p-3.5 transition-all ${
+                            selectedModuleId === mod.id
+                              ? 'border-[#FF5A36] bg-orange-50/20 shadow-xs'
+                              : 'border-slate-200 bg-slate-50/60'
+                          }`}
+                        >
+                          {editingModuleId === mod.id ? (
+                            <div className="space-y-2 mb-2">
+                              <input
+                                type="text"
+                                value={editingModuleTitle}
+                                onChange={e => setEditingModuleTitle(e.target.value)}
+                                className="w-full bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-bold"
+                              />
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="text"
+                                  value={editingModuleDuration}
+                                  onChange={e => setEditingModuleDuration(e.target.value)}
+                                  placeholder="Duration"
+                                  className="w-24 bg-white border border-slate-300 rounded-xl px-2.5 py-1 text-xs font-mono"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => handleSaveModuleEdit(mod.id)}
+                                  className="px-3 py-1 rounded-xl bg-emerald-600 text-white text-xs font-bold"
+                                >
+                                  Save
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setEditingModuleId(null)}
+                                  className="px-2.5 py-1 rounded-xl bg-slate-200 text-slate-700 text-xs font-bold"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="flex items-center justify-between gap-2">
                               <button
                                 type="button"
-                                onClick={() => handleDeleteModule(mod.id)}
-                                className="cursor-pointer p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
-                                title="Delete Module"
+                                onClick={() => setSelectedModuleId(mod.id)}
+                                className="cursor-pointer text-left min-w-0 flex-1"
                               >
-                                <Trash2 size={13} />
-                              </button>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Lessons inside Module */}
-                        {mod.lessons.length > 0 && (
-                          <div className="mt-3 pt-3 border-t border-slate-200/70 space-y-1.5">
-                            {mod.lessons.map((lesson, lIdx) => (
-                              <div
-                                key={lesson.id}
-                                className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-100 hover:border-orange-200 transition-colors group"
-                              >
-                                <div className="flex items-center gap-2 min-w-0 flex-1">
-                                  <span className="text-[10px] font-mono text-slate-400 font-bold shrink-0">
-                                    #{lIdx + 1}
+                                <div className="flex items-center gap-2">
+                                  <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-900 text-white font-mono">
+                                    M{idx + 1}
                                   </span>
-                                  <Video size={13} className="text-[#FF5A36] shrink-0" />
-                                  <span className="text-xs font-semibold text-slate-800 truncate">
-                                    {lesson.title}
-                                  </span>
+                                  <span className="font-bold text-xs text-slate-900 truncate">{mod.title}</span>
                                 </div>
-                                <div className="flex items-center gap-2 shrink-0 ml-2">
-                                  <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">
-                                    {lesson.duration}
-                                  </span>
+                                <div className="text-[10px] text-slate-500 mt-1 flex items-center gap-2">
+                                  <span>{mod.lessons.length} lessons</span>
+                                  <span>•</span>
+                                  <span>{(mod.subModules || []).length} sub-modules</span>
+                                  <span>•</span>
+                                  <span>{mod.duration || '1h 30m'}</span>
+                                </div>
+                              </button>
+
+                              <div className="flex items-center gap-1 shrink-0">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setEditingModuleId(mod.id);
+                                    setEditingModuleTitle(mod.title);
+                                    setEditingModuleDuration(mod.duration);
+                                  }}
+                                  className="cursor-pointer p-1.5 rounded-lg text-slate-400 hover:text-[#FF5A36] hover:bg-orange-50 transition-colors"
+                                  title="Rename Module"
+                                >
+                                  <Edit3 size={13} />
+                                </button>
+                                {targetStudioCourse.modules.length > 1 && (
                                   <button
                                     type="button"
-                                    onClick={() => setPreviewingLesson(lesson)}
-                                    className="cursor-pointer p-1 text-slate-400 hover:text-[#FF5A36] hover:bg-orange-50 rounded"
-                                    title="Play Video Preview"
-                                  >
-                                    <PlayCircle size={14} />
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={() => handleDeleteLesson(mod.id, lesson.id)}
-                                    className="cursor-pointer p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded"
-                                    title="Delete Lesson"
+                                    onClick={() => handleDeleteModule(mod.id)}
+                                    className="cursor-pointer p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                                    title="Delete Module"
                                   >
                                     <Trash2 size={13} />
                                   </button>
-                                </div>
+                                )}
                               </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                            </div>
+                          )}
+
+                          {/* Sub-Modules Tags inside Module */}
+                          {(mod.subModules || []).length > 0 && (
+                            <div className="mt-2.5 flex flex-wrap gap-1.5">
+                              {mod.subModules!.map(sm => (
+                                <span
+                                  key={sm.id}
+                                  onClick={() => {
+                                    setSelectedModuleId(mod.id);
+                                    setNewLessonSubModule(sm.title);
+                                  }}
+                                  className="cursor-pointer inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-orange-50 border border-orange-200 text-[#FF5A36] text-[10px] font-bold"
+                                >
+                                  <span>{sm.title}</span>
+                                  <button
+                                    type="button"
+                                    onClick={e => {
+                                      e.stopPropagation();
+                                      handleDeleteSubModule(mod.id, sm.title);
+                                    }}
+                                    className="hover:text-rose-700"
+                                  >
+                                    <X size={10} />
+                                  </button>
+                                </span>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Lessons inside Module */}
+                          {mod.lessons.length > 0 && (
+                            <div className="mt-3 pt-3 border-t border-slate-200/70 space-y-1.5">
+                              {mod.lessons.map((lesson, lIdx) => (
+                                <div
+                                  key={lesson.id}
+                                  className={`flex items-center justify-between p-2 rounded-xl bg-white border transition-colors group ${
+                                    editingLessonId === lesson.id ? 'border-[#FF5A36] ring-1 ring-orange-300' : 'border-slate-100 hover:border-orange-200'
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                                    <span className="text-[10px] font-mono text-slate-400 font-bold shrink-0">
+                                      #{lIdx + 1}
+                                    </span>
+                                    <Youtube size={13} className="text-rose-600 shrink-0" />
+                                    <div className="min-w-0 flex-1">
+                                      <div className="text-xs font-semibold text-slate-800 truncate">{lesson.title}</div>
+                                      {lesson.subModule && (
+                                        <div className="text-[9px] font-bold text-[#FF5A36] truncate">{lesson.subModule}</div>
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-1 shrink-0 ml-2">
+                                    <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded hidden sm:inline">
+                                      {lesson.duration}
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleStartEditLesson(mod.id, lesson)}
+                                      className="cursor-pointer p-1 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded"
+                                      title="Edit Lesson & YouTube Link"
+                                    >
+                                      <Edit3 size={13} />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => setPreviewingLesson(lesson)}
+                                      className="cursor-pointer p-1 text-slate-400 hover:text-[#FF5A36] hover:bg-orange-50 rounded"
+                                      title="Play YouTube Preview"
+                                    >
+                                      <PlayCircle size={14} />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleDeleteLesson(mod.id, lesson.id)}
+                                      className="cursor-pointer p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded"
+                                      title="Delete Lesson"
+                                    >
+                                      <Trash2 size={13} />
+                                    </button>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           )}
 
@@ -3720,25 +4568,25 @@ export const AdminDashboard: React.FC = () => {
         </main>
       </div>
 
-      {/* MODAL 1: Create Course Track */}
+      {/* MODAL 1: Create Course Track (Enterprise Fields + Cost + YouTube Link) */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-xl bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden p-7 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-2xl max-h-[92vh] overflow-y-auto bg-white border border-slate-200 rounded-3xl shadow-2xl p-5 sm:p-7 relative">
             <button
               onClick={() => setIsCreateModalOpen(false)}
-              className="cursor-pointer absolute top-5 right-5 p-2 text-slate-400 hover:text-slate-900 rounded-xl hover:bg-slate-100"
+              className="cursor-pointer absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-900 rounded-xl hover:bg-slate-100"
             >
               <X size={18} />
             </button>
 
-            <div className="flex items-center gap-2.5 mb-6">
+            <div className="flex items-center gap-2.5 mb-5">
               <div className="p-2.5 rounded-xl bg-orange-50 text-[#FF5A36] border border-orange-200">
                 <Plus size={20} />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-lg font-display">Publish New Course Track</h3>
+                <h3 className="font-bold text-slate-900 text-lg font-display">Publish New Enterprise Course</h3>
                 <p className="text-xs text-slate-500">
-                  Author a masterclass video series or interactive text documentation curriculum.
+                  Configure title, description, cost (₹), YouTube video URL, and curriculum format.
                 </p>
               </div>
             </div>
@@ -3756,7 +4604,8 @@ export const AdminDashboard: React.FC = () => {
                         : 'bg-slate-50 border-slate-200 text-slate-600'
                     }`}
                   >
-                    <span>Video Masterclass</span>
+                    <Youtube size={14} />
+                    <span>YouTube Video Course</span>
                   </button>
                   <button
                     type="button"
@@ -3767,34 +4616,47 @@ export const AdminDashboard: React.FC = () => {
                         : 'bg-slate-50 border-slate-200 text-slate-600'
                     }`}
                   >
+                    <FileText size={14} />
                     <span>Text Documentation</span>
                   </button>
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Course Title</label>
-                <input
-                  type="text"
-                  value={newTitle}
-                  onChange={e => setNewTitle(e.target.value)}
-                  placeholder="e.g. Advanced Rust Systems Programming"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36]"
-                  required
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Course Title</label>
+                  <input
+                    type="text"
+                    value={newTitle}
+                    onChange={e => setNewTitle(e.target.value)}
+                    placeholder="e.g. Full Stack TypeScript & SQL"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36]"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Subtitle / Tagline</label>
+                  <input
+                    type="text"
+                    value={newSubtitle}
+                    onChange={e => setNewSubtitle(e.target.value)}
+                    placeholder="e.g. Build production apps from scratch"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36]"
+                  />
+                </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">Category</label>
                   <select
                     value={newCategory}
                     onChange={e => setNewCategory(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36]"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36]"
                   >
                     <option value="Full Stack">Full Stack</option>
                     <option value="Cloud Architecture">Cloud Architecture</option>
-                    <option value="AI & ML">AI & ML</option>
+                    <option value="AI & ML">AI &amp; ML</option>
                     <option value="Cyber Security">Cyber Security</option>
                     <option value="Databases">Databases</option>
                   </select>
@@ -3804,7 +4666,7 @@ export const AdminDashboard: React.FC = () => {
                   <select
                     value={newLevel}
                     onChange={e => setNewLevel(e.target.value as any)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36]"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 outline-none focus:border-[#FF5A36]"
                   >
                     <option value="All Levels">All Levels</option>
                     <option value="Beginner">Beginner</option>
@@ -3812,14 +4674,84 @@ export const AdminDashboard: React.FC = () => {
                     <option value="Advanced">Advanced</option>
                   </select>
                 </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Duration</label>
+                  <input
+                    type="text"
+                    value={newDuration}
+                    onChange={e => setNewDuration(e.target.value)}
+                    placeholder="18h 30m"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-mono text-slate-900 outline-none focus:border-[#FF5A36]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Badge</label>
+                  <input
+                    type="text"
+                    value={newBadge}
+                    onChange={e => setNewBadge(e.target.value)}
+                    placeholder="NEW"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-bold text-[#FF5A36] outline-none focus:border-[#FF5A36]"
+                  />
+                </div>
               </div>
+
+              {/* Cost & Pricing Row */}
+              <div className="p-3.5 rounded-2xl bg-orange-50/70 border border-orange-200 grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Selling Cost (₹)</label>
+                  <input
+                    type="text"
+                    disabled={newIsFree}
+                    value={newIsFree ? 'Free' : newPrice}
+                    onChange={e => setNewPrice(e.target.value)}
+                    placeholder="₹299"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono font-bold text-slate-900 outline-none focus:border-[#FF5A36] disabled:opacity-50"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Original MRP (₹)</label>
+                  <input
+                    type="text"
+                    disabled={newIsFree}
+                    value={newIsFree ? '—' : newOriginalPrice}
+                    onChange={e => setNewOriginalPrice(e.target.value)}
+                    placeholder="₹2,999"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono text-slate-600 outline-none focus:border-[#FF5A36] disabled:opacity-50"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setNewIsFree(!newIsFree)}
+                  className={`cursor-pointer py-2 px-3 rounded-xl text-xs font-bold transition-all ${
+                    newIsFree ? 'bg-emerald-600 text-white' : 'bg-slate-900 text-white'
+                  }`}
+                >
+                  {newIsFree ? '✓ Free Course' : 'Paid Course (Click for Free)'}
+                </button>
+              </div>
+
+              {courseFormat === 'video' && (
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Intro Lesson YouTube Link (<a href={SKYROVIX_YOUTUBE_CHANNEL} target="_blank" rel="noreferrer" className="text-rose-600 underline">@skyrovix</a>)
+                  </label>
+                  <input
+                    type="url"
+                    value={newInitialYouTubeUrl}
+                    onChange={e => setNewInitialYouTubeUrl(e.target.value)}
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-mono text-slate-900 outline-none focus:border-rose-500"
+                  />
+                </div>
+              )}
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">Description</label>
                 <textarea
                   value={newDescription}
                   onChange={e => setNewDescription(e.target.value)}
-                  placeholder="Detailed outline of topics covered..."
+                  placeholder="Detailed outline of topics, architecture, and real-world projects covered..."
                   rows={3}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 outline-none focus:border-[#FF5A36] resize-none"
                 />
@@ -3829,7 +4761,7 @@ export const AdminDashboard: React.FC = () => {
                 type="submit"
                 className="cursor-pointer w-full py-3 rounded-2xl bg-[#FF5A36] hover:bg-[#E03D00] text-white font-bold text-xs transition-all shadow-md shadow-orange-500/20 active:scale-95"
               >
-                Publish Course to Catalog
+                Publish Course to Live Catalog
               </button>
             </form>
           </div>
@@ -3927,10 +4859,10 @@ export const AdminDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* MODAL 4: Create Coupon */}
+      {/* MODAL 4: Create & Manage Discount Coupons */}
       {isCouponModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-md bg-white border border-slate-200 rounded-3xl shadow-2xl p-6 relative">
+          <div className="w-full max-w-md max-h-[90vh] overflow-y-auto bg-white border border-slate-200 rounded-3xl shadow-2xl p-6 relative">
             <button
               onClick={() => setIsCouponModalOpen(false)}
               className="cursor-pointer absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-900 rounded-xl"
@@ -3939,7 +4871,7 @@ export const AdminDashboard: React.FC = () => {
             </button>
             <div className="flex items-center gap-2 mb-4">
               <Tag size={18} className="text-amber-600" />
-              <h3 className="font-bold text-base text-slate-900">Create Course Discount Coupon</h3>
+              <h3 className="font-bold text-base text-slate-900">Course Discount Coupons</h3>
             </div>
             <div className="space-y-3">
               <div>
@@ -3972,14 +4904,41 @@ export const AdminDashboard: React.FC = () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ code: couponCode.trim(), discountPercent: Number(discountPercent) || 10 })
                   });
+                  await fetchAdminOverview(false);
                 } catch (e) {}
                 showToast(`Coupon ${couponCode} (${discountPercent}% OFF) saved to DB!`);
-                setIsCouponModalOpen(false);
               }}
               className="cursor-pointer w-full mt-4 py-2.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs transition-all"
             >
               Activate Coupon
             </button>
+
+            {liveCoupons.length > 0 && (
+              <div className="mt-5 pt-4 border-t border-slate-100 space-y-2">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                  Active DB Coupons ({liveCoupons.length})
+                </div>
+                {liveCoupons.map(cp => (
+                  <div key={cp.id} className="flex items-center justify-between px-3 py-2 rounded-xl bg-amber-50/70 border border-amber-200 text-xs">
+                    <div>
+                      <span className="font-mono font-extrabold text-slate-900">{cp.code}</span>
+                      <span className="ml-2 font-bold text-amber-700">{cp.discountPercent}% OFF</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        setLiveCoupons(prev => prev.filter(x => x.id !== cp.id));
+                        await fetch(`http://localhost:5000/api/admin/coupons/${cp.id}`, { method: 'DELETE' }).catch(() => {});
+                        showToast(`Coupon ${cp.code} deleted.`);
+                      }}
+                      className="cursor-pointer p-1 text-rose-500 hover:text-rose-700"
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -4232,25 +5191,16 @@ export const AdminDashboard: React.FC = () => {
             </div>
 
             <div className="rounded-2xl overflow-hidden bg-black aspect-video flex items-center justify-center border border-slate-800">
-              {previewingLesson.videoUrl?.includes('youtube') || previewingLesson.videoUrl?.includes('youtu.be') ? (
-                <iframe
-                  src={previewingLesson.videoUrl}
-                  className="w-full h-full border-0"
-                  title={previewingLesson.title}
-                  allowFullScreen
-                />
-              ) : (
-                <video
-                  controls
-                  autoPlay
-                  src={previewingLesson.videoUrl}
-                  className="w-full h-full object-contain"
-                />
-              )}
+              <iframe
+                src={toYouTubeEmbedUrl(previewingLesson.videoUrl)}
+                className="w-full h-full border-0"
+                title={previewingLesson.title}
+                allowFullScreen
+              />
             </div>
 
             <div className="mt-4 flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
-              <span>Skyrovix Video Engine Preview</span>
+              <span>Skyrovix YouTube Video Engine</span>
               <button
                 type="button"
                 onClick={() => setPreviewingLesson(null)}
@@ -4259,6 +5209,106 @@ export const AdminDashboard: React.FC = () => {
                 Close Preview
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 11: Edit Text Course Details & Cost */}
+      {editingTextCourse && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white border border-slate-200 rounded-3xl shadow-2xl p-6 relative">
+            <button
+              onClick={() => setEditingTextCourse(null)}
+              className="cursor-pointer absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-900 rounded-xl"
+            >
+              <X size={18} />
+            </button>
+            <div className="flex items-center gap-2 mb-4">
+              <Edit3 size={18} className="text-[#FF5A36]" />
+              <h3 className="font-bold text-base text-slate-900 font-display">Edit Text Course Details &amp; Cost</h3>
+            </div>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                updateTextCourse(editingTextCourse);
+                showToast(`Updated "${editingTextCourse.title}"!`);
+                setEditingTextCourse(null);
+              }}
+              className="space-y-3.5"
+            >
+              <div>
+                <label className="block text-[11px] font-bold text-slate-600 mb-1">Course Title</label>
+                <input
+                  type="text"
+                  value={editingTextCourse.title}
+                  onChange={e => setEditingTextCourse({ ...editingTextCourse, title: e.target.value })}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 outline-none focus:border-[#FF5A36]"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-bold text-slate-600 mb-1">Description</label>
+                <textarea
+                  rows={3}
+                  value={editingTextCourse.shortDesc}
+                  onChange={e => setEditingTextCourse({ ...editingTextCourse, shortDesc: e.target.value })}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 outline-none focus:border-[#FF5A36] resize-none"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Category</label>
+                  <input
+                    type="text"
+                    value={editingTextCourse.category}
+                    onChange={e => setEditingTextCourse({ ...editingTextCourse, category: e.target.value })}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none focus:border-[#FF5A36]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Estimated Hours</label>
+                  <input
+                    type="text"
+                    value={editingTextCourse.estimatedHours}
+                    onChange={e => setEditingTextCourse({ ...editingTextCourse, estimatedHours: e.target.value })}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono text-slate-900 outline-none focus:border-[#FF5A36]"
+                  />
+                </div>
+              </div>
+              <div className="p-3 rounded-2xl bg-orange-50/60 border border-orange-200 grid grid-cols-2 gap-3 items-end">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Selling Cost (₹)</label>
+                  <input
+                    type="text"
+                    disabled={editingTextCourse.isFree !== false}
+                    value={editingTextCourse.isFree !== false ? 'Free' : editingTextCourse.price || '₹99'}
+                    onChange={e => setEditingTextCourse({ ...editingTextCourse, price: e.target.value })}
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono font-bold text-slate-900 outline-none focus:border-[#FF5A36] disabled:opacity-50"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setEditingTextCourse({
+                      ...editingTextCourse,
+                      isFree: editingTextCourse.isFree === false ? true : false,
+                      price: editingTextCourse.price || '₹99'
+                    })
+                  }
+                  className={`cursor-pointer py-2 px-3 rounded-xl text-xs font-bold ${
+                    editingTextCourse.isFree !== false ? 'bg-emerald-600 text-white' : 'bg-slate-900 text-white'
+                  }`}
+                >
+                  {editingTextCourse.isFree !== false ? '100% Free' : 'Paid Course'}
+                </button>
+              </div>
+              <button
+                type="submit"
+                className="cursor-pointer w-full py-2.5 rounded-2xl bg-[#FF5A36] hover:bg-[#E03D00] text-white font-bold text-xs transition-all"
+              >
+                Save Text Course Changes
+              </button>
+            </form>
           </div>
         </div>
       )}
