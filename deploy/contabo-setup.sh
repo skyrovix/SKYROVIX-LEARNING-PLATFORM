@@ -83,3 +83,4 @@ echo "🔒 To setup free SSL for your domain, run:"
 echo "   sudo apt install certbot python3-certbot-nginx -y"
 echo "   sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com"
 echo "=========================================================="
+

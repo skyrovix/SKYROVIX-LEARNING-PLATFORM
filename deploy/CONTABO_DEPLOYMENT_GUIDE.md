@@ -168,3 +168,4 @@ pm2 restart all
 - **Backend Restart செய்ய:** `pm2 restart skyrovix-backend`
 - **Nginx Status பார்க்க:** `sudo systemctl status nginx`
 - **Nginx Restart செய்ய:** `sudo systemctl restart nginx`
+

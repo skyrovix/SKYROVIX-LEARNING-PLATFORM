@@ -249,23 +249,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAuth }) => {
                   ))}
                 </span>
 
-                {/* Line 2: Shape Your Future. with Vibrant Orange Running Letters & Shimmer */}
-                <span className="block text-[#FB4400] mt-1 sm:mt-1.5">
-                  <span className="bg-gradient-to-r from-[#FB4400] via-orange-400 to-[#FB4400] bg-clip-text text-transparent animate-shimmer-text inline-block">
-                    {'Shape Your Future.'.split('').map((char, index) => (
-                      char === ' ' ? (
-                        <span key={`line2-space-${index}`}>&nbsp;</span>
-                      ) : (
-                        <span
-                          key={`line2-${index}-${char}`}
-                          style={{ animationDelay: `${0.35 + index * 0.07}s` }}
-                          className="inline-block animate-running-letter transition-transform hover:-translate-y-2 hover:scale-110 duration-200 cursor-default select-none"
-                        >
-                          {char}
-                        </span>
-                      )
-                    ))}
-                  </span>
+                {/* Line 2: Shape Your Future. with Crisp Solid Brand Orange Running Letters */}
+                <span className="block text-[#FB4400] mt-1 sm:mt-1.5 font-black">
+                  {'Shape Your Future.'.split('').map((char, index) => (
+                    char === ' ' ? (
+                      <span key={`line2-space-${index}`}>&nbsp;</span>
+                    ) : (
+                      <span
+                        key={`line2-${index}-${char}`}
+                        style={{ animationDelay: `${0.35 + index * 0.08}s` }}
+                        className="inline-block animate-running-letter text-[#FB4400] transition-transform hover:-translate-y-2 hover:scale-110 duration-200 cursor-default select-none"
+                      >
+                        {char}
+                      </span>
+                    )
+                  ))}
                 </span>
               </h1>
 
