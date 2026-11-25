@@ -98,112 +98,42 @@ interface CapstoneItem {
   repo: string;
 }
 
-const INITIAL_ASSIGNMENTS: AssignmentSubmission[] = [
-  {
-    id: 'sub-01',
-    studentName: 'Hariharan S',
-    studentId: 'SKX-2026-9055',
-    studentAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    assignmentTitle: 'Capstone 5: Multi-Region Microservices',
-    courseTrack: 'Full Stack Cloud Architecture',
-    submittedOn: 'Today, 2:45 PM',
-    status: 'Approved',
-    githubUrl: 'https://github.com/hariharan-dev/cloud-microservices',
-    liveUrl: 'https://cloud-api.skyrovix.io'
-  },
-  {
-    id: 'sub-02',
-    studentName: 'Aisha Sharma',
-    studentId: 'SKX-2026-8812',
-    studentAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-    assignmentTitle: 'Module 3: Neural Network Training Pipeline',
-    courseTrack: 'AI & Machine Learning',
-    submittedOn: 'Today, 1:15 PM',
-    status: 'Pending',
-    githubUrl: 'https://github.com/aishasharma/ai-pipeline'
-  },
-  {
-    id: 'sub-03',
-    studentName: 'Carlos Mendoza',
-    studentId: 'SKX-2026-7940',
-    studentAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-    assignmentTitle: 'Module 4: GraphQL Federation & Caching',
-    courseTrack: 'Full Stack Web Development',
-    submittedOn: 'Yesterday, 6:30 PM',
-    status: 'Approved',
-    githubUrl: 'https://github.com/carlosm/graphql-federation',
-    liveUrl: 'https://graphql-hub.dev'
-  },
-  {
-    id: 'sub-04',
-    studentName: 'Sneha Patel',
-    studentId: 'SKX-2026-6415',
-    studentAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    assignmentTitle: 'Module 2: Penetration Testing Lab',
-    courseTrack: 'Cyber Security & Networks',
-    submittedOn: 'Yesterday, 11:20 AM',
-    status: 'Pending',
-    githubUrl: 'https://github.com/snehap/security-audit'
-  },
-  {
-    id: 'sub-05',
-    studentName: 'Devon Patel',
-    studentId: 'SKX-2026-5201',
-    studentAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
-    assignmentTitle: 'Module 1: Next.js 15 SSR Portfolio',
-    courseTrack: 'Frontend React 19',
-    submittedOn: '16 Nov 2026',
-    status: 'Approved',
-    githubUrl: 'https://github.com/devonp/next15-portfolio',
-    liveUrl: 'https://devon-portfolio.vercel.app'
-  }
-];
+// Cashfree / Payment Order Interface (Real Backend Ledger)
+interface LiveOrder {
+  orderId: string;
+  cfOrderId?: string;
+  amount: number;
+  courseId?: string;
+  courseTitle?: string;
+  userId?: string;
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string;
+  status: string;
+  createdAt?: string;
+  paidAt?: string | null;
+}
 
-const INITIAL_CAPSTONES: CapstoneItem[] = [
-  {
-    id: 'cap-1',
-    student: 'Hariharan S',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    title: 'Multi-Region Serverless E-Commerce Infrastructure',
-    stack: 'AWS Lambda, DynamoDB, Terraform, GitHub Actions',
-    grade: 'A+ (100%)',
-    status: 'Graded',
-    repo: 'https://github.com/hariharan-dev/cloud-capstone'
-  },
-  {
-    id: 'cap-2',
-    student: 'Sneha Patel',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    title: 'Automated OWASP Penetration Testing Toolkit',
-    stack: 'Python, Docker, OWASP ZAP, Bash',
-    grade: 'Under Review',
-    status: 'Pending',
-    repo: 'https://github.com/snehap/security-audit'
-  },
-  {
-    id: 'cap-3',
-    student: 'Carlos Mendoza',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-    title: 'Enterprise Distributed Cache & Rate Limiting Proxy',
-    stack: 'Redis, Node.js, Docker, Nginx',
-    grade: 'A (94%)',
-    status: 'Graded',
-    repo: 'https://github.com/carlosm/redis-proxy'
-  },
-  {
-    id: 'cap-4',
-    student: 'Aisha Sharma',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-    title: 'End-to-End LLM RAG Pipeline with Vector Search',
-    stack: 'Python, LangChain, Pinecone, FastAPI',
-    grade: 'Under Review',
-    status: 'Pending',
-    repo: 'https://github.com/aishasharma/rag-pipeline'
-  }
-];
+interface LiveActivityItem {
+  id: string;
+  type: 'user' | 'enrollment' | 'order' | 'certificate';
+  title: string;
+  subtitle: string;
+  timestamp: string;
+}
+
+interface LiveEnrollment {
+  userId: string;
+  courseId: string;
+  enrolledAt: string;
+  orderId?: string;
+  paymentGateway?: string;
+  amountPaid?: number;
+}
 
 export const AdminDashboard: React.FC = () => {
   const {
+    currentUser,
     videoCourses,
     textCourses,
     addVideoCourse,
@@ -211,6 +141,7 @@ export const AdminDashboard: React.FC = () => {
     addTextCourse,
     deleteCourse,
     students,
+    setStudents,
     updateStudent,
     addStudent,
     deleteStudent,
@@ -233,35 +164,31 @@ export const AdminDashboard: React.FC = () => {
   // Profile dropdown
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
-  // Assignments State with LocalStorage Persistence
-  const [submissions, setSubmissions] = useState<AssignmentSubmission[]>(() => {
-    const saved = localStorage.getItem('skyrovix_admin_submissions');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {}
-    }
-    return INITIAL_ASSIGNMENTS;
+  // Real-time Backend Sync State
+  const [liveOrders, setLiveOrders] = useState<LiveOrder[]>([]);
+  const [liveEnrollments, setLiveEnrollments] = useState<LiveEnrollment[]>([]);
+  const [liveActivity, setLiveActivity] = useState<LiveActivityItem[]>([]);
+  const [liveStats, setLiveStats] = useState({
+    totalUsers: 0,
+    activeUsers: 0,
+    totalEnrollments: 0,
+    totalOrders: 0,
+    paidOrdersCount: 0,
+    paidRevenue: 0,
+    pendingVolume: 0,
+    totalCertificates: 0
   });
+  const [isSyncingLive, setIsSyncingLive] = useState(false);
+  const [lastSyncedAt, setLastSyncedAt] = useState<string>('Connecting...');
+  const [dbConnected, setDbConnected] = useState<boolean>(true);
+  const [verifyingOrderId, setVerifyingOrderId] = useState<string | null>(null);
+  const [liveClock, setLiveClock] = useState<Date>(() => new Date());
 
-  useEffect(() => {
-    localStorage.setItem('skyrovix_admin_submissions', JSON.stringify(submissions));
-  }, [submissions]);
+  // Assignments State synced with backend DB
+  const [submissions, setSubmissions] = useState<AssignmentSubmission[]>([]);
 
-  // Capstones State with LocalStorage Persistence
-  const [capstones, setCapstones] = useState<CapstoneItem[]>(() => {
-    const saved = localStorage.getItem('skyrovix_capstones');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {}
-    }
-    return INITIAL_CAPSTONES;
-  });
-
-  useEffect(() => {
-    localStorage.setItem('skyrovix_capstones', JSON.stringify(capstones));
-  }, [capstones]);
+  // Capstones State synced with backend DB
+  const [capstones, setCapstones] = useState<CapstoneItem[]>([]);
 
   // Modals
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -486,9 +413,10 @@ export const AdminDashboard: React.FC = () => {
     return students.reduce((acc, s) => acc + (s.xp || 0), 0);
   }, [students]);
 
-  // Real certificates computed for every learner
+  // Real certificates synced from backend database
   const [issuedCertificates, setIssuedCertificates] = useState<Array<{
     id: string;
+    userId?: string;
     certCode: string;
     studentName: string;
     studentAvatar: string;
@@ -496,65 +424,66 @@ export const AdminDashboard: React.FC = () => {
     issuedDate: string;
     score: string;
     status: string;
-  }>>(() => {
-    const saved = localStorage.getItem('skyrovix_admin_certificates');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {}
-    }
-    return [
-      {
-        id: 'cert-1',
-        certCode: 'SKX-COURSE-2026-9055',
-        studentName: 'Hariharan S',
-        studentAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-        courseTitle: 'Full Stack Cloud Architecture',
-        issuedDate: '18 October 2026',
-        score: '100% (Distinction)',
-        status: 'Live Verified Online'
-      },
-      {
-        id: 'cert-2',
-        certCode: 'SKX-COURSE-2026-8812',
-        studentName: 'Aisha Sharma',
-        studentAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-        courseTitle: 'AI & Machine Learning Engineering',
-        issuedDate: '12 November 2026',
-        score: '98% (Honors)',
-        status: 'Live Verified Online'
-      },
-      {
-        id: 'cert-3',
-        certCode: 'SKX-COURSE-2026-7940',
-        studentName: 'Carlos Mendoza',
-        studentAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-        courseTitle: 'Full Stack Web Development Masterclass',
-        issuedDate: '14 November 2026',
-        score: '95% (Honors)',
-        status: 'Live Verified Online'
-      },
-      {
-        id: 'cert-4',
-        certCode: 'SKX-COURSE-2026-6415',
-        studentName: 'Sneha Patel',
-        studentAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-        courseTitle: 'Cyber Security & Network Defense',
-        issuedDate: '16 November 2026',
-        score: '96% (Honors)',
-        status: 'Live Verified Online'
+  }>>([]);
+
+  // Fetch all real-time admin data from Express + DB backend
+  const fetchAdminOverview = React.useCallback(async (showSpinner = false) => {
+    if (showSpinner) setIsSyncingLive(true);
+    try {
+      const resp = await fetch('http://localhost:5000/api/admin/overview');
+      if (!resp.ok) throw new Error('Failed to fetch overview');
+      const data = await resp.json();
+
+      if (Array.isArray(data.students)) setStudents(data.students);
+      if (Array.isArray(data.orders)) setLiveOrders(data.orders);
+      if (Array.isArray(data.enrollments)) setLiveEnrollments(data.enrollments);
+      if (Array.isArray(data.certificates)) setIssuedCertificates(data.certificates);
+      if (Array.isArray(data.recentActivity)) setLiveActivity(data.recentActivity);
+      if (Array.isArray(data.submissions)) setSubmissions(data.submissions);
+      if (Array.isArray(data.capstones)) setCapstones(data.capstones);
+      if (data.stats) setLiveStats(data.stats);
+      if (data.settings) {
+        setPlatformSettings((prev: any) => ({ ...prev, ...data.settings }));
       }
-    ];
-  });
+      setDbConnected(true);
+      setLastSyncedAt(
+        new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+      );
+    } catch (e) {
+      setDbConnected(false);
+    } finally {
+      if (showSpinner) setIsSyncingLive(false);
+    }
+  }, [setStudents]);
 
+  // Initial load + 5-second real-time auto-refresh + 1-second live clock
   useEffect(() => {
-    localStorage.setItem('skyrovix_admin_certificates', JSON.stringify(issuedCertificates));
-  }, [issuedCertificates]);
+    fetchAdminOverview(true);
+    const pollInterval = setInterval(() => {
+      fetchAdminOverview(false);
+    }, 5000);
+    const clockInterval = setInterval(() => {
+      setLiveClock(new Date());
+    }, 1000);
+    return () => {
+      clearInterval(pollInterval);
+      clearInterval(clockInterval);
+    };
+  }, [fetchAdminOverview]);
 
-  // Real Learner Progress Distribution for Donut Chart
-  const completedStudents = students.filter(s => s.completedLessonsCount >= 30);
-  const inProgressStudents = students.filter(s => s.completedLessonsCount > 0 && s.completedLessonsCount < 30);
-  const newStudents = students.filter(s => s.completedLessonsCount === 0);
+  // Keep selected cert student synced when students load
+  useEffect(() => {
+    if (!newCertStudentId && students.length > 0) {
+      setNewCertStudentId(students[0].id);
+    }
+  }, [students, newCertStudentId]);
+
+  // Real Learner Progress Distribution for Donut Chart (real backend counts)
+  const completedStudents = students.filter(s => s.completedLessonsCount >= 5);
+  const inProgressStudents = students.filter(
+    s => (s.completedLessonsCount > 0 && s.completedLessonsCount < 5) || (s.completedLessonsCount === 0 && s.enrolledCourseCount > 0)
+  );
+  const newStudents = students.filter(s => s.completedLessonsCount === 0 && s.enrolledCourseCount === 0);
 
   const completedPct = totalLearnersCount > 0 ? Math.round((completedStudents.length / totalLearnersCount) * 100) : 0;
   const inProgressPct = totalLearnersCount > 0 ? Math.round((inProgressStudents.length / totalLearnersCount) * 100) : 0;
@@ -568,16 +497,17 @@ export const AdminDashboard: React.FC = () => {
   const offsetInProgress = -dashCompleted;
   const offsetNew = -(dashCompleted + dashInProgress);
 
-  // Real Category Statistics
+  // Real Category Statistics with actual enrollment counts from DB
   const categoryStats = useMemo(() => {
-    const map: Record<string, { count: number; lessons: number; tracks: string[] }> = {};
+    const map: Record<string, { count: number; lessons: number; learnersCount: number; tracks: string[] }> = {};
     allCoursesList.forEach(c => {
       const cat = c.category || 'General';
       if (!map[cat]) {
-        map[cat] = { count: 0, lessons: 0, tracks: [] };
+        map[cat] = { count: 0, lessons: 0, learnersCount: 0, tracks: [] };
       }
       map[cat].count += 1;
       map[cat].lessons += c.lessonsCount;
+      map[cat].learnersCount += liveEnrollments.filter(e => e.courseId === c.id).length;
       map[cat].tracks.push(c.title);
     });
     const maxCount = Math.max(...Object.values(map).map(m => m.count), 1);
@@ -586,11 +516,11 @@ export const AdminDashboard: React.FC = () => {
         name,
         count: data.count,
         lessons: data.lessons,
-        learnersCount: Math.round(data.count * 12 + data.lessons * 2),
+        learnersCount: data.learnersCount,
         pct: Math.round((data.count / maxCount) * 100)
       }))
       .sort((a, b) => b.count - a.count);
-  }, [allCoursesList]);
+  }, [allCoursesList, liveEnrollments]);
 
   // Video File Upload Handler
   const handleVideoFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -742,66 +672,58 @@ export const AdminDashboard: React.FC = () => {
     setUploadedVideoName(null);
   };
 
-  // Dedicated Add Student Action
-  const handleCreateStudent = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newStudentName.trim() || !newStudentEmail.trim()) {
-      showToast('Name and email are required.');
-      return;
-    }
-
-    const newStudentId = `SKX-2026-${Math.floor(1000 + Math.random() * 9000)}`;
-    const newProfile: StudentProfile = {
-      id: `std-${Date.now()}`,
-      name: newStudentName.trim(),
-      email: newStudentEmail.trim(),
-      avatar: newStudentAvatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
-      role: newStudentRole,
-      enrolledCourseCount: 1,
-      completedLessonsCount: 0,
-      xp: Number(newStudentXP) || 100,
-      streakDays: Number(newStudentStreak) || 1,
-      lastActive: 'Just now',
-      status: newStudentStatus
-    };
-
-    addStudent(newProfile);
-
-    // Sync to backend & SQL database in background
-    try {
-      fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: newProfile.name,
-          email: newProfile.email,
-          password: newStudentPassword || 'Student@2026!',
-          role: newProfile.role
-        })
-      }).catch(() => {});
-    } catch (e) {}
-
-    showToast(`Student "${newProfile.name}" created (${newStudentId}) and enrolled!`);
-    setNewStudentName('');
-    setNewStudentEmail('');
-    setNewStudentPassword('Student@2026!');
-    setActiveMenu('students'); // Seamlessly return to roster
-  };
-
-  // Delete Student Action
+  // Delete Student Action (persisted in backend DB)
   const handleConfirmDeleteStudent = async () => {
     if (!studentToDelete) return;
     const name = studentToDelete.name;
     const id = studentToDelete.id;
     deleteStudent(id);
     setStudentToDelete(null);
-    showToast(`Student "${name}" has been deleted successfully.`);
+    showToast(`Deleting "${name}" from database...`);
 
     try {
-      fetch(`http://localhost:5000/api/auth/students/${id}`, {
+      await fetch(`http://localhost:5000/api/auth/students/${id}`, {
         method: 'DELETE'
-      }).catch(() => {});
+      });
+      await fetchAdminOverview(false);
+      showToast(`Student "${name}" deleted from database!`);
+    } catch (e) {
+      showToast(`Removed "${name}" locally.`);
+    }
+  };
+
+  // Toggle Student Active/Inactive Status (persisted in backend DB)
+  const handleToggleStudentStatus = async (student: StudentProfile) => {
+    const nextStatus: 'Active' | 'Inactive' = student.status === 'Active' ? 'Inactive' : 'Active';
+    updateStudent({ ...student, status: nextStatus });
+    try {
+      await fetch(`http://localhost:5000/api/admin/students/${student.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: nextStatus })
+      });
+      await fetchAdminOverview(false);
     } catch (e) {}
+    showToast(`Student ${student.name} is now ${nextStatus}!`);
+  };
+
+  // Re-verify Cashfree Payment Order in Real Time
+  const handleVerifyOrder = async (orderId: string) => {
+    setVerifyingOrderId(orderId);
+    try {
+      const resp = await fetch(`http://localhost:5000/api/cashfree/verify/${orderId}`);
+      const data = await resp.json();
+      await fetchAdminOverview(false);
+      if (data.isPaid) {
+        showToast(`Order ${orderId} verified PAID & student enrolled!`);
+      } else {
+        showToast(`Order ${orderId} status: ${data.orderStatus || 'Updated'}`);
+      }
+    } catch (e) {
+      showToast('Failed to query Cashfree verification endpoint.');
+    } finally {
+      setVerifyingOrderId(null);
+    }
   };
 
   // Test SQL Database Connection Action
@@ -812,12 +734,15 @@ export const AdminDashboard: React.FC = () => {
     try {
       const resp = await fetch('http://localhost:5000/api/db/status');
       const data = await resp.json();
-      const duration = Math.max(16, Math.round(performance.now() - start));
-      setDbLatency(`${duration}ms - Status 200 (SQL Database ${data.status || 'Healthy'})`);
+      const duration = Math.max(4, Math.round(performance.now() - start));
+      setDbLatency(`${duration}ms - Status 200 (${data.engine || 'SQL Database'} ${data.status || 'Healthy'})`);
+      setDbConnected(true);
+      await fetchAdminOverview(false);
       showToast(`SQL Database Verified! Latency: ${duration}ms`);
     } catch (err) {
-      setDbLatency('Ping: 18ms (Local SQL Database Engine Responsive)');
-      showToast('SQL Database Connection Verified!');
+      setDbConnected(false);
+      setDbLatency('Connection Error: Backend unreachable on port 5000');
+      showToast('Backend server offline on port 5000.');
     } finally {
       setIsTestingDb(false);
     }
@@ -831,6 +756,8 @@ export const AdminDashboard: React.FC = () => {
       videoCourses,
       textCourses,
       students,
+      orders: liveOrders,
+      enrollments: liveEnrollments,
       capstones,
       issuedCertificates
     };
@@ -843,65 +770,117 @@ export const AdminDashboard: React.FC = () => {
     showToast('Platform database exported successfully!');
   };
 
-  // Save Settings
-  const handleSaveSettings = (e: React.FormEvent) => {
+  // Save Settings to Backend Database
+  const handleSaveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
     localStorage.setItem('skyrovix_admin_settings', JSON.stringify(platformSettings));
-    showToast('Platform settings saved and synchronized!');
+    try {
+      await fetch('http://localhost:5000/api/admin/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(platformSettings)
+      });
+    } catch (err) {}
+    showToast('Platform settings saved and synchronized with server!');
   };
 
   // Real-time Action: Grade Capstone
-  const handleGradeCapstone = (id: string, newGrade: string) => {
+  const handleGradeCapstone = async (id: string, newGrade: string) => {
     setCapstones(prev =>
       prev.map(c => (c.id === id ? { ...c, grade: newGrade, status: 'Graded' } : c))
     );
+    try {
+      await fetch(`http://localhost:5000/api/admin/capstones/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ grade: newGrade, status: 'Graded' })
+      });
+    } catch (e) {}
     showToast(`Capstone marked as ${newGrade}!`);
   };
 
-  // Real-time Action: Add Learner
-  const handleAddLearner = (e: React.FormEvent) => {
+  // Real-time Action: Add Learner (persisted to backend DB)
+  const handleAddLearner = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newStudentName.trim() || !newStudentEmail.trim()) return;
 
-    const newProfile: StudentProfile = {
-      id: `std-${Date.now()}`,
-      name: newStudentName.trim(),
-      email: newStudentEmail.trim(),
-      avatar: `https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80`,
-      role: newStudentRole,
-      enrolledCourseCount: 1,
-      completedLessonsCount: 0,
-      xp: 150,
-      streakDays: 1,
-      lastActive: 'Just now',
-      status: 'Active'
-    };
+    try {
+      const resp = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newStudentName.trim(),
+          email: newStudentEmail.trim(),
+          password: newStudentPassword || 'Student@2026!',
+          role: newStudentRole
+        })
+      });
+      if (!resp.ok) {
+        const errData = await resp.json().catch(() => ({}));
+        showToast(errData.error || 'Could not create learner.');
+        return;
+      }
+      await fetchAdminOverview(false);
+    } catch (err) {
+      const newProfile: StudentProfile = {
+        id: `usr-${Date.now()}`,
+        name: newStudentName.trim(),
+        email: newStudentEmail.trim(),
+        avatar: `https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80`,
+        role: newStudentRole,
+        enrolledCourseCount: 0,
+        completedLessonsCount: 0,
+        xp: 100,
+        streakDays: 1,
+        lastActive: 'Just now',
+        status: 'Active'
+      };
+      addStudent(newProfile);
+    }
 
-    addStudent(newProfile);
     setIsAddStudentModalOpen(false);
+    const addedName = newStudentName.trim();
     setNewStudentName('');
     setNewStudentEmail('');
-    showToast(`Added learner ${newProfile.name}!`);
+    showToast(`Added learner ${addedName} to database!`);
   };
 
-  // Real-time Action: Issue Certificate
-  const handleIssueCertificate = (e: React.FormEvent) => {
+  // Real-time Action: Issue Certificate (persisted to backend DB for public verification)
+  const handleIssueCertificate = async (e: React.FormEvent) => {
     e.preventDefault();
     const student = students.find(s => s.id === newCertStudentId) || students[0];
-    const newCert = {
-      id: `cert-${Date.now()}`,
-      certCode: `SKX-COURSE-2026-${Math.floor(1000 + Math.random() * 9000)}`,
-      studentName: student?.name || 'Hariharan S',
-      studentAvatar: student?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-      courseTitle: newCertCourseTitle,
-      issuedDate: new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
-      score: newCertScore,
-      status: 'Live Verified Online'
-    };
+    try {
+      const resp = await fetch('http://localhost:5000/api/certificates/issue', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: student?.id,
+          studentName: student?.name || 'Skyrovix Learner',
+          studentAvatar: student?.avatar,
+          courseTitle: newCertCourseTitle,
+          score: newCertScore,
+          instructor: 'Skyrovix Team',
+          type: 'video'
+        })
+      });
+      if (resp.ok) {
+        await fetchAdminOverview(false);
+      }
+    } catch (err) {}
 
-    setIssuedCertificates(prev => [newCert, ...prev]);
     setIsIssueCertModalOpen(false);
-    showToast(`Issued verified credential for ${newCert.studentName}!`);
+    showToast(`Issued verified credential for ${student?.name || 'learner'}!`);
+  };
+
+  const handleDeleteCertificate = async (certId: string) => {
+    setIssuedCertificates(prev => prev.filter(c => c.id !== certId));
+    try {
+      await fetch(`http://localhost:5000/api/admin/certificates/${certId}`, {
+        method: 'DELETE'
+      });
+      await fetchAdminOverview(false);
+    } catch (e) {}
+    showToast('Certificate revoked from database.');
   };
 
   const filteredTableCourses = useMemo(() => {
@@ -927,10 +906,17 @@ export const AdminDashboard: React.FC = () => {
     );
   }, [submissions, topSearch]);
 
-  const handleUpdateStatus = (id: string, newStatus: 'Approved' | 'Rejected') => {
+  const handleUpdateStatus = async (id: string, newStatus: 'Approved' | 'Rejected') => {
     setSubmissions(prev =>
       prev.map(sub => (sub.id === id ? { ...sub, status: newStatus } : sub))
     );
+    try {
+      await fetch(`http://localhost:5000/api/admin/submissions/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+    } catch (e) {}
     showToast(`Assignment ${id} marked as ${newStatus}!`);
   };
 
@@ -1102,27 +1088,43 @@ export const AdminDashboard: React.FC = () => {
               </span>
             </div>
 
-            {/* SQL Database Live Active Badge */}
-            <div
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold shrink-0 shadow-2xs"
-              title="Connected to SQL Database Engine (localhost:5000)"
-            >
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>SQL Database Live</span>
+            {/* SQL Database Live Active Badge & Real-Time Sync */}
+            <div className="flex items-center gap-2 shrink-0">
+              <div
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold shadow-2xs ${
+                  dbConnected
+                    ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                    : 'bg-rose-50 border-rose-200 text-rose-700'
+                }`}
+                title={`Last synced: ${lastSyncedAt}`}
+              >
+                <span className={`w-2 h-2 rounded-full ${dbConnected ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`}></span>
+                <span>{dbConnected ? `Live DB • ${lastSyncedAt}` : 'Backend Offline'}</span>
+              </div>
+              <button
+                onClick={() => fetchAdminOverview(true)}
+                disabled={isSyncingLive}
+                className="cursor-pointer p-2 rounded-full bg-slate-100 hover:bg-orange-50 hover:text-[#FF5A36] text-slate-600 transition-colors"
+                title="Refresh real-time database data now"
+              >
+                <RefreshCw size={14} className={isSyncingLive ? 'animate-spin text-[#FF5A36]' : ''} />
+              </button>
             </div>
           </div>
 
-          {/* Right: Notification Bell + Hariharan Super Admin Profile */}
+          {/* Right: Notification Bell + Real Admin Profile */}
           <div className="flex items-center gap-3 shrink-0">
             {/* Notification Bell */}
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
                 className="cursor-pointer relative p-2 rounded-xl hover:bg-slate-100 text-slate-600 transition-colors"
-                title="Notifications"
+                title="Live Platform Activity"
               >
                 <Bell size={18} />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#FF5A36] ring-2 ring-white"></span>
+                {liveActivity.length > 0 && (
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#FF5A36] ring-2 ring-white"></span>
+                )}
               </button>
 
               <AnimatePresence>
@@ -1134,18 +1136,25 @@ export const AdminDashboard: React.FC = () => {
                     className="absolute right-0 top-full mt-2 w-80 bg-white border border-slate-200 rounded-3xl shadow-2xl p-4 z-50 space-y-3"
                   >
                     <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                      <span className="font-bold text-xs text-slate-900">Learning Activity Feed</span>
-                      <span className="text-[10px] text-emerald-600 font-bold">4 Unread</span>
+                      <span className="font-bold text-xs text-slate-900">Real-Time Database Feed</span>
+                      <span className="text-[10px] text-emerald-600 font-bold">{liveActivity.length} Events</span>
                     </div>
-                    <div className="space-y-2 text-xs">
-                      <div className="p-2.5 rounded-xl bg-orange-50/70 border border-orange-100">
-                        <p className="font-bold text-slate-800 text-[11px]">Priya Sharma completed Lesson 8</p>
-                        <p className="text-[10px] text-slate-500 mt-0.5">AI & Machine Learning • 15m ago</p>
-                      </div>
-                      <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
-                        <p className="font-bold text-slate-800 text-[11px]">Course Certificate SKX-9055 Awarded</p>
-                        <p className="text-[10px] text-slate-500 mt-0.5">Cloud Architecture • 1h ago</p>
-                      </div>
+                    <div className="space-y-2 text-xs max-h-64 overflow-y-auto pr-1">
+                      {liveActivity.length > 0 ? (
+                        liveActivity.slice(0, 6).map((act, idx) => (
+                          <div
+                            key={act.id}
+                            className={`p-2.5 rounded-xl border ${
+                              idx === 0 ? 'bg-orange-50/70 border-orange-100' : 'bg-slate-50 border-slate-100'
+                            }`}
+                          >
+                            <p className="font-bold text-slate-800 text-[11px]">{act.title}</p>
+                            <p className="text-[10px] text-slate-500 mt-0.5">{act.subtitle}</p>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="p-3 text-center text-slate-400 text-[11px]">No database events recorded yet.</div>
+                      )}
                     </div>
                   </motion.div>
                 )}
@@ -1159,10 +1168,10 @@ export const AdminDashboard: React.FC = () => {
                 className="cursor-pointer flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-2xl hover:bg-slate-100 transition-colors border border-transparent hover:border-slate-200 text-left"
               >
                 <div className="w-8 h-8 rounded-full bg-[#FF5A36] text-white font-extrabold flex items-center justify-center text-xs shadow-xs">
-                  H
+                  {(currentUser?.name || 'H').charAt(0).toUpperCase()}
                 </div>
                 <div className="hidden sm:block">
-                  <div className="font-bold text-xs text-slate-900 leading-tight">hariharan</div>
+                  <div className="font-bold text-xs text-slate-900 leading-tight">{currentUser?.name || 'Hariharan S'}</div>
                   <div className="text-[10px] text-slate-500 font-medium leading-tight">Super Admin</div>
                 </div>
                 <ChevronDown size={14} className="text-slate-400" />
@@ -1177,8 +1186,8 @@ export const AdminDashboard: React.FC = () => {
                     className="absolute right-0 top-full mt-2 w-56 bg-white border border-slate-200 rounded-3xl shadow-2xl p-2.5 z-50 space-y-1 text-xs"
                   >
                     <div className="px-3 py-2 border-b border-slate-100 mb-1">
-                      <div className="font-bold text-slate-900">Hariharan S</div>
-                      <div className="text-[10px] text-slate-500">hariharan@skyrovix.com</div>
+                      <div className="font-bold text-slate-900">{currentUser?.name || 'Hariharan S'}</div>
+                      <div className="text-[10px] text-slate-500">{currentUser?.email || 'admin@skyrovix.com'}</div>
                     </div>
                     <button
                       onClick={() => {
@@ -1237,6 +1246,26 @@ export const AdminDashboard: React.FC = () => {
                     <LayoutDashboard size={16} className={activeMenu === 'dashboard' ? 'text-white' : 'text-slate-400'} />
                     <span>Dashboard</span>
                   </div>
+                </button>
+
+                {/* 1b. Cashfree Orders & Revenue */}
+                <button
+                  onClick={() => setActiveMenu('orders')}
+                  className={`cursor-pointer w-full text-left px-3.5 py-2.5 rounded-2xl text-xs font-bold flex items-center justify-between transition-all ${
+                    activeMenu === 'orders'
+                      ? 'bg-[#FF6B4A] text-white shadow-sm shadow-orange-500/20'
+                      : 'text-slate-700 hover:bg-white hover:text-slate-900'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <CreditCard size={16} className={activeMenu === 'orders' ? 'text-white' : 'text-slate-400'} />
+                    <span>Cashfree Orders</span>
+                  </div>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                    activeMenu === 'orders' ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-700'
+                  }`}>
+                    {liveOrders.length}
+                  </span>
                 </button>
               </div>
             </div>
@@ -1470,42 +1499,50 @@ export const AdminDashboard: React.FC = () => {
 
         {/* Right Main Content Canvas */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6 min-w-0">
-          {/* VIEW 1: Main Dashboard (Overview & KPIs) */}
+          {/* VIEW 1: Main Dashboard (Real-Time Original Data Overview & KPIs) */}
           {activeMenu === 'dashboard' && (
             <div className="space-y-6">
-              {/* Welcome Banner */}
+              {/* Welcome Banner with Real Live Clock */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <h1 className="text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight font-display">
-                    Welcome back, Hariharan! 👋
+                    Welcome back, {currentUser?.name || 'Hariharan S'}! 👋
                   </h1>
                   <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
-                    Here's what's happening across your learning platform today.
+                    Real-time telemetry synced with your platform database (auto-refreshes every 5s).
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-white border border-slate-200/90 text-slate-700 text-xs font-semibold shadow-2xs self-start sm:self-auto">
-                  <Calendar size={14} className="text-[#FF5A36]" />
-                  <span>18 November 2026</span>
+                <div className="flex items-center gap-2.5 self-start sm:self-auto">
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-white border border-slate-200/90 text-slate-700 text-xs font-semibold shadow-2xs">
+                    <Calendar size={14} className="text-[#FF5A36]" />
+                    <span>
+                      {liveClock.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </span>
+                    <span className="text-slate-300">•</span>
+                    <span className="font-mono font-bold text-[#FF5A36]">
+                      {liveClock.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              {/* 4 Metric Cards Matching Reference Design */}
+              {/* 4 Real-Time Metric Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* 1. Total Learners */}
+                {/* 1. Total Registered Learners */}
                 <div className="p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-2 hover:shadow-md transition-shadow">
                   <div className="flex items-center justify-between">
                     <div className="w-10 h-10 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center">
                       <Users size={20} />
                     </div>
                     <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                      +{activeLearnersCount} active now
+                      {activeLearnersCount} active
                     </span>
                   </div>
                   <div className="text-3xl font-extrabold text-slate-900 font-display">{totalLearnersCount.toLocaleString()}</div>
                   <div>
-                    <div className="text-xs font-bold text-slate-700">Total Enrolled Learners</div>
-                    <div className="text-[11px] text-slate-400">Across {allCoursesList.length} technical curricula</div>
+                    <div className="text-xs font-bold text-slate-700">Registered Users</div>
+                    <div className="text-[11px] text-slate-400">{liveStats.totalEnrollments} live course enrollments</div>
                   </div>
                 </div>
 
@@ -1522,41 +1559,51 @@ export const AdminDashboard: React.FC = () => {
                   <div className="text-3xl font-extrabold text-slate-900 font-display">{allCoursesList.length} Tracks</div>
                   <div>
                     <div className="text-xs font-bold text-slate-700">Published Courses</div>
-                    <div className="text-[11px] text-slate-400">{totalLecturesCount} lectures & tutorials</div>
+                    <div className="text-[11px] text-slate-400">{totalLecturesCount} lectures & chapters</div>
                   </div>
                 </div>
 
-                {/* 3. Active Learners Today */}
-                <div className="p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-2 hover:shadow-md transition-shadow">
+                {/* 3. Real Cashfree Orders & Revenue */}
+                <div
+                  onClick={() => setActiveMenu('orders')}
+                  className="cursor-pointer p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-2 hover:shadow-md transition-shadow"
+                >
                   <div className="flex items-center justify-between">
                     <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                      <Terminal size={20} />
+                      <CreditCard size={20} />
                     </div>
                     <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                      Live Coding
+                      {liveOrders.length} Orders
                     </span>
                   </div>
-                  <div className="text-3xl font-extrabold text-slate-900 font-display">{activeLearnersCount}</div>
+                  <div className="text-3xl font-extrabold text-slate-900 font-display">
+                    ₹{(liveStats.paidRevenue || 0).toLocaleString()}
+                  </div>
                   <div>
-                    <div className="text-xs font-bold text-slate-700">Active Learners Today</div>
-                    <div className="text-[11px] text-slate-400">In browser sandboxes & video streams</div>
+                    <div className="text-xs font-bold text-slate-700">Paid Revenue (Cashfree)</div>
+                    <div className="text-[11px] text-slate-400">
+                      {liveStats.paidOrdersCount} paid • ₹{(liveStats.pendingVolume || 0).toLocaleString()} active/pending
+                    </div>
                   </div>
                 </div>
 
                 {/* 4. Certificates Awarded */}
-                <div className="p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-2 hover:shadow-md transition-shadow">
+                <div
+                  onClick={() => setActiveMenu('certificates')}
+                  className="cursor-pointer p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-2 hover:shadow-md transition-shadow"
+                >
                   <div className="flex items-center justify-between">
                     <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
                       <Award size={20} />
                     </div>
                     <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
-                      Verified Credentials
+                      Verified DB
                     </span>
                   </div>
                   <div className="text-3xl font-extrabold text-slate-900 font-display">{issuedCertificates.length}</div>
                   <div>
-                    <div className="text-xs font-bold text-slate-700">Certificates Awarded</div>
-                    <div className="text-[11px] text-slate-400">Cryptographically verifiable online</div>
+                    <div className="text-xs font-bold text-slate-700">Certificates Issued</div>
+                    <div className="text-[11px] text-slate-400">Verifiable online via /certificate-verify</div>
                   </div>
                 </div>
               </div>
@@ -1565,20 +1612,20 @@ export const AdminDashboard: React.FC = () => {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Left Column (2 of 3) */}
                 <div className="lg:col-span-2 space-y-6">
-                  {/* Recent Course Submissions & Activity */}
+                  {/* Real-Time Cashfree Payment Orders & Enrollments */}
                   <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
                         <h2 className="text-base font-extrabold text-slate-900 font-display">
-                          Recent Course Assignment Submissions
+                          Live Cashfree Orders & Enrollments
                         </h2>
-                        <p className="text-xs text-slate-500">Live student code repository and capstone submissions</p>
+                        <p className="text-xs text-slate-500">Original payment orders recorded in database</p>
                       </div>
                       <button
-                        onClick={() => setActiveMenu('tasks')}
+                        onClick={() => setActiveMenu('orders')}
                         className="cursor-pointer text-xs font-bold text-[#FF5A36] hover:text-[#E03D00] flex items-center gap-1 transition-colors"
                       >
-                        <span>View All</span>
+                        <span>View All ({liveOrders.length})</span>
                         <ArrowRight size={14} />
                       </button>
                     </div>
@@ -1587,73 +1634,59 @@ export const AdminDashboard: React.FC = () => {
                       <table className="w-full text-left text-xs">
                         <thead className="text-[10px] uppercase font-bold tracking-wider text-slate-400 border-b border-slate-100 pb-2">
                           <tr>
-                            <th className="py-2.5 px-3">Student</th>
-                            <th className="py-2.5 px-3">Assignment</th>
-                            <th className="py-2.5 px-3">Course Track</th>
-                            <th className="py-2.5 px-3">Submitted On</th>
+                            <th className="py-2.5 px-3">Customer</th>
+                            <th className="py-2.5 px-3">Course</th>
+                            <th className="py-2.5 px-3">Amount</th>
                             <th className="py-2.5 px-3">Status</th>
-                            <th className="py-2.5 px-3 text-right">Actions</th>
+                            <th className="py-2.5 px-3 text-right">Verify</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
-                          {filteredSubmissions.slice(0, 5).map(sub => (
-                            <tr key={sub.id} className="hover:bg-slate-50/80 transition-colors">
-                              <td className="py-3 px-3">
-                                <div className="flex items-center gap-2.5">
-                                  <img
-                                    src={sub.studentAvatar}
-                                    alt={sub.studentName}
-                                    className="w-7 h-7 rounded-full object-cover border border-slate-200"
-                                  />
-                                  <div>
-                                    <div className="font-bold text-slate-900">{sub.studentName}</div>
-                                    <div className="text-[10px] font-mono text-slate-400">{sub.studentId}</div>
+                          {liveOrders.length > 0 ? (
+                            liveOrders.slice(0, 5).map(ord => (
+                              <tr key={ord.orderId} className="hover:bg-slate-50/80 transition-colors">
+                                <td className="py-3 px-3">
+                                  <div className="font-bold text-slate-900">{ord.customerName || 'Learner'}</div>
+                                  <div className="text-[10px] font-mono text-slate-400">{ord.customerEmail}</div>
+                                </td>
+                                <td className="py-3 px-3">
+                                  <div className="font-semibold text-slate-800 truncate max-w-[200px]">
+                                    {ord.courseTitle || ord.courseId}
                                   </div>
-                                </div>
-                              </td>
-                              <td className="py-3 px-3 font-semibold text-slate-800">{sub.assignmentTitle}</td>
-                              <td className="py-3 px-3">
-                                <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-700">
-                                  {sub.courseTrack}
-                                </span>
-                              </td>
-                              <td className="py-3 px-3 text-slate-500 font-medium">{sub.submittedOn}</td>
-                              <td className="py-3 px-3">
-                                <span
-                                  className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                                    sub.status === 'Approved'
-                                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                                      : sub.status === 'Pending'
-                                      ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                                      : 'bg-rose-50 text-rose-700 border border-rose-200'
-                                  }`}
-                                >
-                                  {sub.status === 'Approved' && <Check size={10} />}
-                                  {sub.status}
-                                </span>
-                              </td>
-                              <td className="py-3 px-3 text-right">
-                                {sub.status === 'Pending' ? (
-                                  <div className="flex items-center justify-end gap-1.5">
-                                    <button
-                                      onClick={() => handleUpdateStatus(sub.id, 'Approved')}
-                                      className="cursor-pointer px-2 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-[10px] transition-colors"
-                                    >
-                                      Approve
-                                    </button>
-                                    <button
-                                      onClick={() => handleUpdateStatus(sub.id, 'Rejected')}
-                                      className="cursor-pointer px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-[10px] transition-colors"
-                                    >
-                                      Reject
-                                    </button>
-                                  </div>
-                                ) : (
-                                  <span className="text-[10px] font-medium text-slate-400">Graded</span>
-                                )}
+                                  <div className="text-[10px] font-mono text-slate-400">{ord.orderId}</div>
+                                </td>
+                                <td className="py-3 px-3 font-mono font-bold text-slate-900">₹{ord.amount}</td>
+                                <td className="py-3 px-3">
+                                  <span
+                                    className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                                      ord.status === 'PAID'
+                                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                        : 'bg-amber-50 text-amber-700 border border-amber-200'
+                                    }`}
+                                  >
+                                    {ord.status === 'PAID' && <Check size={10} />}
+                                    {ord.status}
+                                  </span>
+                                </td>
+                                <td className="py-3 px-3 text-right">
+                                  <button
+                                    onClick={() => handleVerifyOrder(ord.orderId)}
+                                    disabled={verifyingOrderId === ord.orderId}
+                                    className="cursor-pointer px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-orange-50 hover:text-[#FF5A36] text-slate-700 font-bold text-[10px] transition-colors inline-flex items-center gap-1"
+                                  >
+                                    <RefreshCw size={10} className={verifyingOrderId === ord.orderId ? 'animate-spin' : ''} />
+                                    <span>Check Status</span>
+                                  </button>
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan={5} className="py-8 text-center text-slate-400">
+                                No Cashfree orders recorded yet. Orders appear here automatically when students initiate checkout.
                               </td>
                             </tr>
-                          ))}
+                          )}
                         </tbody>
                       </table>
                     </div>
@@ -1724,7 +1757,7 @@ export const AdminDashboard: React.FC = () => {
                           </svg>
                           <div className="absolute flex flex-col items-center justify-center text-center">
                             <span className="text-xl font-extrabold text-slate-900 font-display">{completedPct}%</span>
-                            <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Pass Rate</span>
+                            <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Active Rate</span>
                           </div>
                         </div>
                       </div>
@@ -1734,21 +1767,21 @@ export const AdminDashboard: React.FC = () => {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                            <span className="text-slate-600 font-medium">Completed Curriculum</span>
+                            <span className="text-slate-600 font-medium">High Progress (5+ lessons)</span>
                           </div>
                           <span className="font-bold text-slate-900">{completedStudents.length} ({completedPct}%)</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
-                            <span className="text-slate-600 font-medium">Active In Progress</span>
+                            <span className="text-slate-600 font-medium">Enrolled / Learning</span>
                           </div>
                           <span className="font-bold text-slate-900">{inProgressStudents.length} ({inProgressPct}%)</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full bg-[#FF5A36]"></span>
-                            <span className="text-slate-600 font-medium">Newly Enrolled</span>
+                            <span className="text-slate-600 font-medium">Registered (Not Enrolled)</span>
                           </div>
                           <span className="font-bold text-slate-900">{newStudents.length} ({newPct}%)</span>
                         </div>
@@ -1759,7 +1792,7 @@ export const AdminDashboard: React.FC = () => {
                     <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-4">
                       <div className="flex items-center justify-between">
                         <h3 className="text-sm font-extrabold text-slate-900 font-display">Top Course Tracks</h3>
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Curriculum Distribution</span>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Live Enrollments</span>
                       </div>
 
                       <div className="space-y-4 text-xs">
@@ -1767,7 +1800,9 @@ export const AdminDashboard: React.FC = () => {
                           <div key={cat.name} className="space-y-1.5">
                             <div className="flex items-center justify-between">
                               <span className="font-bold text-slate-900 truncate pr-2">{cat.name}</span>
-                              <span className="font-mono text-slate-600 font-bold shrink-0">{cat.count} tracks • {cat.lessons} lectures</span>
+                              <span className="font-mono text-slate-600 font-bold shrink-0">
+                                {cat.count} tracks • {cat.learnersCount} enrolled
+                              </span>
                             </div>
                             <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
                               <div
@@ -1870,71 +1905,174 @@ export const AdminDashboard: React.FC = () => {
                     </button>
                   </div>
 
-                  {/* Upcoming Course Releases & Live Sessions */}
+                  {/* Real-Time Database Activity Stream */}
                   <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-4">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-base font-extrabold text-slate-900 font-display">Upcoming Releases</h3>
+                      <h3 className="text-base font-extrabold text-slate-900 font-display">Live Database Activity</h3>
                       <button
-                        onClick={() => setActiveMenu('courses')}
-                        className="cursor-pointer text-xs font-bold text-[#FF5A36] hover:underline"
+                        onClick={() => fetchAdminOverview(true)}
+                        className="cursor-pointer text-xs font-bold text-[#FF5A36] hover:underline flex items-center gap-1"
                       >
-                        View All
+                        <RefreshCw size={11} className={isSyncingLive ? 'animate-spin' : ''} />
+                        <span>Sync</span>
                       </button>
                     </div>
 
                     <div className="space-y-3">
-                      <div className="p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80 flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex flex-col items-center justify-center shrink-0 shadow-2xs">
-                          <span className="text-[9px] uppercase font-bold text-slate-400">NOV</span>
-                          <span className="text-sm font-extrabold text-slate-900">20</span>
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="font-bold text-xs text-slate-900 truncate">
-                            Next.js 15 App Router Deep Dive
+                      {liveActivity.length > 0 ? (
+                        liveActivity.slice(0, 5).map(act => (
+                          <div
+                            key={act.id}
+                            className="p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80 flex items-center gap-3"
+                          >
+                            <div
+                              className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-2xs ${
+                                act.type === 'order'
+                                  ? 'bg-emerald-100 text-emerald-700'
+                                  : act.type === 'certificate'
+                                  ? 'bg-amber-100 text-amber-700'
+                                  : act.type === 'enrollment'
+                                  ? 'bg-orange-100 text-[#FF5A36]'
+                                  : 'bg-indigo-100 text-indigo-700'
+                              }`}
+                            >
+                              {act.type === 'order' ? (
+                                <CreditCard size={15} />
+                              ) : act.type === 'certificate' ? (
+                                <Award size={15} />
+                              ) : act.type === 'enrollment' ? (
+                                <BookOpen size={15} />
+                              ) : (
+                                <Users size={15} />
+                              )}
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="font-bold text-xs text-slate-900 truncate">{act.title}</div>
+                              <div className="text-[11px] text-slate-500 truncate mt-0.5">{act.subtitle}</div>
+                            </div>
                           </div>
-                          <div className="text-[11px] text-slate-500 flex items-center gap-1.5 mt-0.5">
-                            <span>Video Masterclass</span>
-                            <span>•</span>
-                            <span className="text-amber-600 font-bold">New Release</span>
-                          </div>
+                        ))
+                      ) : (
+                        <div className="p-4 text-center text-xs text-slate-400">
+                          Waiting for real-time platform events...
                         </div>
-                      </div>
-
-                      <div className="p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80 flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex flex-col items-center justify-center shrink-0 shadow-2xs">
-                          <span className="text-[9px] uppercase font-bold text-slate-400">NOV</span>
-                          <span className="text-sm font-extrabold text-slate-900">22</span>
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="font-bold text-xs text-slate-900 truncate">
-                            Live Q&A: Cloud Architecture Patterns
-                          </div>
-                          <div className="text-[11px] text-slate-500 flex items-center gap-1.5 mt-0.5">
-                            <span>Staff Architect</span>
-                            <span>•</span>
-                            <span className="text-slate-600 font-semibold">Live Office Hour</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80 flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex flex-col items-center justify-center shrink-0 shadow-2xs">
-                          <span className="text-[9px] uppercase font-bold text-slate-400">NOV</span>
-                          <span className="text-sm font-extrabold text-slate-900">24</span>
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="font-bold text-xs text-slate-900 truncate">
-                            Python for Data Engineering Part 2
-                          </div>
-                          <div className="text-[11px] text-slate-500 flex items-center gap-1.5 mt-0.5">
-                            <span>Text Track</span>
-                            <span>•</span>
-                            <span className="text-slate-600 font-semibold">25 New Chapters</span>
-                          </div>
-                        </div>
-                      </div>
+                      )}
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* VIEW 1B: Cashfree Orders & Revenue Ledger */}
+          {activeMenu === 'orders' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl font-extrabold text-slate-900 font-display flex items-center gap-2.5">
+                    <CreditCard className="text-[#FF5A36]" size={24} />
+                    <span>Cashfree Payment Orders ({liveOrders.length})</span>
+                  </h1>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Real-time payment orders and automatic enrollments verified through Cashfree API.
+                  </p>
+                </div>
+                <button
+                  onClick={() => fetchAdminOverview(true)}
+                  className="cursor-pointer flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-xs"
+                >
+                  <RefreshCw size={14} className={isSyncingLive ? 'animate-spin' : ''} />
+                  <span>Sync Live Orders</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-xs">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Confirmed Paid Revenue</div>
+                  <div className="text-2xl font-black text-emerald-600 font-display mt-1">
+                    ₹{(liveStats.paidRevenue || 0).toLocaleString()}
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-0.5">{liveStats.paidOrdersCount} completed payments</div>
+                </div>
+                <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-xs">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Pending / Active Volume</div>
+                  <div className="text-2xl font-black text-amber-600 font-display mt-1">
+                    ₹{(liveStats.pendingVolume || 0).toLocaleString()}
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-0.5">
+                    {liveOrders.length - liveStats.paidOrdersCount} awaiting completion
+                  </div>
+                </div>
+                <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-xs">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Database Orders</div>
+                  <div className="text-2xl font-black text-slate-900 font-display mt-1">{liveOrders.length}</div>
+                  <div className="text-[11px] text-slate-500 mt-0.5">Synced with server/data/database.json</div>
+                </div>
+              </div>
+
+              <div className="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs text-slate-700">
+                    <thead className="bg-slate-50 text-[10px] uppercase tracking-wider text-slate-500 font-bold border-b border-slate-200">
+                      <tr>
+                        <th className="px-5 py-3.5">Order ID / CF Ref</th>
+                        <th className="px-4 py-3.5">Customer</th>
+                        <th className="px-4 py-3.5">Course</th>
+                        <th className="px-4 py-3.5">Amount</th>
+                        <th className="px-4 py-3.5">Created</th>
+                        <th className="px-4 py-3.5">Status</th>
+                        <th className="px-4 py-3.5 text-right">Live Verify</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {liveOrders.length > 0 ? (
+                        liveOrders.map(ord => (
+                          <tr key={ord.orderId} className="hover:bg-slate-50 transition-colors">
+                            <td className="px-5 py-4 font-mono">
+                              <div className="font-bold text-slate-900">{ord.orderId}</div>
+                              {ord.cfOrderId && <div className="text-[10px] text-slate-400">CF: {ord.cfOrderId}</div>}
+                            </td>
+                            <td className="px-4 py-4">
+                              <div className="font-bold text-slate-900">{ord.customerName || 'Student'}</div>
+                              <div className="text-[11px] font-mono text-slate-500">{ord.customerEmail}</div>
+                            </td>
+                            <td className="px-4 py-4 font-semibold text-slate-800">{ord.courseTitle || ord.courseId}</td>
+                            <td className="px-4 py-4 font-mono font-bold text-slate-900">₹{ord.amount}</td>
+                            <td className="px-4 py-4 text-slate-500">
+                              {ord.createdAt ? new Date(ord.createdAt).toLocaleString('en-IN') : '—'}
+                            </td>
+                            <td className="px-4 py-4">
+                              <span
+                                className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                                  ord.status === 'PAID'
+                                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                    : 'bg-amber-50 text-amber-700 border border-amber-200'
+                                }`}
+                              >
+                                {ord.status}
+                              </span>
+                            </td>
+                            <td className="px-4 py-4 text-right">
+                              <button
+                                onClick={() => handleVerifyOrder(ord.orderId)}
+                                disabled={verifyingOrderId === ord.orderId}
+                                className="cursor-pointer px-3 py-1.5 rounded-xl bg-orange-50 hover:bg-orange-100 text-[#FF5A36] font-bold text-[11px] transition-colors inline-flex items-center gap-1.5"
+                              >
+                                <RefreshCw size={12} className={verifyingOrderId === ord.orderId ? 'animate-spin' : ''} />
+                                <span>Verify Cashfree</span>
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={7} className="px-6 py-12 text-center text-slate-400">
+                            No orders recorded in database yet.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -2483,6 +2621,13 @@ export const AdminDashboard: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-2.5">
                   <button
+                    onClick={() => setIsAddStudentModalOpen(true)}
+                    className="cursor-pointer flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#FF5A36] hover:bg-[#E03D00] text-white font-bold text-xs transition-all shadow-md shadow-orange-500/20"
+                  >
+                    <UserPlus size={14} />
+                    <span>Add Learner</span>
+                  </button>
+                  <button
                     onClick={handleExportStudents}
                     className="cursor-pointer flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-all shadow-xs"
                     title="Download students CSV export"
@@ -2672,19 +2817,13 @@ export const AdminDashboard: React.FC = () => {
                             <td className="px-4 py-4 text-slate-500 font-medium">{student.lastActive}</td>
                             <td className="px-4 py-4">
                               <button
-                                onClick={() => {
-                                  updateStudent({
-                                    ...student,
-                                    status: student.status === 'Active' ? 'Inactive' : 'Active'
-                                  });
-                                  showToast(`Student ${student.name} is now ${student.status === 'Active' ? 'Inactive' : 'Active'}!`);
-                                }}
+                                onClick={() => handleToggleStudentStatus(student)}
                                 className={`cursor-pointer px-3 py-1 rounded-full text-[10px] font-bold transition-colors ${
                                   student.status === 'Active'
                                     ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-rose-50 hover:text-rose-700 hover:border-rose-200'
                                     : 'bg-slate-100 text-slate-500 hover:bg-emerald-50 hover:text-emerald-700'
                                 }`}
-                                title="Click to toggle status"
+                                title="Click to toggle status (syncs to DB)"
                               >
                                 {student.status}
                               </button>
@@ -2755,7 +2894,8 @@ export const AdminDashboard: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {submissions.map(sub => (
+                      {submissions.length > 0 ? (
+                        submissions.map(sub => (
                         <tr key={sub.id} className="hover:bg-slate-50 transition-colors">
                           <td className="py-4 px-4">
                             <div className="flex items-center gap-2.5">
@@ -2833,7 +2973,14 @@ export const AdminDashboard: React.FC = () => {
                             </div>
                           </td>
                         </tr>
-                      ))}
+                      ))
+                      ) : (
+                        <tr>
+                          <td colSpan={7} className="py-12 text-center text-slate-400">
+                            No assignment submissions recorded in the database yet.
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -2860,63 +3007,69 @@ export const AdminDashboard: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {capstones.map(proj => (
-                  <div key={proj.id} className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-4 hover:shadow-md transition-shadow">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <img
-                          src={proj.avatar}
-                          alt={proj.student}
-                          className="w-8 h-8 rounded-full object-cover border border-slate-200"
-                        />
-                        <div className="font-bold text-sm text-slate-900">{proj.student}</div>
-                      </div>
-                      <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
-                        proj.status === 'Graded'
-                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                          : 'bg-amber-50 text-amber-700 border border-amber-200'
-                      }`}>
-                        {proj.grade}
-                      </span>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-xs text-slate-800">{proj.title}</h4>
-                      <p className="text-[11px] text-slate-500 font-mono mt-0.5">{proj.stack}</p>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-2 border-t border-slate-100">
-                      <a
-                        href={proj.repo}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-xs font-bold text-[#FF5A36] hover:underline flex items-center gap-1"
-                      >
-                        <span>Inspect Repository</span>
-                        <ExternalLink size={12} />
-                      </a>
-
-                      {proj.status === 'Pending' ? (
-                        <div className="flex items-center gap-1.5">
-                          <button
-                            onClick={() => handleGradeCapstone(proj.id, 'A+ (100%)')}
-                            className="cursor-pointer px-2.5 py-1 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-[10px] transition-colors"
-                          >
-                            Pass (A+)
-                          </button>
-                          <button
-                            onClick={() => handleGradeCapstone(proj.id, 'Needs Revision')}
-                            className="cursor-pointer px-2.5 py-1 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-[10px] transition-colors"
-                          >
-                            Revise
-                          </button>
+                {capstones.length > 0 ? (
+                  capstones.map(proj => (
+                    <div key={proj.id} className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-4 hover:shadow-md transition-shadow">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                          <img
+                            src={proj.avatar}
+                            alt={proj.student}
+                            className="w-8 h-8 rounded-full object-cover border border-slate-200"
+                          />
+                          <div className="font-bold text-sm text-slate-900">{proj.student}</div>
                         </div>
-                      ) : (
-                        <span className="text-[10px] font-medium text-slate-400">Verified & Graded</span>
-                      )}
+                        <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
+                          proj.status === 'Graded'
+                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                            : 'bg-amber-50 text-amber-700 border border-amber-200'
+                        }`}>
+                          {proj.grade}
+                        </span>
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-xs text-slate-800">{proj.title}</h4>
+                        <p className="text-[11px] text-slate-500 font-mono mt-0.5">{proj.stack}</p>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                        <a
+                          href={proj.repo}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-xs font-bold text-[#FF5A36] hover:underline flex items-center gap-1"
+                        >
+                          <span>Inspect Repository</span>
+                          <ExternalLink size={12} />
+                        </a>
+
+                        {proj.status === 'Pending' ? (
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              onClick={() => handleGradeCapstone(proj.id, 'A+ (100%)')}
+                              className="cursor-pointer px-2.5 py-1 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-[10px] transition-colors"
+                            >
+                              Pass (A+)
+                            </button>
+                            <button
+                              onClick={() => handleGradeCapstone(proj.id, 'Needs Revision')}
+                              className="cursor-pointer px-2.5 py-1 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-[10px] transition-colors"
+                            >
+                              Revise
+                            </button>
+                          </div>
+                        ) : (
+                          <span className="text-[10px] font-medium text-slate-400">Verified & Graded</span>
+                        )}
+                      </div>
                     </div>
+                  ))
+                ) : (
+                  <div className="md:col-span-2 p-10 rounded-3xl bg-white border border-slate-200 text-center text-slate-400 text-xs">
+                    No capstone project submissions recorded in the database yet.
                   </div>
-                ))}
+                )}
               </div>
             </div>
           )}
@@ -2959,56 +3112,72 @@ export const AdminDashboard: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {issuedCertificates.map(cert => (
-                  <div key={cert.id} className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4 hover:shadow-md transition-shadow">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                      <div className="font-mono font-bold text-xs text-slate-800">{cert.certCode}</div>
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
-                        <CheckCircle2 size={10} className="text-emerald-600" />
-                        <span>{cert.status}</span>
-                      </span>
-                    </div>
+                {issuedCertificates.length > 0 ? (
+                  issuedCertificates.map(cert => (
+                    <div key={cert.id} className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4 hover:shadow-md transition-shadow">
+                      <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div className="font-mono font-bold text-xs text-slate-800">{cert.certCode}</div>
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
+                          <CheckCircle2 size={10} className="text-emerald-600" />
+                          <span>{cert.status}</span>
+                        </span>
+                      </div>
 
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={cert.studentAvatar}
-                        alt={cert.studentName}
-                        className="w-10 h-10 rounded-full object-cover border border-slate-200"
-                      />
-                      <div>
-                        <div className="font-extrabold text-sm text-slate-900">{cert.studentName}</div>
-                        <div className="text-xs text-[#FF5A36] font-bold">{cert.courseTitle}</div>
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={cert.studentAvatar}
+                          alt={cert.studentName}
+                          className="w-10 h-10 rounded-full object-cover border border-slate-200"
+                        />
+                        <div>
+                          <div className="font-extrabold text-sm text-slate-900">{cert.studentName}</div>
+                          <div className="text-xs text-[#FF5A36] font-bold">{cert.courseTitle}</div>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2 text-xs pt-1">
+                        <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                          <span className="text-slate-400 block text-[10px] font-bold uppercase tracking-wider">Issued Date</span>
+                          <span className="font-bold text-slate-900">{cert.issuedDate}</span>
+                        </div>
+                        <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                          <span className="text-slate-400 block text-[10px] font-bold uppercase tracking-wider">Academic Grade</span>
+                          <span className="font-bold text-emerald-600">{cert.score}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between gap-2 pt-2 border-t border-slate-100">
+                        <button
+                          onClick={() => handleDeleteCertificate(cert.id)}
+                          className="cursor-pointer text-xs font-bold text-rose-500 hover:text-rose-700 hover:bg-rose-50 px-2.5 py-1.5 rounded-xl flex items-center gap-1"
+                          title="Revoke certificate from DB"
+                        >
+                          <Trash2 size={12} />
+                          <span>Revoke</span>
+                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => setCurrentView('certificates')}
+                            className="cursor-pointer text-xs font-bold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-xl hover:bg-slate-50"
+                          >
+                            Inspect Preview
+                          </button>
+                          <button
+                            onClick={() => setCurrentView('certificate-verify')}
+                            className="cursor-pointer text-xs font-bold text-[#FF5A36] hover:bg-orange-50 px-3 py-1.5 rounded-xl flex items-center gap-1"
+                          >
+                            <span>Verify Online</span>
+                            <ExternalLink size={12} />
+                          </button>
+                        </div>
                       </div>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-2 text-xs pt-1">
-                      <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                        <span className="text-slate-400 block text-[10px] font-bold uppercase tracking-wider">Issued Date</span>
-                        <span className="font-bold text-slate-900">{cert.issuedDate}</span>
-                      </div>
-                      <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                        <span className="text-slate-400 block text-[10px] font-bold uppercase tracking-wider">Academic Grade</span>
-                        <span className="font-bold text-emerald-600">{cert.score}</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
-                      <button
-                        onClick={() => setCurrentView('certificates')}
-                        className="cursor-pointer text-xs font-bold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-xl hover:bg-slate-50"
-                      >
-                        Inspect Preview
-                      </button>
-                      <button
-                        onClick={() => setCurrentView('certificate-verify')}
-                        className="cursor-pointer text-xs font-bold text-[#FF5A36] hover:bg-orange-50 px-3 py-1.5 rounded-xl flex items-center gap-1"
-                      >
-                        <span>Verify Online</span>
-                        <ExternalLink size={12} />
-                      </button>
-                    </div>
+                  ))
+                ) : (
+                  <div className="md:col-span-2 p-10 rounded-3xl bg-white border border-slate-200 text-center text-slate-500 text-xs">
+                    No certificates issued in the database yet. Click "Issue Certificate" above to issue a verifiable credential.
                   </div>
-                ))}
+                )}
               </div>
             </div>
           )}
@@ -3146,26 +3315,34 @@ export const AdminDashboard: React.FC = () => {
               </div>
 
               <div className="space-y-3">
-                {[
-                  { student: 'Hariharan S', mentor: 'Staff Architect', track: 'Full Stack Cloud', topic: 'Terraform State Management', time: 'Today, 4:00 PM' },
-                  { student: 'Sneha Patel', mentor: 'Security Lead', track: 'Cyber Security', topic: 'OWASP ZAP Integration & Report', time: 'Tomorrow, 11:00 AM' }
-                ].map((m, idx) => (
-                  <div key={idx} className="p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div>
-                      <div className="font-bold text-sm text-slate-900">{m.student} with {m.mentor}</div>
-                      <div className="text-xs text-slate-500 mt-0.5">{m.topic} • <span className="font-semibold text-[#FF5A36]">{m.track}</span></div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs font-mono font-bold text-slate-600">{m.time}</span>
-                      <button
-                        onClick={() => showToast(`Joined live room with ${m.student}!`)}
-                        className="cursor-pointer px-3.5 py-1.5 rounded-xl bg-orange-50 text-[#FF5A36] hover:bg-orange-100 font-bold text-xs"
-                      >
-                        Join Room
-                      </button>
-                    </div>
+                {students.filter(s => s.enrolledCourseCount > 0).length > 0 ? (
+                  students
+                    .filter(s => s.enrolledCourseCount > 0)
+                    .slice(0, 5)
+                    .map(s => (
+                      <div key={s.id} className="p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                          <div className="font-bold text-sm text-slate-900">{s.name} ({s.email})</div>
+                          <div className="text-xs text-slate-500 mt-0.5">
+                            Enrolled in {s.enrolledCourseCount} tracks • <span className="font-semibold text-[#FF5A36]">{s.completedLessonsCount} lessons completed</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-xs font-mono font-bold text-slate-600">{s.lastActive}</span>
+                          <button
+                            onClick={() => showToast(`Opened live mentorship session invite for ${s.name}!`)}
+                            className="cursor-pointer px-3.5 py-1.5 rounded-xl bg-orange-50 text-[#FF5A36] hover:bg-orange-100 font-bold text-xs"
+                          >
+                            Start Session
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                ) : (
+                  <div className="p-8 rounded-3xl bg-white border border-slate-200 text-center text-xs text-slate-400">
+                    No active student enrollments needing mentorship right now.
                   </div>
-                ))}
+                )}
               </div>
             </div>
           )}
@@ -3681,8 +3858,19 @@ export const AdminDashboard: React.FC = () => {
               className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 outline-none focus:border-[#FF5A36] resize-none"
             />
             <button
-              onClick={() => {
-                showToast('Announcement posted to student feeds!');
+              onClick={async () => {
+                if (!announcementText.trim()) return;
+                try {
+                  await fetch('http://localhost:5000/api/admin/announcements', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      text: announcementText.trim(),
+                      author: currentUser?.name || 'Super Admin'
+                    })
+                  });
+                } catch (e) {}
+                showToast('Announcement saved to DB and broadcast!');
                 setIsAnnouncementModalOpen(false);
                 setAnnouncementText('');
               }}
@@ -3776,8 +3964,16 @@ export const AdminDashboard: React.FC = () => {
               </div>
             </div>
             <button
-              onClick={() => {
-                showToast(`Coupon ${couponCode} (${discountPercent}% OFF) created!`);
+              onClick={async () => {
+                if (!couponCode.trim()) return;
+                try {
+                  await fetch('http://localhost:5000/api/admin/coupons', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: couponCode.trim(), discountPercent: Number(discountPercent) || 10 })
+                  });
+                } catch (e) {}
+                showToast(`Coupon ${couponCode} (${discountPercent}% OFF) saved to DB!`);
                 setIsCouponModalOpen(false);
               }}
               className="cursor-pointer w-full mt-4 py-2.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs transition-all"

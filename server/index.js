@@ -55,10 +55,10 @@ function loadDB() {
     const initialDB = {
       users: [
         {
-          id: 'usr-1',
+          id: 'usr-admin',
           name: 'Hariharan S',
-          email: 'hariharan@skyrovix.dev',
-          passwordHash: 'hashed_secret',
+          email: 'admin@skyrovix.com',
+          passwordHash: 'hashed_AdminPassword123!',
           role: 'admin',
           avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
           xp: 1850,
@@ -67,58 +67,44 @@ function loadDB() {
           createdAt: new Date().toISOString()
         },
         {
-          id: 'usr-2',
-          name: 'Aisha Sharma',
-          email: 'aisha.s@techcorp.io',
-          passwordHash: 'hashed_secret',
+          id: 'usr-student',
+          name: 'Student Learner',
+          email: 'student@skyrovix.com',
+          passwordHash: 'hashed_StudentPassword123!',
           role: 'student',
-          avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-          xp: 2450,
-          streakDays: 14,
+          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+          xp: 250,
+          streakDays: 2,
           status: 'Active',
           createdAt: new Date().toISOString()
         }
       ],
-      enrollments: [
-        { userId: 'usr-1', courseId: 'vid-fullstack-dev', enrolledAt: new Date().toISOString() },
-        { userId: 'usr-1', courseId: 'text-html', enrolledAt: new Date().toISOString() },
-        { userId: 'usr-1', courseId: 'vid-react', enrolledAt: new Date().toISOString() },
-        { userId: 'usr-1', courseId: 'text-python', enrolledAt: new Date().toISOString() }
-      ],
-      completedLessons: {
-        'usr-1:vid-fullstack-dev': ['fs-l1'],
-        'usr-1:text-html': ['html_01_html_home', 'html_02_html_introduction']
-      },
-      notes: [
-        {
-          id: 'note-1',
-          userId: 'usr-1',
-          courseId: 'vid-fullstack-dev',
-          courseTitle: 'Full Stack Web Development Masterclass',
-          lessonId: 'fs-l1',
-          lessonTitle: '1. Anatomy of a Production Full Stack Application',
-          content: 'Stateless servers permit seamless horizontal autoscaling behind reverse proxy (Nginx/ALB). Decouple session storage to Redis.',
-          timestamp: '09:30',
-          createdAt: 'Yesterday'
-        }
-      ],
-      certificates: [
-        {
-          id: 'cert-1',
-          userId: 'usr-1',
-          studentName: 'Hariharan S',
-          courseTitle: 'Full Stack Web Development Masterclass',
-          certId: 'SKX-982410',
-          issueDate: 'November 18, 2026',
-          instructor: 'Skyrovix Team',
-          type: 'video'
-        }
-      ]
+      enrollments: [],
+      completedLessons: {},
+      notes: [],
+      certificates: [],
+      orders: [],
+      submissions: [],
+      capstones: [],
+      announcements: [],
+      coupons: [],
+      settings: null
     };
     fs.writeFileSync(dbPath, JSON.stringify(initialDB, null, 2), 'utf-8');
     return initialDB;
   }
-  return JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
+  const parsed = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
+  if (!Array.isArray(parsed.users)) parsed.users = [];
+  if (!Array.isArray(parsed.enrollments)) parsed.enrollments = [];
+  if (!parsed.completedLessons || typeof parsed.completedLessons !== 'object') parsed.completedLessons = {};
+  if (!Array.isArray(parsed.notes)) parsed.notes = [];
+  if (!Array.isArray(parsed.certificates)) parsed.certificates = [];
+  if (!Array.isArray(parsed.orders)) parsed.orders = [];
+  if (!Array.isArray(parsed.submissions)) parsed.submissions = [];
+  if (!Array.isArray(parsed.capstones)) parsed.capstones = [];
+  if (!Array.isArray(parsed.announcements)) parsed.announcements = [];
+  if (!Array.isArray(parsed.coupons)) parsed.coupons = [];
+  return parsed;
 }
 
 function saveDB(db) {
@@ -168,16 +154,18 @@ app.post('/api/auth/register', async (req, res) => {
     xp: 100,
     streakDays: 1,
     status: 'Active',
+    lastActive: new Date().toISOString(),
     createdAt: new Date().toISOString()
   };
 
   db.users.push(newUser);
   saveDB(db);
 
+  const { passwordHash: _, ...safeUser } = newUser;
   res.status(201).json({
     message: 'Registration successful',
     token: `skyrovix_jwt_${newUser.id}`,
-    user: newUser
+    user: safeUser
   });
 });
 
@@ -190,10 +178,14 @@ app.post('/api/auth/login', (req, res) => {
     return res.status(401).json({ error: 'Invalid email or password' });
   }
 
+  user.lastActive = new Date().toISOString();
+  saveDB(db);
+
+  const { passwordHash: _, ...safeUser } = user;
   res.json({
     message: 'Login successful',
     token: `skyrovix_jwt_${user.id}`,
-    user
+    user: safeUser
   });
 });
 
@@ -240,26 +232,57 @@ app.get('/api/enrollments', (req, res) => {
 });
 
 app.post('/api/enrollments', (req, res) => {
-  const { userId, courseId } = req.body;
+  const { userId, email, courseId } = req.body;
+  if (!courseId) {
+    return res.status(400).json({ error: 'courseId is required' });
+  }
   const db = loadDB();
-  const exists = db.enrollments.some(e => e.userId === userId && e.courseId === courseId);
+  const user = db.users.find(
+    u => (userId && u.id === userId) || (email && u.email?.toLowerCase() === email.toLowerCase())
+  );
+  const targetUserId = user?.id || userId || email;
+  if (!targetUserId) {
+    return res.status(400).json({ error: 'userId or email is required' });
+  }
+  const exists = db.enrollments.some(e => e.userId === targetUserId && e.courseId === courseId);
   if (!exists) {
-    db.enrollments.push({ userId, courseId, enrolledAt: new Date().toISOString() });
+    db.enrollments.push({
+      userId: targetUserId,
+      courseId,
+      enrolledAt: new Date().toISOString()
+    });
+    if (user) {
+      user.xp = (user.xp || 0) + 50;
+      user.lastActive = new Date().toISOString();
+    }
     saveDB(db);
   }
   res.json({ success: true, message: 'Enrolled successfully' });
 });
 
 app.post('/api/progress/toggle', (req, res) => {
-  const { userId, courseId, lessonId } = req.body;
+  const { userId, email, courseId, lessonId } = req.body;
+  if (!courseId || !lessonId) {
+    return res.status(400).json({ error: 'courseId and lessonId are required' });
+  }
   const db = loadDB();
-  const key = `${userId}:${courseId}`;
+  const user = db.users.find(
+    u => (userId && u.id === userId) || (email && u.email?.toLowerCase() === email.toLowerCase())
+  );
+  const targetUserId = user?.id || userId || email;
+  const key = `${targetUserId}:${courseId}`;
   const list = db.completedLessons[key] || [];
 
   if (list.includes(lessonId)) {
     db.completedLessons[key] = list.filter(id => id !== lessonId);
   } else {
     db.completedLessons[key] = [...list, lessonId];
+    if (user) {
+      user.xp = (user.xp || 0) + 100;
+    }
+  }
+  if (user) {
+    user.lastActive = new Date().toISOString();
   }
 
   saveDB(db);
@@ -279,19 +302,24 @@ app.get('/api/certificates/verify/:certId', (req, res) => {
 });
 
 app.post('/api/certificates/issue', (req, res) => {
-  const { userId, studentName, courseTitle, type, instructor } = req.body;
+  const { userId, studentName, studentAvatar, courseTitle, type, instructor, score } = req.body;
   const db = loadDB();
+  const student = db.users.find(u => u.id === userId);
   const newCert = {
     id: `cert-${Date.now()}`,
-    userId,
-    studentName,
+    userId: userId || student?.id || 'usr-admin',
+    studentName: studentName || student?.name || 'Skyrovix Learner',
+    studentAvatar: studentAvatar || student?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
     courseTitle,
     certId: `SKX-${Math.floor(100000 + Math.random() * 900000)}`,
     issueDate: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
     instructor: instructor || 'Skyrovix Team',
-    type: type || 'video'
+    score: score || '100% (Distinction)',
+    status: 'Live Verified Online',
+    type: type || 'video',
+    createdAt: new Date().toISOString()
   };
-  db.certificates.push(newCert);
+  db.certificates.unshift(newCert);
   saveDB(db);
   res.status(201).json({ success: true, certificate: newCert });
 });
@@ -517,15 +545,266 @@ app.post('/api/cashfree/webhook', express.raw({ type: 'application/json' }), (re
   }
 });
 
-// 4. Analytics & KPIs
+// 4. Analytics & Real-Time Admin Endpoints
+function formatRelativeOrDate(iso) {
+  if (!iso) return 'Recently';
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return iso;
+  const diffMs = Date.now() - date.getTime();
+  const diffMin = Math.floor(diffMs / 60000);
+  if (diffMin < 1) return 'Just now';
+  if (diffMin < 60) return `${diffMin}m ago`;
+  const diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 24) return `${diffHr}h ago`;
+  return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+app.get('/api/admin/overview', (req, res) => {
+  const db = loadDB();
+
+  // Compute real student profiles from db.users + db.enrollments + db.completedLessons
+  const students = db.users.map(u => {
+    const enrolledCourseCount = db.enrollments.filter(e => e.userId === u.id).length;
+    const completedLessonsCount = Object.entries(db.completedLessons || {})
+      .filter(([key]) => key.startsWith(`${u.id}:`))
+      .reduce((sum, [, list]) => sum + (Array.isArray(list) ? list.length : 0), 0);
+
+    return {
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      avatar: u.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+      role: u.role === 'admin' ? 'admin' : 'student',
+      enrolledCourseCount,
+      completedLessonsCount,
+      xp: u.xp || 0,
+      streakDays: u.streakDays || 1,
+      lastActive: formatRelativeOrDate(u.lastActive || u.createdAt),
+      lastActiveRaw: u.lastActive || u.createdAt || null,
+      createdAt: u.createdAt || null,
+      status: u.status === 'Inactive' ? 'Inactive' : 'Active'
+    };
+  });
+
+  // Sort newest orders first
+  const orders = [...(db.orders || [])].sort(
+    (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+  );
+
+  const paidOrders = orders.filter(o => o.status === 'PAID');
+  const paidRevenue = paidOrders.reduce((sum, o) => sum + (Number(o.amount) || 0), 0);
+  const pendingVolume = orders
+    .filter(o => o.status !== 'PAID')
+    .reduce((sum, o) => sum + (Number(o.amount) || 0), 0);
+
+  // Build real chronological live activity feed
+  const activity = [];
+  db.users.forEach(u => {
+    activity.push({
+      id: `act-user-${u.id}`,
+      type: 'user',
+      title: `${u.name} joined as ${u.role}`,
+      subtitle: `${u.email} • ${formatRelativeOrDate(u.createdAt)}`,
+      timestamp: u.createdAt || new Date(0).toISOString()
+    });
+  });
+  db.enrollments.forEach((e, idx) => {
+    const user = db.users.find(u => u.id === e.userId);
+    activity.push({
+      id: `act-enr-${e.userId}-${e.courseId}-${idx}`,
+      type: 'enrollment',
+      title: `${user?.name || e.userId} enrolled in ${e.courseId}`,
+      subtitle: `${e.paymentGateway || 'Direct Enrollment'} • ${formatRelativeOrDate(e.enrolledAt)}`,
+      timestamp: e.enrolledAt || new Date(0).toISOString()
+    });
+  });
+  orders.forEach(o => {
+    activity.push({
+      id: `act-ord-${o.orderId}`,
+      type: 'order',
+      title: `Cashfree Order ₹${o.amount} (${o.status})`,
+      subtitle: `${o.customerName || o.customerEmail} • ${o.courseTitle} • ${formatRelativeOrDate(o.createdAt)}`,
+      timestamp: o.createdAt || new Date(0).toISOString()
+    });
+  });
+  db.certificates.forEach(c => {
+    activity.push({
+      id: `act-cert-${c.id}`,
+      type: 'certificate',
+      title: `Certificate ${c.certId} issued to ${c.studentName}`,
+      subtitle: `${c.courseTitle} • ${c.issueDate}`,
+      timestamp: c.createdAt || new Date(0).toISOString()
+    });
+  });
+
+  activity.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+  // Normalize certificates for frontend display
+  const certificates = (db.certificates || []).map(c => {
+    const owner = db.users.find(u => u.id === c.userId);
+    return {
+      id: c.id,
+      userId: c.userId,
+      certCode: c.certId || c.certCode,
+      studentName: c.studentName,
+      studentAvatar: c.studentAvatar || owner?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+      courseTitle: c.courseTitle,
+      issuedDate: c.issueDate || c.issuedDate,
+      score: c.score || '100% (Distinction)',
+      status: c.status || 'Live Verified Online',
+      instructor: c.instructor || 'Skyrovix Team'
+    };
+  });
+
+  res.json({
+    serverTime: new Date().toISOString(),
+    students,
+    enrollments: db.enrollments,
+    orders,
+    certificates,
+    notesCount: db.notes.length,
+    submissions: db.submissions || [],
+    capstones: db.capstones || [],
+    announcements: db.announcements || [],
+    coupons: db.coupons || [],
+    settings: db.settings || null,
+    recentActivity: activity.slice(0, 15),
+    stats: {
+      totalUsers: students.length,
+      activeUsers: students.filter(s => s.status === 'Active').length,
+      totalEnrollments: db.enrollments.length,
+      totalOrders: orders.length,
+      paidOrdersCount: paidOrders.length,
+      paidRevenue,
+      pendingVolume,
+      totalCertificates: certificates.length
+    }
+  });
+});
+
+app.patch('/api/admin/students/:id', (req, res) => {
+  const { id } = req.params;
+  const { status, role, xp, name } = req.body;
+  const db = loadDB();
+  const user = db.users.find(u => u.id === id || u.email?.toLowerCase() === id.toLowerCase());
+  if (!user) {
+    return res.status(404).json({ error: 'Student not found' });
+  }
+  if (status) user.status = status;
+  if (role) user.role = role;
+  if (typeof xp === 'number') user.xp = xp;
+  if (name) user.name = name;
+  saveDB(db);
+  const { passwordHash: _, ...safeUser } = user;
+  res.json({ success: true, user: safeUser });
+});
+
+app.delete('/api/admin/certificates/:id', (req, res) => {
+  const { id } = req.params;
+  const db = loadDB();
+  db.certificates = (db.certificates || []).filter(c => c.id !== id);
+  saveDB(db);
+  res.json({ success: true });
+});
+
+app.post('/api/admin/submissions', (req, res) => {
+  const db = loadDB();
+  const item = {
+    id: `sub-${Date.now()}`,
+    ...req.body,
+    status: req.body.status || 'Pending',
+    submittedOn: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })
+  };
+  db.submissions.unshift(item);
+  saveDB(db);
+  res.status(201).json({ success: true, submission: item });
+});
+
+app.patch('/api/admin/submissions/:id', (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  const db = loadDB();
+  const sub = db.submissions.find(s => s.id === id);
+  if (sub && status) {
+    sub.status = status;
+    saveDB(db);
+  }
+  res.json({ success: true, submission: sub || null });
+});
+
+app.post('/api/admin/capstones', (req, res) => {
+  const db = loadDB();
+  const item = {
+    id: `cap-${Date.now()}`,
+    ...req.body,
+    status: req.body.status || 'Pending'
+  };
+  db.capstones.unshift(item);
+  saveDB(db);
+  res.status(201).json({ success: true, capstone: item });
+});
+
+app.patch('/api/admin/capstones/:id', (req, res) => {
+  const { id } = req.params;
+  const { grade, status } = req.body;
+  const db = loadDB();
+  const cap = db.capstones.find(c => c.id === id);
+  if (cap) {
+    if (grade) cap.grade = grade;
+    if (status) cap.status = status;
+    saveDB(db);
+  }
+  res.json({ success: true, capstone: cap || null });
+});
+
+app.post('/api/admin/announcements', (req, res) => {
+  const { text, author } = req.body;
+  if (!text) return res.status(400).json({ error: 'Announcement text is required' });
+  const db = loadDB();
+  const item = {
+    id: `ann-${Date.now()}`,
+    text,
+    author: author || 'Super Admin',
+    createdAt: new Date().toISOString()
+  };
+  db.announcements.unshift(item);
+  saveDB(db);
+  res.status(201).json({ success: true, announcement: item });
+});
+
+app.post('/api/admin/coupons', (req, res) => {
+  const { code, discountPercent } = req.body;
+  if (!code) return res.status(400).json({ error: 'Coupon code is required' });
+  const db = loadDB();
+  const item = {
+    id: `cpn-${Date.now()}`,
+    code: String(code).toUpperCase(),
+    discountPercent: Number(discountPercent) || 10,
+    active: true,
+    createdAt: new Date().toISOString()
+  };
+  db.coupons.unshift(item);
+  saveDB(db);
+  res.status(201).json({ success: true, coupon: item });
+});
+
+app.put('/api/admin/settings', (req, res) => {
+  const db = loadDB();
+  db.settings = { ...(db.settings || {}), ...(req.body || {}), updatedAt: new Date().toISOString() };
+  saveDB(db);
+  res.json({ success: true, settings: db.settings });
+});
+
 app.get('/api/analytics', (req, res) => {
   const db = loadDB();
+  const paidOrders = (db.orders || []).filter(o => o.status === 'PAID');
+  const paidRevenue = paidOrders.reduce((sum, o) => sum + (Number(o.amount) || 0), 0);
   res.json({
-    totalStudents: 14820 + db.users.length,
-    activeCourses: 22,
-    totalCompletions: 84190,
-    satisfactionRating: 4.94,
-    monthlyEnrollmentGrowth: '+24%'
+    totalStudents: db.users.length,
+    totalEnrollments: db.enrollments.length,
+    totalOrders: (db.orders || []).length,
+    paidRevenue,
+    totalCertificates: (db.certificates || []).length
   });
 });
 

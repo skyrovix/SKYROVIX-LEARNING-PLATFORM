@@ -120,6 +120,7 @@ export interface PlatformContextType {
 
   // Admin Data
   students: StudentProfile[];
+  setStudents: React.Dispatch<React.SetStateAction<StudentProfile[]>>;
   updateStudent: (student: StudentProfile) => void;
   addStudent: (student: StudentProfile) => void;
   deleteStudent: (studentId: string) => void;
@@ -293,9 +294,11 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     showGlobalToast('Workspace reset! All course enrollments and progress have been cleared.');
   };
 
-  // Students list for Admin Dashboard
+  // Students list for Admin Dashboard — synced directly from real backend database
   const [students, setStudents] = useState<StudentProfile[]>(() => {
-    const saved = localStorage.getItem('skyrovix_students');
+    // Clear legacy mock student cache so fake users never reappear
+    localStorage.removeItem('skyrovix_students');
+    const saved = localStorage.getItem('skyrovix_students_live_v2');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -303,112 +306,7 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         // fallback
       }
     }
-    return [
-      {
-        id: 'std-1',
-        name: 'Hariharan S (You)',
-        email: 'hariharan@skyrovix.dev',
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-        role: 'admin',
-        enrolledCourseCount: 6,
-        completedLessonsCount: 42,
-        xp: 1850,
-        streakDays: 7,
-        lastActive: 'Just now',
-        status: 'Active'
-      },
-      {
-        id: 'std-2',
-        name: 'Aisha Sharma',
-        email: 'aisha.s@techcorp.io',
-        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-        role: 'student',
-        enrolledCourseCount: 4,
-        completedLessonsCount: 38,
-        xp: 2450,
-        streakDays: 14,
-        lastActive: '12 mins ago',
-        status: 'Active'
-      },
-      {
-        id: 'std-3',
-        name: 'Carlos Mendoza',
-        email: 'carlos.m@buildfast.com',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-        role: 'student',
-        enrolledCourseCount: 5,
-        completedLessonsCount: 29,
-        xp: 1980,
-        streakDays: 5,
-        lastActive: '1 hour ago',
-        status: 'Active'
-      },
-      {
-        id: 'std-4',
-        name: 'Zoe Becker',
-        email: 'zoe@datasci.org',
-        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
-        role: 'student',
-        enrolledCourseCount: 3,
-        completedLessonsCount: 19,
-        xp: 1420,
-        streakDays: 9,
-        lastActive: '3 hours ago',
-        status: 'Active'
-      },
-      {
-        id: 'std-5',
-        name: 'Devon Patel',
-        email: 'devon.p@siliconhub.net',
-        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
-        role: 'student',
-        enrolledCourseCount: 7,
-        completedLessonsCount: 51,
-        xp: 3200,
-        streakDays: 21,
-        lastActive: 'Yesterday',
-        status: 'Active'
-      },
-      {
-        id: 'std-6',
-        name: 'Priya Sharma',
-        email: 'priya.sharma@cloudlabs.dev',
-        avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
-        role: 'student',
-        enrolledCourseCount: 5,
-        completedLessonsCount: 34,
-        xp: 2210,
-        streakDays: 11,
-        lastActive: '30 mins ago',
-        status: 'Active'
-      },
-      {
-        id: 'std-7',
-        name: 'Rahul Verma',
-        email: 'rahul.v@fullstackhub.com',
-        avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80',
-        role: 'student',
-        enrolledCourseCount: 4,
-        completedLessonsCount: 22,
-        xp: 1680,
-        streakDays: 4,
-        lastActive: '4 hours ago',
-        status: 'Active'
-      },
-      {
-        id: 'std-8',
-        name: 'Sneha Patel',
-        email: 'sneha.patel@cyberdefense.io',
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-        role: 'student',
-        enrolledCourseCount: 6,
-        completedLessonsCount: 45,
-        xp: 2890,
-        streakDays: 18,
-        lastActive: 'Yesterday',
-        status: 'Active'
-      }
-    ];
+    return [];
   });
 
   // Sync to localStorage
@@ -417,8 +315,30 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, [role]);
 
   useEffect(() => {
-    localStorage.setItem('skyrovix_students', JSON.stringify(students));
+    localStorage.setItem('skyrovix_students_live_v2', JSON.stringify(students));
   }, [students]);
+
+  // Fetch real students from backend SQL/DB API on mount
+  useEffect(() => {
+    let active = true;
+    const fetchRealUsers = async () => {
+      try {
+        const resp = await fetch('http://localhost:5000/api/admin/overview');
+        if (resp.ok) {
+          const data = await resp.json();
+          if (active && Array.isArray(data.students)) {
+            setStudents(data.students);
+          }
+        }
+      } catch (e) {
+        // Backend offline; keep cached live data
+      }
+    };
+    fetchRealUsers();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Load user-scoped data whenever currentUser changes
   useEffect(() => {
@@ -521,6 +441,19 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       addXP(50);
       const found = videoCourses.find(c => c.id === courseId) || textCourses.find(c => c.id === courseId);
       showGlobalToast(`🎉 Enrolled in "${found?.title || courseId}"! +50 XP earned.`);
+
+      // Persist enrollment to backend DB in real time
+      if (currentUser?.id || currentUser?.email) {
+        fetch('http://localhost:5000/api/enrollments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: currentUser.id,
+            email: currentUser.email,
+            courseId
+          })
+        }).catch(() => {});
+      }
     }
   };
 
@@ -540,6 +473,20 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         [courseId]: updated
       };
     });
+
+    // Sync progress to backend DB in real time
+    if (currentUser?.id || currentUser?.email) {
+      fetch('http://localhost:5000/api/progress/toggle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: currentUser.id,
+          email: currentUser.email,
+          courseId,
+          lessonId
+        })
+      }).catch(() => {});
+    }
   };
 
   const isLessonCompleted = (courseId: string, lessonId: string): boolean => {
@@ -813,22 +760,27 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         ? 'admin'
         : 'student';
 
-      // 1. Notify express backend
+      // 1. Register with express backend and use server-assigned ID
+      let serverUser: any = null;
       try {
-        await fetch('http://localhost:5000/api/auth/register', {
+        const resp = await fetch('http://localhost:5000/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: name.trim(), email: email.trim(), password, role: userRole })
         });
+        if (resp.ok) {
+          const data = await resp.json();
+          serverUser = data.user;
+        }
       } catch (e) {
         // Non-blocking
       }
 
       const profile = {
-        id: `usr-${Date.now()}`,
-        name: name.trim(),
-        email: email.trim(),
-        role: userRole
+        id: serverUser?.id || `usr-${Date.now()}`,
+        name: serverUser?.name || name.trim(),
+        email: serverUser?.email || email.trim(),
+        role: (serverUser?.role as 'student' | 'admin') || userRole
       };
       setIsAuthenticated(true);
       setCurrentUser(profile);
@@ -973,6 +925,7 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         showGlobalToast,
         resetMyLearningData,
         students,
+        setStudents,
         updateStudent,
         addStudent,
         deleteStudent,
